@@ -21,8 +21,12 @@
     "connect-mongo": "^4.6.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "del": "^7.0.0",
+    "express": "^4.18.1",
+    "fancy-log": "^2.0.0",
     "fs-extra": "^10.1.0",
     "googleapis": "^108.0.0",
+    "gulp": "^4.0.2",
     "http-proxy-middleware": "^2.0.6",
     "lodash": "^4.17.21",
     "mongodb": "^4.10.0",
@@ -30,11 +34,13 @@
     "multer": "^1.4.5-lts.1",
     "node": "^18.10.0",
     "nodemailer": "^6.8.0",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
     "prop-types": "^15.8.1",
     "regex": "^0.1.1",
     "socket.io": "^4.5.2"
   },
   "engines": {
-    "node": "^16.4.0"
+    "node": "^18.10.0"
   }
 }

@@ -1,27 +1,40 @@
-const express = require('express')
-const path = require('path')
-const app = express()
-const bodyParser = require("body-parser")
-const port = process.env.PORT || 5000;
-const connectionOptions = { poolSize: process.env.MONGO_POOLSIZE || 1 }
-const mongodb = require('mongodb')
-const cors = require('cors')
-const busboy = require('connect-busboy');
-const http = require('http');
-const server = http.createServer(app);
-const colors = require('./colorfulLogs').colors;
-const connectionString = require('./credentials').connectionString;
-var multer = require('multer');
-var	cookieParser = require('cookie-parser');
-var	crypt = require('crypto');
-var	db;
-var	fs = require('fs-extra');
-var	io = require("socket.io")(server)
-		.use(function (socket, next) {
-			// Wrap the express middleware
-			sessionMiddleware(socket.request, {}, next);
-		})
+const express = require('express');
+const path = require('path');
+const bodyParser = require('body-parser');
 
+const app = express();
+const server = http.createServer(app);
+const port = process.env.PORT || 5000;
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+//TESTS START
+
+// const express = require('express')
+// const path = require('path')
+// const app = express()
+// const bodyParser = require("body-parser")
+// const port = process.env.PORT || 5000;
+// const connectionOptions = { poolSize: process.env.MONGO_POOLSIZE || 1 }
+// const mongodb = require('mongodb')
+// const cors = require('cors')
+// const busboy = require('connect-busboy');
+// const http = require('http');
+// const server = http.createServer(app);
+// const colors = require('./colorfulLogs').colors;
+// const connectionString = require('./credentials').connectionString;
+// var multer = require('multer');
+// var	cookieParser = require('cookie-parser');
+// var	crypt = require('crypto');
+// var	db;
+// var	fs = require('fs-extra');
+// var	io = require("socket.io")(server)
+// 		.use(function (socket, next) {
+// 			// Wrap the express middleware
+// 			sessionMiddleware(socket.request, {}, next);
+// 		})
+
+		// HERE TESTS ENDED
 // app.use(busboy());
 // app.use(cors());
 // global.bodyParser = require('body-parser');

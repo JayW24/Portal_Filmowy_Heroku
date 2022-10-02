@@ -5,7 +5,7 @@ export default function TestComp3(props) {
 
     useEffect(() => {
         console.log('fetching...')
-        callApi = async () => {
+        const callApi = async () => {
             const response = await fetch('/api/hello');
             const body = await response.json();
         
@@ -13,6 +13,7 @@ export default function TestComp3(props) {
         
             console.log(body);
           };
+          callApi();
     }, []);
 
     const handleToggle = function() {

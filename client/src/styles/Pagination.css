@@ -1,0 +1,18 @@
+#reset-filters-and-categories, .filterButton, #sortBy, #sortType, #searchFilter  {
+    cursor: pointer
+}
+
+#reset-filters-and-categories {
+    background-color: white;
+    border: 1px solid #e3e3e3;
+    border-top: none;
+}
+
+.resultsAmountController {
+border: 1px solid #e3e3e3;
+border-top: none;
+}
+
+.results-title {
+    white-space: nowrap;
+}

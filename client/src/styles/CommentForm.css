@@ -1,0 +1,18 @@
+.commentInput {
+    min-height: 80px;
+    height: auto;
+    font-size: 0.6em;
+    resize: none;
+    overflow: auto;
+    border-radius: 0px;
+}
+
+.remove-comment-input {
+    border: none !important;
+}
+
+@media only screen and (max-width: 992px) {
+    .commentInput {
+        margin-bottom: 100px;
+    }
+  }

@@ -12,12 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.18.0",
-    "body-parser": "^1.18.3",
-    "express": "^4.16.4",
-    "lodash": "^4.17.11",
-    "mongoose": "^5.4.13",
-    "prop-types": "^15.7.2",
     "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
     "busboy": "^0.3.1",

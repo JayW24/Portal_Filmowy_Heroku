@@ -368,7 +368,7 @@ app.get('/api/servertime', (req, res, next) => {
 
 
 app.get('/', (req, res) => {
-	res.send("portal-filmowy api");
+	res.redirect(':3000')
 })
 
 // UNIVERSAL GET FROM DB WITH QUERY AND SORTING + FILTERS

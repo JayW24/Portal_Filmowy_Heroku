@@ -24,9 +24,8 @@
     "superagent": "^6.1.0",
     "swiper": "^6.7.1",
     "universal-cookie": "^4.0.4"
-  },
-  "scripts": {
-    "start": "react-scripts start --port 3001",
+  },  "scripts": {
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

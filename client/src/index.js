@@ -4,11 +4,14 @@ import './styles/index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { AppError } from './components/AppError';
+import SimpleReactLightbox from 'simple-react-lightbox';
 
 ReactDOM.render(
   <React.StrictMode>
     <AppError children="children">
+      <SimpleReactLightbox>
         <App />
+      </SimpleReactLightbox>
     </AppError>
   </React.StrictMode>,
   document.getElementById('root')

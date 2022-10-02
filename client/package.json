@@ -10,7 +10,7 @@
     "bootstrap": "^4.5.0",
     "jquery": "^3.6.0",
     "lodash.debounce": "^4.0.8",
-    "react": "^16.14.0",
+    "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.1",
     "react-infinite-scroll-component": "^6.1.0",
@@ -24,7 +24,8 @@
     "superagent": "^6.1.0",
     "swiper": "^6.7.1",
     "universal-cookie": "^4.0.4"
-  },  "scripts": {
+  },
+  "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

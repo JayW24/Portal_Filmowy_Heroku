@@ -2,7 +2,7 @@ const express = require('express')
 const path = require('path')
 const app = express()
 const bodyParser = require("body-parser")
-const port = 8080;
+const port = process.env.PORT || 5000;
 const connectionOptions = { poolSize: process.env.MONGO_POOLSIZE || 1 }
 const mongodb = require('mongodb')
 const cors = require('cors')
@@ -125,7 +125,7 @@ mongodb.MongoClient.connect(connectionString, connectionOptions, function (err, 
 			))
 
 	// Start Server
-	server.listen(process.env.PORT || port, () => {
+	server.listen(port, () => {
 		console.log(colors.FgCyan, '\n*\n*\n*\n*\n*\n*\n')
 		console.log(colors.FgYellow, '[Database]: database connected! Mongo Client and Mongoose are ready.')
 		console.log(colors.FgBlue, `[Server]: server started. Listening on port *:${port}`)
@@ -134,6 +134,13 @@ mongodb.MongoClient.connect(connectionString, connectionOptions, function (err, 
 		console.log(err)
 	})
 });
+
+app.get('/api/hello', (req, res) => {
+	res.send({ express: 'Hello From Express' });
+  });
+  
+//app.listen(port, () => console.log(`Listening on port ${port}`));
+
 
 
 // *********************************************************  PASSPORT JS ***************************************************************
@@ -1540,8 +1547,3 @@ function serverLog(req, method) {
 		if (err) { console.log(colors.FgRed, '[Server]: Server error! Method: ' + 'Path:' + req.path + ' called by ' + req.user == undefined ? req.user.username : 'anonymous') }
 	}
 }
-
-
-app.get('/api/hello', (req, res) => {
-	res.send({ express: 'Hello From Express' });
-  });

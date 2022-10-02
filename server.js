@@ -66,17 +66,17 @@ const { setTimeout } = require('timers/promises')
 var MongoStore = require('connect-mongo')(session);
 
 // Middleware
-app.engine('hbs', hbs({ extname: '.hbs' }));
-app.set('view engine', 'hbs');
-app.use(express.static(__dirname + '/public'));
-var sessionMiddleware = session({
-	secret: crypt.randomBytes(16).toString("hex"),
-	cookie: { maxAge: 604800000 },	// = one week
-	resave: false,
-	saveUninitialized: true,
-	maxAge: new Date(Date.now() + 3600000),
-	store: new MongoStore({ mongooseConnection: mongoose.connection })
-});
+// app.engine('hbs', hbs({ extname: '.hbs' }));
+// app.set('view engine', 'hbs');
+// app.use(express.static(__dirname + '/public'));
+// var sessionMiddleware = session({
+// 	secret: crypt.randomBytes(16).toString("hex"),
+// 	cookie: { maxAge: 604800000 },	// = one week
+// 	resave: false,
+// 	saveUninitialized: true,
+// 	maxAge: new Date(Date.now() + 3600000),
+// 	store: new MongoStore({ mongooseConnection: mongoose.connection })
+// });
 //app.use(sessionMiddleware);
 // app.use(express.urlencoded({ extended: false }));
 // app.use(express.json());

@@ -78,22 +78,22 @@ var sessionMiddleware = session({
 	store: new MongoStore({ mongooseConnection: mongoose.connection })
 });
 //app.use(sessionMiddleware);
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-app.use(cookieParser());
+// app.use(express.urlencoded({ extended: false }));
+// app.use(express.json());
+// app.use(cookieParser());
 
 // Passport.js
-app.use(passport.initialize());
-app.use(passport.session());
-passport.serializeUser(function (user, done) {
-	done(null, user.id)
-});
-passport.deserializeUser(function (id, done) {
-	User.findById(id, function (err, user) {
-		//dbLog('Deserialize User.', 'findById()', 'users', 'by id', user)
-		done(err, user)
-	})
-});
+// app.use(passport.initialize());
+// app.use(passport.session());
+// passport.serializeUser(function (user, done) {
+// 	done(null, user.id)
+// });
+// passport.deserializeUser(function (id, done) {
+// 	User.findById(id, function (err, user) {
+// 		//dbLog('Deserialize User.', 'findById()', 'users', 'by id', user)
+// 		done(err, user)
+// 	})
+// });
 
 //
 if (process.env.NODE_ENV === 'production') {

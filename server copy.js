@@ -36,9 +36,7 @@ app.use(bodyParser.json({
 	parameterLimit: 100000
 }));
 
-
 const { fork } = require('child_process')	// for multi thread
-
 
 	// Mongoose Schemas
 const Schemas = require('./schemas');

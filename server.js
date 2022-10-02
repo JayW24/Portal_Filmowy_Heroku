@@ -2,7 +2,7 @@ const express = require('express')
 const path = require('path')
 const app = express()
 const bodyParser = require("body-parser")
-const port = 8080;
+const port = 5000;
 const connectionOptions = { poolSize: process.env.MONGO_POOLSIZE || 1 }
 const mongodb = require('mongodb')
 const cors = require('cors')
@@ -375,11 +375,6 @@ app.get('/api/servertime', (req, res, next) => {
 	catch (err) {
 		next(err)
 	}
-})
-
-
-app.get('/', (req, res) => {
-	res.redirect(':3000')
 })
 
 // UNIVERSAL GET FROM DB WITH QUERY AND SORTING + FILTERS

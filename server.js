@@ -77,7 +77,7 @@ var sessionMiddleware = session({
 	maxAge: new Date(Date.now() + 3600000),
 	store: new MongoStore({ mongooseConnection: mongoose.connection })
 });
-app.use(sessionMiddleware);
+//app.use(sessionMiddleware);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());

@@ -1540,8 +1540,3 @@ function serverLog(req, method) {
 		if (err) { console.log(colors.FgRed, '[Server]: Server error! Method: ' + 'Path:' + req.path + ' called by ' + req.user == undefined ? req.user.username : 'anonymous') }
 	}
 }
-
-
-app.get('/api/hello', (req, res) => {
-	res.send({ express: 'Hello From Express' });
-  });

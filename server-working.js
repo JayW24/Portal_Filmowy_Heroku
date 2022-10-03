@@ -121,6 +121,81 @@ app.post('/api/world', (req, res) => {
   );
 });
 
+// ALL GUWNO TEST
+// DB
+function dbLog(communicate, method, dbName, query, results) {
+	try {
+		query == null ? query = 'none' : query = JSON.stringify(query)
+		console.log(colors.FgYellow, `[Database]: ${communicate} Method: ${method} called, dbName: ${dbName}, query: ${query}, results_type: ${typeof (results)}`)
+	}
+	catch (err) {
+		if (err) { console.log(colors.FgRed), err }
+	}
+}
+// SERVER
+function serverLog(req, method) {
+	try {
+		console.log(colors.FgGreen, `[Server]: ${method} ${req.path} | Called by: ${req.user ? req.user.username : 'anonymous'}`)
+	}
+	catch (err) {
+		if (err) { console.log(colors.FgRed, '[Server]: Server error! Method: ' + 'Path:' + req.path + ' called by ' + req.user == undefined ? req.user.username : 'anonymous') }
+	}
+}
+function collectionNotAllowed(req, res, next) {
+	if (req.params.dbName !== "messages" && req.params.dbName !== "users" && req.params.dbName !== "sessions" && req.params.dbName !== "confirmations") {
+		next()
+	}
+	else {
+		res.status(405).send("Not allowed to finish this action.")
+	}
+}
+
+app.get('/api/dbquery/:dbname/:skip?/:limit?/:query?', collectionNotAllowed, async (req, res, next) => {
+	try {
+		serverLog(req, 'Universal GET')
+		const dbname = req.params.dbname,
+			skip = parseInt(req.params.skip),
+			limit = parseInt(req.params.limit),
+			query = req.params.query																		//to prevent access to all users Data
+		if (query !== "null" && query !== undefined) {
+			let decodedQueryParams = decodeQueryParams(query)
+			//CATEGORIES
+			if (decodedQueryParams['categories']) { (decodedQueryParams['categories']) = new RegExp((decodedQueryParams['categories']), 'i') }
+			//NAME
+			if (decodedQueryParams['name']) { (decodedQueryParams['name']) = new RegExp((decodedQueryParams['name']), 'i') }
+			//DURATION
+			console.log(colors.FgGreen, '[Server]: decodedQueryParams: ' + decodedQueryParams)
+			if (decodedQueryParams['duration']) {
+				let duration = decodedQueryParams['duration'].split(',')
+				duration = { $gt: parseInt(duration[0]), $lt: parseInt(duration[1]) }
+				decodedQueryParams['duration'] = duration
+			}
+			//ORDER
+			if (decodedQueryParams['order']) {
+				var order = decodedQueryParams['order']
+				order = decodeOrderParams(order)
+				delete decodedQueryParams['order']
+			}
+			else {
+				order = null
+			}
+
+			const items = await db.collection(dbname).find(decodedQueryParams).skip(skip).limit(limit).sort(order).toArray()	//example: /api/dbquery/filmy/0/10/categories=cat1&order=name:1
+			dbLog('Got results from DB!', 'find()', dbname, decodedQueryParams, items)
+			res.send(items)
+		}
+		else {
+			const items = await db.collection(dbname).find().skip(skip).limit(limit).sort().toArray()
+			dbLog('Got results from DB!', 'find()', dbname, null, items)
+			res.send(items)
+		}
+	}
+	catch (err) {
+		next(err)
+	}
+})
+//end of dbquery test
+
 if (process.env.NODE_ENV === 'production') {
   // Serve any static files
   app.use(express.static(path.join(__dirname, 'client/build')));

@@ -194,7 +194,7 @@ app.get('/api/login', isLoggedOut, (req, res) => {
 })
 
 app.post('/api/login', passport.authenticate('local', {
-	successRedirect: '/',
+	successRedirect: '/success',
 	failureRedirect: '/login?error=true'
 }))
 

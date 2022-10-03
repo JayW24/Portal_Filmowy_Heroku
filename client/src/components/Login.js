@@ -18,10 +18,10 @@ async function login(e, nameRef, passRef, setLoginResponse, history) {
     console.log('response');
     console.log(response);
   
-    if (response.status == 200 && response.url == "http://localhost:3000/") {
+    if (response.status == 200 && response.url.includes('success')) {
         history.push("/")
     }
-    else if (response.status == 200 && response.url == "http://localhost:3000/login?error=true") {
+    else if (response.status == 200 && response.url.includes("error=true")) {
         setLoginResponse('Username or password is wrong!');
     }
     else {

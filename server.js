@@ -158,3 +158,18 @@ mongodb.MongoClient.connect(connectionString, connectionOptions, function (err, 
 		console.log(err)
 	})
 });
+
+// GET NEWS FOR MAIN PAGE
+app.get('/api/news_Preview', (req, res, next) => {
+	try {
+		News.find({}, "title thumbnail header paragraph", (err, docs) => {
+			if (err) {
+				res.status(500)
+			}
+			res.send(docs)
+		}).limit(20)
+	}
+	catch (err) {
+		next(err)
+	}
+})

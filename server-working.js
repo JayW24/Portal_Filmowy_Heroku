@@ -131,4 +131,30 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-server.listen(port, () => console.log(`Listening on port ${port}`));
+// ************************************************* START SERVER + DATABASE CONNECTIONS ***********************************************
+// Start Mongoose 
+mongodb.MongoClient.connect(connectionString, connectionOptions, function (err, database) {
+	if (err) {
+		console.log(colors.FgRed, '[Database]: Mongo Client connection error!' + error)
+	}
+	db = database.db('portal_filmowy')
+
+	// Start MongoDB Client
+	mongoose.connect(connectionString, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+	})
+		.catch(error =>
+			console.log(colors.FgRed, '[Database]: mongoose connection error!' + error
+			))
+
+	// Start Server
+	server.listen(port, () => {
+		console.log(colors.FgCyan, '\n*\n*\n*\n*\n*\n*\n')
+		console.log(colors.FgYellow, '[Database]: database connected! Mongo Client and Mongoose are ready.')
+		console.log(colors.FgBlue, `[Server]: server started. Listening on port *:${port}`)
+	}).on('error', (err) => {
+		console.log(colors.FgRed, '[Server]: Server listen error!')
+		console.log(err)
+	})
+});

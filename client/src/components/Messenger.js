@@ -1,8 +1,8 @@
-import React, { useState, useContext } from 'react'
-import MessengerSocket from './MessengerSocket'
-import MessagesReverse from './MessagesReverse'
+import React, { useState, useContext } from 'react';
+import MessengerSocket from './MessengerSocket';
+import MessagesReverse from './MessagesReverse';
 import MetaTags from 'react-meta-tags';
-import { LoginContext } from './LoginContext'
+import { LoginContext } from './LoginContext';
 
 
 function Messenger(props) {

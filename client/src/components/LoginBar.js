@@ -4,6 +4,7 @@ import MessagesPreview from './MessagesPreview';
 import { Link } from 'react-router-dom';
 import { LoginContext } from './LoginContext';
 import { SocketContext } from './SocketContext';
+import { useHistory } from "react-router-dom";
 import HideWhenClickedOutside from '../services/HideWhenClickedOutsite';
 import '../styles/LoginBar.css';
 
@@ -12,11 +13,23 @@ const loginBarClasses = 'container d-flex justify-content-end';
 const loginStyle = { marginLeft: '10px' };
 const LoggedAs = { color: '#cfcfcf' };
 
+async function logout(e, history) {
+    e.preventDefault();
+    const logout = await axios.get('/api/logout');
+    if(logout.status == 200) {
+        history.push('/')
+    }
+    else {
+        alert('Logout problem');
+    }
+}
+
 function LoginBar() {
     const loginIndicator = useContext(LoginContext);
     const [unreadMessagesAmount, setUnreadMessagesAmount] = useState(0);
     const socket = useContext(SocketContext);
     const [newMessages, setNewMessages] = useState([]);
+    const history = useHistory();
     
     const fetchData = async () => {
         if (loginIndicator) {
@@ -75,7 +88,7 @@ function LoginBar() {
                 <div className={loginBarClasses}>
                     <div className="">
                         <span><strong>Wymagana autoryzacja!</strong></span>
-                        <Link to={`/logout`} className="ml-2">
+                        <Link onClick={e => {logout(e, history)}} to={`/`} className="ml-2">
                             <i className="fas fa-sign-out-alt"></i>
                         </Link>
                     </div>
@@ -107,9 +120,9 @@ function LoginBar() {
                             </div>
                         </div>
 
-                        <a href={`/api/logout`}>
+                        <Link onClick={e => {logout(e, history)}} to={`/`} className="ml-2">
                             <i className="fas fa-sign-out-alt"></i>
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -135,4 +148,3 @@ function LoginBar() {
 
 
 export default LoginBar;
-

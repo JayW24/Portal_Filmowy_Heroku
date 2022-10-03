@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useHistory } from "react-router-dom";
 import '../styles/Login.css';
 
-async function login(e, nameRef, passRef, setLoginResponse, history) {
+async function login(e, nameRef, passRef, setLoginResponse, history, fetchUserName) {
     e.preventDefault();
     let username = nameRef.current.value;
     let password = passRef.current.value;
@@ -14,12 +14,11 @@ async function login(e, nameRef, passRef, setLoginResponse, history) {
         },
         body: JSON.stringify({ username: username, password: password })
     });
-
-    console.log('response');
-    console.log(response);
-  
+ 
     if (response.status == 200 && response.ok) {
-        history.push("/")
+        setLoginResponse('');
+        fetchUserName();
+        history.push("/");
     }
     else if (response.status == 200 && !response.ok) {
         setLoginResponse('Username or password is wrong!');
@@ -29,7 +28,7 @@ async function login(e, nameRef, passRef, setLoginResponse, history) {
     }
 }
 
-function Login() {
+function Login(props) {
     const nameRef = useRef(null);
     const passRef = useRef(null);
     const [loginResponse, setLoginResponse] = useState(null);
@@ -64,7 +63,7 @@ function Login() {
                             required />
                     </div>
                     <div>
-                        <input type="submit" value="Login" onClick={e => login(e, nameRef, passRef, setLoginResponse, history)} />
+                        <input type="submit" value="Login" onClick={e => login(e, nameRef, passRef, setLoginResponse, history, props.fetchUserName)} />
                     </div>
                 </form>
             </div>

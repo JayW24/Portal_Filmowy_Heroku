@@ -40,15 +40,13 @@ function App() {
   const [userName, setUserName] = useState(null);
   const [userID, setUserID] = useState(null);
 
+  const fetchUserName = async () => {
+    const result = await axios('/api/loggedUserUsername');
+    setUserName(result.data.username);
+    setUserID(result.data.userID);
+  }
 
   useEffect(() => {
-    const fetchUserName = async () => {
-      const result = await axios('/api/loggedUserUsername');
-      
-      setUserName(result.data.username);
-      setUserID(result.data.userID);
-    }
-
     fetchUserName();
   }, [])
 
@@ -67,7 +65,7 @@ function App() {
             <Navbar userID={userID} ></Navbar>
             <NavbarVerticalSpacer />
             <Switch>
-              <Route name="login" path="/login"><Login/></Route>
+              <Route name="login" path="/login"><Login fetchUserName={fetchUserName}/></Route>
               <Route name="home" exact path="/">
                 <News url="/api/dbquery/news" />
               </Route>

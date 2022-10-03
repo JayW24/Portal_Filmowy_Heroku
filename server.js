@@ -194,13 +194,13 @@ app.get('/api/login', isLoggedOut, (req, res) => {
 })
 
 app.post('/api/login', passport.authenticate('local', {
-	successRedirect: '/success',
+	successRedirect: '/',
 	failureRedirect: '/login?error=true'
 }))
 
 app.get('/api/logout', function (req, res) {
 	req.logout();
-	res.redirect(':3000')
+	res.redirect('/')
 })
 
 // *************************** SETUP ADMIN ACCOUNT - RUN ONLY IF ADMIN ACCOUNT DOES NOT EXIST OR HAS BEEN REMOVED ***************************

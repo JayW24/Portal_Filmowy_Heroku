@@ -107,7 +107,7 @@ function LoginBar() {
                             </div>
                         </div>
 
-                        <a href={`/logout`}>
+                        <a href={`/api/logout`}>
                             <i className="fas fa-sign-out-alt"></i>
                         </a>
                     </div>

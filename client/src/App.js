@@ -43,7 +43,7 @@ function App() {
 
   useEffect(() => {
     const fetchUserName = async () => {
-      const result = await axios('/loggedUserUsername');
+      const result = await axios('/api/loggedUserUsername');
       
       setUserName(result.data.username);
       setUserID(result.data.userID);

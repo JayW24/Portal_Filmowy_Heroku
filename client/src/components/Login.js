@@ -6,8 +6,8 @@ async function login(e, nameRef, passRef, setLoginResponse, history) {
     e.preventDefault();
     let username = nameRef.current.value;
     let password = passRef.current.value;
-    alert(username + ' ' + password)
-    const response = await fetch('/login', {
+
+    const response = await fetch('/api/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

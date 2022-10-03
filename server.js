@@ -170,7 +170,7 @@ function collectionNotAllowed(req, res, next) {
 
 
 // Get Logged User Username
-app.get('/loggedUserUsername', isLoggedIn, (req, res) => {
+app.get('/api/loggedUserUsername', isLoggedIn, (req, res) => {
 	serverLog(req, 'GET loggedUserUsername')
 	res.send({ username: req.user.username, userID: req.user._id })
 })
@@ -184,7 +184,7 @@ app.get('/api/get-user-id/:username', async (req, res) => {
 })
 
 //Get login
-app.get('/login', isLoggedOut, (req, res) => {
+app.get('/api/login', isLoggedOut, (req, res) => {
 	console.log(colors.FgGreen, `[Server]: GET login form called.`)
 	const response = {
 		title: "Login",
@@ -193,12 +193,12 @@ app.get('/login', isLoggedOut, (req, res) => {
 	res.render('login', response);
 })
 
-app.post('/login', passport.authenticate('local', {
+app.post('/api/login', passport.authenticate('local', {
 	successRedirect: '/',
 	failureRedirect: '/login?error=true'
 }))
 
-app.get('/logout', function (req, res) {
+app.get('/api/logout', function (req, res) {
 	req.logout();
 	res.redirect(':3000')
 })

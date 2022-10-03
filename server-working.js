@@ -94,21 +94,6 @@ app.use(express.json());
 app.use(cookieParser());
 //end of added stuff part 4
 
-//added stuff part 5
-// Passport.js
-app.use(passport.initialize());
-app.use(passport.session());
-passport.serializeUser(function (user, done) {
-	done(null, user.id)
-});
-passport.deserializeUser(function (id, done) {
-	User.findById(id, function (err, user) {
-		//dbLog('Deserialize User.', 'findById()', 'users', 'by id', user)
-		done(err, user)
-	})
-});
-//end of added stuff part 5
-
 // API calls
 app.get('/api/hello', (req, res) => {
   res.send({ express: 'Hello From Express' });

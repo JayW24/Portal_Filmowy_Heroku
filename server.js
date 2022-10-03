@@ -122,6 +122,16 @@ app.post('/api/world', (req, res) => {
 });
 
 //dbquery test
+// DB
+function dbLog(communicate, method, dbName, query, results) {
+	try {
+		query == null ? query = 'none' : query = JSON.stringify(query)
+		console.log(colors.FgYellow, `[Database]: ${communicate} Method: ${method} called, dbName: ${dbName}, query: ${query}, results_type: ${typeof (results)}`)
+	}
+	catch (err) {
+		if (err) { console.log(colors.FgRed), err }
+	}
+}
 // SERVER
 function serverLog(req, method) {
 	try {

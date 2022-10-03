@@ -122,7 +122,15 @@ app.post('/api/world', (req, res) => {
 });
 
 //dbquery test
-
+// SERVER
+function serverLog(req, method) {
+	try {
+		console.log(colors.FgGreen, `[Server]: ${method} ${req.path} | Called by: ${req.user ? req.user.username : 'anonymous'}`)
+	}
+	catch (err) {
+		if (err) { console.log(colors.FgRed, '[Server]: Server error! Method: ' + 'Path:' + req.path + ' called by ' + req.user == undefined ? req.user.username : 'anonymous') }
+	}
+}
 function collectionNotAllowed(req, res, next) {
 	if (req.params.dbName !== "messages" && req.params.dbName !== "users" && req.params.dbName !== "sessions" && req.params.dbName !== "confirmations") {
 		next()

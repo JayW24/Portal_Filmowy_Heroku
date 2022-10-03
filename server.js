@@ -134,7 +134,7 @@ app.get('/api/hello', (req, res) => {
   });
   
 
-server.listen(port, () => {
+app.listen(port, () => {
 	console.log(colors.FgCyan, '\n*\n*\n*\n*\n*\n*\n')
 	console.log(colors.FgYellow, '[Database]: database connected! Mongo Client and Mongoose are ready.')
 	console.log(colors.FgBlue, `[Server]: server started. Listening on port *:${port}`)

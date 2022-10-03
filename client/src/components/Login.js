@@ -14,6 +14,9 @@ async function login(e, nameRef, passRef, setLoginResponse, history) {
         },
         body: JSON.stringify({ username: username, password: password })
     });
+
+    console.log('response');
+    console.log(response);
   
     if (response.status == 200 && response.url == "http://localhost:3000/") {
         history.push("/")

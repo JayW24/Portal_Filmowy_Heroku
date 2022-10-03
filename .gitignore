@@ -21,3 +21,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# particular files
+
+token.json
+credentials.js
+client_secret.json

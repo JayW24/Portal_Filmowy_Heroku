@@ -159,15 +159,46 @@ mongodb.MongoClient.connect(connectionString, connectionOptions, function (err, 
 	})
 });
 
-// GET NEWS FOR MAIN PAGE
-app.get('/api/news_Preview', (req, res, next) => {
+// UNIVERSAL GET FROM DB WITH QUERY AND SORTING + FILTERS
+app.get('/api/dbquery/:dbname/:skip?/:limit?/:query?', collectionNotAllowed, async (req, res, next) => {
 	try {
-		News.find({}, "title thumbnail header paragraph", (err, docs) => {
-			if (err) {
-				res.status(500)
+		serverLog(req, 'Universal GET')
+		const dbname = req.params.dbname,
+			skip = parseInt(req.params.skip),
+			limit = parseInt(req.params.limit),
+			query = req.params.query																		//to prevent access to all users Data
+		if (query !== "null" && query !== undefined) {
+			let decodedQueryParams = decodeQueryParams(query)
+			//CATEGORIES
+			if (decodedQueryParams['categories']) { (decodedQueryParams['categories']) = new RegExp((decodedQueryParams['categories']), 'i') }
+			//NAME
+			if (decodedQueryParams['name']) { (decodedQueryParams['name']) = new RegExp((decodedQueryParams['name']), 'i') }
+			//DURATION
+			console.log(colors.FgGreen, '[Server]: decodedQueryParams: ' + decodedQueryParams)
+			if (decodedQueryParams['duration']) {
+				let duration = decodedQueryParams['duration'].split(',')
+				duration = { $gt: parseInt(duration[0]), $lt: parseInt(duration[1]) }
+				decodedQueryParams['duration'] = duration
 			}
-			res.send(docs)
-		}).limit(20)
+			//ORDER
+			if (decodedQueryParams['order']) {
+				var order = decodedQueryParams['order']
+				order = decodeOrderParams(order)
+				delete decodedQueryParams['order']
+			}
+			else {
+				order = null
+			}
+
+			const items = await db.collection(dbname).find(decodedQueryParams).skip(skip).limit(limit).sort(order).toArray()	//example: /api/dbquery/filmy/0/10/categories=cat1&order=name:1
+			dbLog('Got results from DB!', 'find()', dbname, decodedQueryParams, items)
+			res.send(items)
+		}
+		else {
+			const items = await db.collection(dbname).find().skip(skip).limit(limit).sort().toArray()
+			dbLog('Got results from DB!', 'find()', dbname, null, items)
+			res.send(items)
+		}
 	}
 	catch (err) {
 		next(err)

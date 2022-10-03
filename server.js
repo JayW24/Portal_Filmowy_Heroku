@@ -75,11 +75,11 @@ const { fork } = require('child_process')	// for multi thread
 	var MongoStore = require('connect-mongo')(session);
 // end of added stuff part 3
 
-// added stuff part 4
+// added stuff part 4 - here's where it crashes
 // Middleware
 app.engine('hbs', hbs({ extname: '.hbs' }));
 app.set('view engine', 'hbs');
-app.use(express.static(__dirname + '/public'));
+//app.use(express.static(__dirname + '/public'));
 var sessionMiddleware = session({
 	secret: crypt.randomBytes(16).toString("hex"),
 	cookie: { maxAge: 604800000 },	// = one week

@@ -46,6 +46,35 @@ app.use(bodyParser.json({
 const { fork } = require('child_process')	// for multi thread
 // end of added stuff part 2
 
+// added stuff part 3
+	// Mongoose Schemas
+	const Schemas = require('./schemas');
+	const User = Schemas.User;
+	const Film = Schemas.Film;
+	const Series = Schemas.Series;
+	const Actor = Schemas.Actor;
+	const Premiere = Schemas.Premiere;
+	const Comment = Schemas.Comment;
+	const Rating = Schemas.Rating;
+	const Message = Schemas.Message;
+	const News = Schemas.News;
+	const SearchItem = Schemas.SearchItem;
+	
+		// Passport JS
+	var	session = require('express-session')
+	var	hbs = require('express-handlebars')
+	var	mongoose = require('mongoose')
+	var	passport = require('passport')
+	var	localStrategy = require('passport-local').Strategy
+	var	bcrypt = require('bcrypt')
+	var	{ resolveNaptr } = require('dns')
+	var	{ query } = require('express')
+	var	{ request } = require('http')
+	const { setTimeout } = require('timers/promises')
+	
+	var MongoStore = require('connect-mongo')(session);
+// end of added stuff part 3
+
 // API calls
 app.get('/api/hello', (req, res) => {
   res.send({ express: 'Hello From Express' });

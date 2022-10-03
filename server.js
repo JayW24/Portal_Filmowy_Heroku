@@ -32,6 +32,20 @@ app.use(cors());
 global.bodyParser = require('body-parser');
 //end of added stuff
 
+//added stuff part 2
+app.use(bodyParser.urlencoded({
+	extended: true,
+	limit: '50mb',
+	parameterLimit: 100000
+}));
+app.use(bodyParser.json({
+	limit: '50mb',
+	parameterLimit: 100000
+}));
+
+const { fork } = require('child_process')	// for multi thread
+// end of added stuff part 2
+
 // API calls
 app.get('/api/hello', (req, res) => {
   res.send({ express: 'Hello From Express' });

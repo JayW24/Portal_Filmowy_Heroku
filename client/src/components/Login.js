@@ -17,7 +17,7 @@ async function login(e, nameRef, passRef, setLoginResponse, history, fetchUserNa
  
     if (response.status == 200 && response.ok) {
         setLoginResponse('');
-        fetchUserName();
+        await fetchUserName();
         history.push("/");
     }
     else if (response.status == 200 && !response.ok) {

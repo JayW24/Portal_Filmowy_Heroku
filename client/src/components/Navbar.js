@@ -24,7 +24,7 @@ function Navbar(props) {
 
     return (
         <div ref={myRef} style={navContainerStyle}>
-            <LoginBar userID={props.userID} socketinfo={socketInfo}></LoginBar>
+            <LoginBar userID={props.userID} socketinfo={socketInfo} fetchUserName={props.fetchUserName}></LoginBar>
             <nav className="navbar navbar-expand-lg navbar-light bg-light" style={{ fontSize: '#40px' }}>
                 <div className="container">
                     <a className="navbar-brand" href="/">

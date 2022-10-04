@@ -62,7 +62,7 @@ function App() {
       <LoginContext.Provider value={userName}>
         <SocketContext.Provider value={socket}>
           <Router history={history}>
-            <Navbar userID={userID} ></Navbar>
+            <Navbar userID={userID} fetchUserName={fetchUserName}></Navbar>
             <NavbarVerticalSpacer />
             <Switch>
               <Route name="login" path="/login"><Login fetchUserName={fetchUserName}/></Route>

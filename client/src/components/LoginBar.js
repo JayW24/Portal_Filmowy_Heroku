@@ -13,10 +13,11 @@ const loginBarClasses = 'container d-flex justify-content-end';
 const loginStyle = { marginLeft: '10px' };
 const LoggedAs = { color: '#cfcfcf' };
 
-async function logout(e, history) {
+async function logout(e, history, fetchUserName) {
     e.preventDefault();
     const logout = await axios.get('/api/logout');
     if (logout.status == 200) {
+        await fetchUserName();
         history.push('/')
     }
     else {
@@ -24,7 +25,7 @@ async function logout(e, history) {
     }
 }
 
-function LoginBar() {
+function LoginBar(props) {
     const loginIndicator = useContext(LoginContext);
     const [unreadMessagesAmount, setUnreadMessagesAmount] = useState(0);
     const socket = useContext(SocketContext);
@@ -92,7 +93,7 @@ function LoginBar() {
                 <div className={loginBarClasses}>
                     <div className="">
                         <span><strong>Wymagana autoryzacja!</strong></span>
-                        <Link onClick={e => { logout(e, history) }} to={`/`} className="ml-2">
+                        <Link onClick={e => { logout(e, history, props.fetchUserName) }} to={`/`} className="ml-2">
                             <i className="fas fa-sign-out-alt"></i>
                         </Link>
                     </div>
@@ -124,7 +125,7 @@ function LoginBar() {
                             </div>
                         </div>
 
-                        <Link onClick={e => { logout(e, history) }} to={`/`} className="ml-2">
+                        <Link onClick={e => { logout(e, history, props.fetchUserName) }} to={`/`} className="ml-2">
                             <i className="fas fa-sign-out-alt"></i>
                         </Link>
                     </div>

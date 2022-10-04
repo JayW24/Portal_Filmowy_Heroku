@@ -1441,6 +1441,7 @@ try {
 
 			//CHAT MESSAGE - requires fix
 			socket.on('chat message', async (msg) => {
+				console.log('chat message!')
 				// todo: change getting userName and ReceiverName from DB to more efficient way
 				let userName = await User.find({ _id: room }, 'username').exec()
 				userName = userName[0].username
@@ -1528,15 +1529,15 @@ function serverLog(req, method) {
 }
 // END OF ALL GUWNO TEST
 
-if (process.env.NODE_ENV === 'production') {
-  // Serve any static files
-  app.use(express.static(path.join(__dirname, 'client/build')));
+// if (process.env.NODE_ENV === 'production') {
+//   // Serve any static files
+//   app.use(express.static(path.join(__dirname, 'client/build')));
 
-  // Handle React routing, return all requests to React app
-  app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-  });
-}
+//   // Handle React routing, return all requests to React app
+//   app.get('*', function(req, res) {
+//     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+//   });
+// }
 
 // ************************************************* START SERVER + DATABASE CONNECTIONS ***********************************************
 // Start Mongoose 

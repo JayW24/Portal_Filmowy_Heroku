@@ -1429,7 +1429,8 @@ try {
 			console.log(socket.request.session);
 			})
 		//*****************************************	test *****************************************
-		/*if (socket.request.session.passport && socket.request.session.passport.user) {
+		if (socket.request.session.passport && socket.request.session.passport.user) {
+			console.log('[JW] user connected, recognized by passport!');
 			let room = socket.request.session.passport.user
 			console.log(colors.FgMagenta, `[Socket IO]: Recognized user connected. socket.id: ${socket.id}, room: ${room}`)
 			socket.join(room)
@@ -1450,6 +1451,7 @@ try {
 			//CHAT MESSAGE - requires fix
 			socket.on('chat message', async (msg) => {
 				console.log('chat message!')
+				console.log(msg);
 				// todo: change getting userName and ReceiverName from DB to more efficient way
 				let userName = await User.find({ _id: room }, 'username').exec()
 				userName = userName[0].username
@@ -1503,7 +1505,7 @@ try {
 		}
 		else {
 			console.log(colors.FgMagenta, '[Socket IO]: anonymous user connected!')
-		}*/
+		}
 	})
 }
 catch (err) {

@@ -16,7 +16,7 @@ const LoggedAs = { color: '#cfcfcf' };
 async function logout(e, history) {
     e.preventDefault();
     const logout = await axios.get('/api/logout');
-    if(logout.status == 200) {
+    if (logout.status == 200) {
         history.push('/')
     }
     else {
@@ -30,7 +30,7 @@ function LoginBar() {
     const socket = useContext(SocketContext);
     const [newMessages, setNewMessages] = useState([]);
     const history = useHistory();
-    
+
     const fetchData = async () => {
         if (loginIndicator) {
             const amount = await axios(`/api/get-unread-messages/${loginIndicator}`);
@@ -50,27 +50,31 @@ function LoginBar() {
 
     // Socket context for notifications. Count new messages.
     useEffect(() => {
-        try {
-            socket.on('chat message', async function (msg) {
-                if (loginIndicator) {
-                    let newArr = newMessages;
+        if (socket) {
+            try {
+                socket.on('chat message', async function (msg) {
+                    if (loginIndicator) {
+                        let newArr = newMessages;
 
-                    if (!newArr.includes(msg.sender) && msg.msg.status !== 'read' && msg.userName !== loginIndicator) {
-                        newArr.push(msg.sender);
-                        setNewMessages(newArr);
-                        setUnreadMessagesAmount(newMessages.length);
+                        if (!newArr.includes(msg.sender) && msg.msg.status !== 'read' && msg.userName !== loginIndicator) {
+                            newArr.push(msg.sender);
+                            setNewMessages(newArr);
+                            setUnreadMessagesAmount(newMessages.length);
+                        }
                     }
-                }
-            })
-            socket.on('read messages', async () => {
-                if (loginIndicator) {
-                    const amount = await axios(`/api/get-unread-messages/${loginIndicator}`);
-                    setUnreadMessagesAmount(amount.data);
-                }
-            })
-        }
-        catch(error) {
-            alert('Something went wrong!');
+                })
+                socket.on('read messages', async () => {
+                    if (loginIndicator) {
+                        const amount = await axios(`/api/get-unread-messages/${loginIndicator}`);
+                        setUnreadMessagesAmount(amount.data);
+                    }
+                })
+            }
+            catch (error) {
+                alert('Something went wrong!');
+                console.log('bad error: ');
+                console.log(error);
+            }
         }
     }, [loginIndicator])
 
@@ -88,7 +92,7 @@ function LoginBar() {
                 <div className={loginBarClasses}>
                     <div className="">
                         <span><strong>Wymagana autoryzacja!</strong></span>
-                        <Link onClick={e => {logout(e, history)}} to={`/`} className="ml-2">
+                        <Link onClick={e => { logout(e, history) }} to={`/`} className="ml-2">
                             <i className="fas fa-sign-out-alt"></i>
                         </Link>
                     </div>
@@ -120,7 +124,7 @@ function LoginBar() {
                             </div>
                         </div>
 
-                        <Link onClick={e => {logout(e, history)}} to={`/`} className="ml-2">
+                        <Link onClick={e => { logout(e, history) }} to={`/`} className="ml-2">
                             <i className="fas fa-sign-out-alt"></i>
                         </Link>
                     </div>

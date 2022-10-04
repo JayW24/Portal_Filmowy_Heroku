@@ -32,15 +32,15 @@ import TestComp2 from './components/test-only-components/TestComp2';
 import TestComp3 from './components/test-only-components/TestComp3';
 import Login from './components/Login';
 
-const endPoint = '/';
-const socket = socketIOClient(endPoint);
-
 function App() {
   // Get username and user ID
+  const endPoint = '/';
   const [userName, setUserName] = useState(null);
   const [userID, setUserID] = useState(null);
+  const [socket, setSocket] = useState(null);
 
   const fetchUserName = async () => {
+    setSocket(socketIOClient(endPoint))
     const result = await axios('/api/loggedUserUsername');
     setUserName(result.data.username);
     setUserID(result.data.userID);
@@ -105,7 +105,6 @@ function App() {
               <Route name="test3" path="/test3">
                   <TestComp3/>
               </Route>
-
             </Switch>
           </Router>
         </SocketContext.Provider>

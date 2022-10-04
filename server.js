@@ -196,7 +196,11 @@ app.get('/api/login', isLoggedOut, (req, res) => {
 app.post('/api/login', passport.authenticate('local', {
 	successRedirect: '/',
 	failureRedirect: '/login?error=true'
-}))
+}), function (req, res) {
+	console.log('[JW] test');
+	console.log(req.user)
+	res.redirect('/dashboard');
+})
 
 app.get('/api/logout', function (req, res) {
 	req.logout();

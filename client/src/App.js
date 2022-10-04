@@ -32,7 +32,7 @@ import TestComp2 from './components/test-only-components/TestComp2';
 import TestComp3 from './components/test-only-components/TestComp3';
 import Login from './components/Login';
 
-const endPoint = 'localhost:3000';
+const endPoint = '/';
 const socket = socketIOClient(endPoint);
 
 function App() {

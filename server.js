@@ -1421,14 +1421,6 @@ async function refreshRankValue(dbName, ratedPositionID, res) {
 //SOCKET IO - MESSENGER
 try {
 	io.on('connection', (socket) => {
-		//*****************************************	test *****************************************
-		console.log(colors.FgMagenta, '[Socket IO]: user connected!')
-			//CHAT MESSAGE - requires fix
-			socket.on('chat message', async (msg) => {
-			//console.log(socket.request);
-			console.log(socket.request.session);
-			})
-		//*****************************************	test *****************************************
 		if (socket.request.session.passport && socket.request.session.passport.user) {
 			console.log('[JW] user connected, recognized by passport!');
 			let room = socket.request.session.passport.user
@@ -1501,7 +1493,6 @@ try {
 			socket.on('disconnect', () => {
 				console.log(colors.FgMagenta, '[Socket IO]: user: ' + room + ' disconnected')
 			})
-
 		}
 		else {
 			console.log(colors.FgMagenta, '[Socket IO]: anonymous user connected!')

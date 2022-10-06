@@ -47,7 +47,6 @@ function MessagesReverse(props) {
 
     // set status as read in real time
     useEffect(() => {
-        console.log('psujące useEffect')
         try {
             if (props.status && items.length > 0) {
                 const messagesStatus = async () => {
@@ -77,12 +76,9 @@ function MessagesReverse(props) {
         try {
             // SET MESSAGES STATUS
             let req = await axios.post(`/api/set-messages-status/${props.url_Params.user1}/${props.url_Params.user2}`);
-            //console.log(req)
             // GET MESSAGES
             let resp = await axios.get(`/api/getmessages/${props.url_Params.user1}/${props.url_Params.user2}/${skip}/${limit}`);
             let data = resp.data;
-            console.log('ON START')
-            console.log(data)
             setItems(data);
             setSkip(skip + 10);
             if (resp.data !== []) {
@@ -93,12 +89,11 @@ function MessagesReverse(props) {
             }
         }
         catch (error) {
-            console.log(error);
+            alert('Something gone wrong...')
         }
     }
 
     const fetchMoreData = () => {
-        console.log('FETCH MORE DATA')
         try {
             setTimeout(async () => {
                 if (hasMore) {

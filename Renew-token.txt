@@ -1,0 +1,6 @@
+Wejść na Google Cloud Platform i znaleźć:
+a) Client ID
+b) Client secret
+
+Następnie wejść na Google Developers Oauth playground.
+Następnie nowe wartości tokena skopiować do pliku token.json

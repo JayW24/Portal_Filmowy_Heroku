@@ -1,13 +1,8 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-
 const app = express();
 const port = process.env.PORT || 5000;
-
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-//added stuff
 const connectionOptions = { poolSize: process.env.MONGO_POOLSIZE || 1 }
 const mongodb = require('mongodb')
 const cors = require('cors')
@@ -16,6 +11,7 @@ const http = require('http');
 const server = http.createServer(app);
 const colors = require('./colorfulLogs').colors;
 const connectionString = require('./credentials').connectionString;
+const { fork } = require('child_process')	// for multi thread
 var multer = require('multer');
 var	cookieParser = require('cookie-parser');
 var	crypt = require('crypto');
@@ -23,16 +19,12 @@ var	db;
 var	fs = require('fs-extra');
 var	io = require("socket.io")(server)
 		.use(function (socket, next) {
-			// Wrap the express middleware
 			sessionMiddleware(socket.request, {}, next);
 		})
 
 app.use(busboy());
 app.use(cors());
 global.bodyParser = require('body-parser');
-//end of added stuff
-
-//added stuff part 2
 app.use(bodyParser.urlencoded({
 	extended: true,
 	limit: '50mb',
@@ -43,10 +35,6 @@ app.use(bodyParser.json({
 	parameterLimit: 100000
 }));
 
-const { fork } = require('child_process')	// for multi thread
-// end of added stuff part 2
-
-// added stuff part 3
 	// Mongoose Schemas
 	const Schemas = require('./schemas');
 	const User = Schemas.User;
@@ -60,7 +48,7 @@ const { fork } = require('child_process')	// for multi thread
 	const News = Schemas.News;
 	const SearchItem = Schemas.SearchItem;
 	
-		// Passport JS
+	// Passport JS
 	var	session = require('express-session')
 	var	hbs = require('express-handlebars')
 	var	mongoose = require('mongoose')
@@ -72,10 +60,9 @@ const { fork } = require('child_process')	// for multi thread
 	var	{ request } = require('http')
 	const { setTimeout } = require('timers/promises')
 	
-	var MongoStore = require('connect-mongo')(session);
-// end of added stuff part 3
+	
 
-// added stuff part 4 - here's where it crashes
+
 // Middleware
 app.engine('hbs', hbs({ extname: '.hbs' }));
 app.set('view engine', 'hbs');
@@ -579,7 +566,7 @@ app.post('/api/newUser/users', async (req, res, next) => {
 				token: token
 			})
 		await newUser.save()
-		const emailContent = `Potwierdź rejestrację konta przez następujący link: localhost:3000/user-confirmation/${body.username}/${token}`
+		const emailContent = `Potwierdź rejestrację konta przez następujący link: https://portal-filmowy-jw-01.herokuapp.com/user-confirmation/${body.username}/${token}`
 		sendEmail(body.email, `Portal Filmowy - ${body.username} - potwierdzenie rejestracji`, emailContent)
 		res.redirect('Pomyślnie zarejestrowano konto! Aby aktywować, wejdź na swój adres email.')
 	}

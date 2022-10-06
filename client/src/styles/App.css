@@ -118,13 +118,13 @@ a:hover {
   background-color: #f2f2f2;
 }
 
-/*
-.container {
-  max-width: 100%;
-}
-*/
-
 .userEditableFieldName {
   border-right: none !important;
   min-width: 100px;
+}
+/*because navbar position=fixed*/
+@media only screen and (max-width: 381px) {
+  .navbarDistance {
+    margin-top: 70px;
+  }
 }

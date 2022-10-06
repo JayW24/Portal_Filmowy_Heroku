@@ -268,7 +268,7 @@ export default class Pagination extends React.Component {
           resetFilters={this.state.resetFilters}
         />
         {/*RESET FILTERS*/}
-        <div id="reset-filters-and-categories" className="text-primary p-1" onClick={() => this.reset()}><i class="fas fa-eraser"></i> RESET FILTRÓW</div>
+        <div id="reset-filters-and-categories" className="text-primary p-1" onClick={() => this.reset()}><i className="fas fa-eraser"></i> RESET FILTRÓW</div>
         {/* END OF FILTERS*/}
         {/*CURRENT STATE - FOR TESTING ONLY*/}
         {/*
@@ -288,7 +288,10 @@ export default class Pagination extends React.Component {
           <div id="jw-pagination-results-29831">
             <div className="d-block align-items-center">
               <span className="d-inline-block results-title"><h2>Wyniki wyszukiwania</h2></span>
-              <span className="d-inline-block resultsAmountDescription ml-1 text-muted">({this.state.ResultsAmount == 0 ? 'Nie znaleziono wyników' : `Znaleziono wyników: ${this.state.ResultsAmount}`})</span>
+              {this.state.ResultsAmount ?
+              <span className="d-inline-block resultsAmountDescription ml-1 text-muted">({this.state.ResultsAmount == 0 ? 'Nie znaleziono wyników' : `Znaleziono wyników: ${this.state.ResultsAmount}`})</span> : 
+              null
+            }   
             </div>
             <hr />
             {this.state.data}

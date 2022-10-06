@@ -4,7 +4,7 @@ import ParamsToJson from '../services/ParamsToJson';
 const charsAmountToTriggerSearch = 0;
 
 function CategoriesSearchFilter(props) {
-    const [inputVal, setInputVal] = useState('');
+    const [inputVal, setInputVal] = useState(undefined);
 
     const onInputChange = (event) => {
         event.preventDefault();

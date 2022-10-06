@@ -31,8 +31,8 @@ export default function CategoriesButtons(props) {
     return (
         <div className="col-sm-12 p-1 m-0 d-flex align-items-center" key={GenerateRandomKey(10)}>
             <h5 className="mr-1 mt-1">Kategoria: </h5>
-                {categories.map(category => (
-                    <CategoryButton category={category} searchedProperty={searchedProperty} chosenCategoryName={chosenCategoryName}
+                {categories.map((category, index) => (
+                    <CategoryButton key={`${category}-${index}`} category={category} searchedProperty={searchedProperty} chosenCategoryName={chosenCategoryName}
                     propertyName={propertyName} handleCategoryChange={props.handleCategoryChange} handleCategoryChangeStyle={handleCategoryChangeStyle}/>
                 ))}
         </div>

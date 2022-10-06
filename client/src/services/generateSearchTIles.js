@@ -12,9 +12,9 @@ export default function generateFilmSmallTiles(array, path) {
     aktor: ActorTile
   }
   let Component = components[path]
-  return array.map(el => {
+  return array.map((el, index) => {
     return (
-      <Component
+      <Component key={`tile${index}`}
         path={path}
         {...el}>
       </Component>

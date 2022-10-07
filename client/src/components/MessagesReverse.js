@@ -81,7 +81,8 @@ function MessagesReverse(props) {
             let data = resp.data;
             setItems(data);
             setSkip(skip + 10);
-            if (resp.data !== []) {
+            console.log(resp.data)
+            if (resp.data.length) {
                 setHasMore(true);
             }
             else {
@@ -126,6 +127,7 @@ function MessagesReverse(props) {
     if (loginIndicator) {
         return (
             <div id="scrollableDiv" style={scrollableDivStyle}>
+                {String(hasMore)}
                 <div className="p-0 bg-white">
                     <InfiniteScroll
                         dataLength={items.length}

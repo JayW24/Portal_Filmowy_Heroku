@@ -1,0 +1,5 @@
+1. Ogarnąć pliki statyczne.
+2. Spróbować przywrócić CMS.
+3. Refactoring i poprawa struktury folderów projektu.
+4. Poprawić stylowanie.
+5. Usunąć JQUERy.

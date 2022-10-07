@@ -13,15 +13,42 @@ const colors = require('./colorfulLogs').colors;
 const connectionString = require('./credentials').connectionString;
 const { fork } = require('child_process')	// for multi thread
 var multer = require('multer');
-var	cookieParser = require('cookie-parser');
-var	crypt = require('crypto');
-var	db;
-var	fs = require('fs-extra');
-var	io = require("socket.io")(server)
-		.use(function (socket, next) {
-			sessionMiddleware(socket.request, {}, next);
-		})
+var cookieParser = require('cookie-parser');
+var crypt = require('crypto');
+var db;
+var fs = require('fs-extra');
+var io = require("socket.io")(server)
+	.use(function (socket, next) {
+		sessionMiddleware(socket.request, {}, next);
+	})
 
+// Passport JS
+var session = require('express-session')
+var hbs = require('express-handlebars')
+var mongoose = require('mongoose')
+var passport = require('passport')
+var localStrategy = require('passport-local').Strategy
+var bcrypt = require('bcrypt')
+var { resolveNaptr } = require('dns')
+var { query } = require('express')
+var { request } = require('http')
+var MongoStore = require('connect-mongo')(session);
+const { setTimeout } = require('timers/promises')
+
+// Mongoose Schemas
+const Schemas = require('./schemas');
+const User = Schemas.User;
+const Film = Schemas.Film;
+const Series = Schemas.Series;
+const Actor = Schemas.Actor;
+const Premiere = Schemas.Premiere;
+const Comment = Schemas.Comment;
+const Rating = Schemas.Rating;
+const Message = Schemas.Message;
+const News = Schemas.News;
+const SearchItem = Schemas.SearchItem;
+
+// Middleware
 app.use(busboy());
 app.use(cors());
 global.bodyParser = require('body-parser');
@@ -34,36 +61,6 @@ app.use(bodyParser.json({
 	limit: '50mb',
 	parameterLimit: 100000
 }));
-
-	// Mongoose Schemas
-	const Schemas = require('./schemas');
-	const User = Schemas.User;
-	const Film = Schemas.Film;
-	const Series = Schemas.Series;
-	const Actor = Schemas.Actor;
-	const Premiere = Schemas.Premiere;
-	const Comment = Schemas.Comment;
-	const Rating = Schemas.Rating;
-	const Message = Schemas.Message;
-	const News = Schemas.News;
-	const SearchItem = Schemas.SearchItem;
-	
-	// Passport JS
-	var	session = require('express-session')
-	var	hbs = require('express-handlebars')
-	var	mongoose = require('mongoose')
-	var	passport = require('passport')
-	var	localStrategy = require('passport-local').Strategy
-	var	bcrypt = require('bcrypt')
-	var	{ resolveNaptr } = require('dns')
-	var	{ query } = require('express')
-	var	{ request } = require('http')
-	const { setTimeout } = require('timers/promises')
-	
-	var MongoStore = require('connect-mongo')(session);
-
-
-// Middleware
 app.engine('hbs', hbs({ extname: '.hbs' }));
 app.set('view engine', 'hbs');
 app.use(express.static(__dirname + '/public'));
@@ -79,9 +76,7 @@ app.use(sessionMiddleware);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
-//end of added stuff part 4
 
-//added stuff part 5
 // Passport.js
 app.use(passport.initialize());
 app.use(passport.session());
@@ -94,21 +89,9 @@ passport.deserializeUser(function (id, done) {
 		done(err, user)
 	})
 });
-//end of added stuff part 5
 
-// API calls
-app.get('/api/hello', (req, res) => {
-  res.send({ express: 'Hello From Express' });
-});
 
-app.post('/api/world', (req, res) => {
-  console.log(req.body);
-  res.send(
-    `I received your POST request. This is what you sent me: ${req.body.post}`,
-  );
-});
-
-// ALL GUWNO TEST
+// ROUTES
 // *********************************************************  PASSPORT JS ***************************************************************
 
 passport.use(new localStrategy(async function (username, password, done) {
@@ -146,6 +129,7 @@ function isLoggedOut(req, res, next) {
 	res.redirect('/')
 }
 
+// When user is not allowed to fetch data
 function collectionNotAllowed(req, res, next) {
 	if (req.params.dbName !== "messages" && req.params.dbName !== "users" && req.params.dbName !== "sessions" && req.params.dbName !== "confirmations") {
 		next()
@@ -154,7 +138,6 @@ function collectionNotAllowed(req, res, next) {
 		res.status(405).send("Not allowed to finish this action.")
 	}
 }
-
 
 // Get Logged User Username
 app.get('/api/loggedUserUsername', isLoggedIn, (req, res) => {
@@ -170,7 +153,7 @@ app.get('/api/get-user-id/:username', async (req, res) => {
 	dbLog('GET user._id called!', 'findOne', 'users', JSON.stringify({ username: req.params.username }), username)
 })
 
-//Get login
+// Login user
 app.get('/api/login', isLoggedOut, (req, res) => {
 	console.log(colors.FgGreen, `[Server]: GET login form called.`)
 	const response = {
@@ -180,19 +163,18 @@ app.get('/api/login', isLoggedOut, (req, res) => {
 	res.render('login', response);
 })
 
-app.post('/api/login', passport.authenticate('local', {
-	successRedirect: '/',
-	failureRedirect: '/login?error=true'
-}), function (req, res) {
-	console.log('[JW] test');
-	console.log(req.user)
-	res.redirect('/dashboard');
-})
-
+// Logout user
 app.get('/api/logout', function (req, res) {
 	req.logout();
 	res.redirect('/')
 })
+
+// Post user
+app.post('/api/login', passport.authenticate('local', {
+	successRedirect: '/',
+	failureRedirect: '/login?error=true'
+}))
+
 
 // *************************** SETUP ADMIN ACCOUNT - RUN ONLY IF ADMIN ACCOUNT DOES NOT EXIST OR HAS BEEN REMOVED ***************************
 /*
@@ -242,7 +224,6 @@ function sendEmail(to, subject, emailContent) {
 		authorize(JSON.parse(content), sendMessage, to, subject, emailContent)
 	});
 }
-
 
 function authorize(credentials, callback, to, subject, content) {
 	let args = {
@@ -295,7 +276,6 @@ function getNewToken(oAuth2Client, callback) {
 	})
 }
 
-
 // SEND EMAIL FROM SERVER
 function makeBody(to, from, subject, message) {
 	const args = { to: to, from: from, subject: subject, message: message }
@@ -335,12 +315,7 @@ function sendMessage(auth, to, subject, content) {
 
 // *********************************************************   END OF GMAIL API *********************************************************
 
-
-
-
-// *************************************************************** ROUTES ***************************************************************
-
-// GET CURRENT TIME
+// GET CURRENT SERVER TIME
 app.get('/api/servertime', (req, res, next) => {
 	try {
 		const time = (`${(new Date).getTime()}`)
@@ -359,35 +334,33 @@ app.get('/api/dbquery/:dbname/:skip?/:limit?/:query?', collectionNotAllowed, asy
 		const dbname = req.params.dbname,
 			skip = parseInt(req.params.skip),
 			limit = parseInt(req.params.limit),
-			query = req.params.query																		//to prevent access to all users Data
+			query = req.params.query
 		if (query !== "null" && query !== undefined) {
 			let decodedQueryParams = decodeQueryParams(query)
-			//CATEGORIES
+			// CATEGORIES
 			if (decodedQueryParams['categories']) { (decodedQueryParams['categories']) = new RegExp((decodedQueryParams['categories']), 'i') }
-			//NAME
+			// NAME
 			if (decodedQueryParams['name']) { (decodedQueryParams['name']) = new RegExp((decodedQueryParams['name']), 'i') }
-			//DURATION
+			// DURATION
 			console.log(colors.FgGreen, '[Server]: decodedQueryParams: ' + decodedQueryParams)
 			if (decodedQueryParams['duration']) {
 				let duration = decodedQueryParams['duration'].split(',')
 				duration = { $gt: parseInt(duration[0]), $lt: parseInt(duration[1]) }
 				decodedQueryParams['duration'] = duration
 			}
-			//ORDER
+			// ORDER
 			if (decodedQueryParams['order']) {
 				var order = decodedQueryParams['order']
 				order = decodeOrderParams(order)
 				delete decodedQueryParams['order']
-			}
-			else {
+			} else {
 				order = null
 			}
 
 			const items = await db.collection(dbname).find(decodedQueryParams).skip(skip).limit(limit).sort(order).toArray()	//example: /api/dbquery/filmy/0/10/categories=cat1&order=name:1
 			dbLog('Got results from DB!', 'find()', dbname, decodedQueryParams, items)
 			res.send(items)
-		}
-		else {
+		} else {
 			const items = await db.collection(dbname).find().skip(skip).limit(limit).sort().toArray()
 			dbLog('Got results from DB!', 'find()', dbname, null, items)
 			res.send(items)
@@ -398,7 +371,7 @@ app.get('/api/dbquery/:dbname/:skip?/:limit?/:query?', collectionNotAllowed, asy
 	}
 })
 
-//RESULTS AMOUNT FOR PAGINATION
+// RESULTS AMOUNT FOR PAGINATION
 app.get('/api/pagesamount/:dbname/:query?', async (req, res, next) => {
 	try {
 		console.log(colors.FgGreen, '[Server]: GET pagesamount called.')
@@ -417,15 +390,14 @@ app.get('/api/pagesamount/:dbname/:query?', async (req, res, next) => {
 				duration = { $gt: parseInt(duration[0]), $lt: parseInt(duration[1]) }
 				decodedQueryParams['duration'] = duration
 			}
+			
 			//CATEGORIES
 			if (decodedQueryParams['categories']) { (decodedQueryParams['categories']) = new RegExp((decodedQueryParams['categories']), 'i') }
 			db.collection(`${dbname}`).find(decodedQueryParams).count().then(amount => {
 				res.send(`${amount}`)
 				dbLog('Got results from DB!', 'find()', dbname, decodedQueryParams, amount)
 			}).catch(err => console.error(`Failed to find documents: ${err}`))
-		}
-
-		else {
+		} else {
 			const amount = await db.collection(`${dbname}`).count()
 			res.send(`${amount}`)
 			dbLog('Got results from DB!', 'find()', dbname, null, amount)
@@ -436,7 +408,7 @@ app.get('/api/pagesamount/:dbname/:query?', async (req, res, next) => {
 	}
 })
 
-//GET ONE FROM DB - id is string
+// GET ONE FROM DB - id is string
 app.get('/api/getOne/:dbName/:id?', collectionNotAllowed, async (req, res, next) => {
 	try {
 		console.log(colors.FgGreen, '[Server]: GET One called.\n Params: ' + req.params)
@@ -444,7 +416,6 @@ app.get('/api/getOne/:dbName/:id?', collectionNotAllowed, async (req, res, next)
 			if (req.params.id) {
 				let id = req.params.id
 				let dbName = req.params.dbName
-				//console.log(id)
 				const result = await db.collection(dbName).findOne({ _id: id })	// id było równe mongodb.ObjectId(id)
 				dbLog('Got results from DB!', 'findOne()', dbName, null, result)
 			}
@@ -459,7 +430,7 @@ app.get('/api/getOne/:dbName/:id?', collectionNotAllowed, async (req, res, next)
 	}
 })
 
-//GET ONE FROM DB - id is mongodb object
+// GET ONE FROM DB - id is mongodb object
 app.get('/api/getoneitem/:dbName/:id?', collectionNotAllowed, async (req, res, next) => {
 	try {
 		console.log(colors.FgGreen, '[Server]: getoneitem GET called.\n Params: ' + req.params)
@@ -525,7 +496,7 @@ app.post('/api/comment/:dbName', isLoggedIn, async (req, res, next) => {
 			if (err) {
 				next(err)
 			}
-			res.json(newID)					//send newID to the front end
+			res.json(newID) // send newID to the front end
 			dbLog('Increase comments amount to +1.', 'findByIdAndUpdate()', 'users', 'by id', docs)
 		})
 	}
@@ -579,7 +550,7 @@ app.post('/api/newUser/users', async (req, res, next) => {
 })
 
 
-//EDIT USER
+// EDIT USER
 app.post('/api/edituser/', isLoggedIn, async (req, res, next) => {
 	try {
 		const body = req.body,
@@ -625,7 +596,7 @@ app.put('/api/editpassword', isLoggedIn, async (req, res, next) => {
 })
 
 
-//CONFIRM USER REGISTRATION
+// CONFIRM USER REGISTRATION
 app.get('/api/userconfirmation/:username/:token', async (req, res, next) => {
 	try {
 		const docs = await User.findOneAndUpdate({ username: req.params.username, token: req.params.token }, { authorized: true })
@@ -642,12 +613,12 @@ app.get('/api/userconfirmation/:username/:token', async (req, res, next) => {
 	}
 })
 
-//RATING
+// RATING
 app.post('/api/rate/:dbName/:id/:rating', isLoggedIn, async (req, res, next) => {
 	try {
 		// CHECK IF USER RANKED POSITION
 		const rating = await Rating.findOne({ "username": req.user.username, "ratedPositionID": req.params.id }, 'dbName ratedPositionID')
-		//USER RANKED BEFORE - UPDATE RANKING
+		// USER RANKED BEFORE - UPDATE RANKING
 		if (rating) {
 			console.log('User ranked before. Updating...')
 			const doc = await Rating.findOneAndUpdate(
@@ -680,7 +651,7 @@ app.post('/api/rate/:dbName/:id/:rating', isLoggedIn, async (req, res, next) => 
 })
 
 
-//DELETE COMMENT - prepared for more DBs if split in future
+// DELETE COMMENT - prepared for more DBs if split in future
 app.delete('/api/deleteComment/:dbName/:id', isLoggedIn, async (req, res, next) => {
 	try {
 		const alertText = 'You are not allowed to complete this action.',
@@ -803,11 +774,12 @@ app.post('/api/comment_likes/post/:comment_id', isLoggedIn, async (req, res, nex
 	}
 })
 
+// CHECK IF COMMENT HAS BEEN LIKED BY USER
 app.get('/api/checkifuserlikedcomment/:comment_id', isLoggedIn, async (req, res, next) => {
 	try {
 		const username = req.user.username
 		const comment_id = req.params.comment_id
-		const data = await Comment.find( { _id: comment_id, usersThatLiked: { $regex: username } } )
+		const data = await Comment.find({ _id: comment_id, usersThatLiked: { $regex: username } })
 		dbLog('GET comment likes data.', 'find()', 'comments', `comment_id: ${comment_id}`, data)
 		if (data && data.length !== 0) {
 			res.send(true)
@@ -826,10 +798,10 @@ app.get('/api/checkifuserlikedcomment/:comment_id', isLoggedIn, async (req, res,
 app.get('/api/search/string=:string', async (req, res, next) => {
 	try {
 		let string = req.params.string
-		//BLOCK SEARCHING MORE THAN 30 SYMBOLS
+		// BLOCK SEARCHING MORE THAN 30 SYMBOLS
 		if (string.length <= 30) {
 			let words = string.split(' ')
-			//BLOCK SEARCHING LESS THAN 3 SYMBOLS
+			// BLOCK SEARCHING LESS THAN 3 SYMBOLS
 			if (string == "null" || string.length < 3) {
 				res.send('Type at least 3 characters!')
 			}
@@ -868,7 +840,7 @@ app.get('/api/search/string=:string', async (req, res, next) => {
 })
 
 
-//GET BASIC USER DATA - ID, USERNAME AND THUMBNAIL FOR COMMENTS ETC.
+// GET BASIC USER DATA - ID, USERNAME AND THUMBNAIL FOR COMMENTS ETC.
 app.get('/api/user/:username', async (req, res, next) => {
 	try {
 		const userData = await User.find({ username: req.params.username }).select('username avatar')
@@ -892,7 +864,7 @@ app.get('/api/userDetails/:username', async (req, res, next) => {
 	}
 })
 
-//CHECK IF USERNAME EXISTS
+// CHECK IF USERNAME EXISTS
 app.get('/api/checkuserexistence/:username', async (req, res, next) => {
 	try {
 		const user = await User.find({ username: req.params.username })
@@ -913,7 +885,7 @@ app.get('/api/checkuserexistence/:username', async (req, res, next) => {
 	}
 })
 
-//CHECK IF EMAIL EXISTS
+// CHECK IF EMAIL EXISTS
 app.get('/api/checkemailexistence/:email', async (req, res, next) => {
 	try {
 		let email = await User.find({ email: req.params.email })
@@ -935,7 +907,7 @@ app.get('/api/checkemailexistence/:email', async (req, res, next) => {
 })
 
 
-//UPLOAD AVATAR
+// UPLOAD AVATAR
 app.post(`/api/uploadavatar/:login`, isLoggedIn, async (req, res, next) => {
 	console.log(`req.user._id: ${req.user._id}`)
 	if (req.user.username == req.params.login) {
@@ -982,6 +954,7 @@ app.post(`/api/uploadavatar/:login`, isLoggedIn, async (req, res, next) => {
 	}
 })
 
+
 // ******************************************************************  MESSAGES ***************************************************************** 
 // VIEW MESSAGES BETWEEN TWO USERS - WITH PAGINATION
 app.get('/api/getmessages/:sender/:receiver/:skip/:limit', isLoggedIn, async (req, res, next) => {
@@ -1012,7 +985,7 @@ app.get('/api/messagespreview/:skip/:limit', isLoggedIn, async (req, res, next) 
 	try {
 		let skip = parseInt(req.params.skip)
 		let limit = parseInt(req.params.limit)
-		//FIRST PART - RECEIVED MESSAGES
+		// FIRST PART - RECEIVED MESSAGES
 		const receivedMessages = await Message.aggregate(
 			[
 				{
@@ -1127,7 +1100,7 @@ app.get('/api/messagespreview/:skip/:limit', isLoggedIn, async (req, res, next) 
 			})
 		})
 
-		// Rest of items
+		// Rest of messages
 		let latestMessagesKeys = []
 		latestMessages.forEach(el => {
 			latestMessagesKeys.push(el.sender)
@@ -1236,7 +1209,7 @@ app.get('/api/get-unread-messages/:username', async (req, res) => {
 // END OF UNREAD MESSAGES AMOUNT
 
 
-//COUNT MISSED MESSAGES
+// COUNT MISSED MESSAGES
 app.get('/api/countmissedmessages', async (req, res) => {
 	if (req.user) {
 		const username = req.user.username
@@ -1278,7 +1251,7 @@ app.post('/api/readmessage/:message_id', async (req, res) => {
 
 // ************************************************************** END OF MESSAGES *****************************************************
 
-//SET MESSAGES STATUS IN DB
+// SET MESSAGES STATUS IN DB
 app.post('/api/set-messages-status/:receiver/:sender', (req, res) => {
 	serverLog(req, 'Set messages status')
 	try {
@@ -1345,7 +1318,7 @@ app.get('/api/user-avatar/:name', async (req, res, next) => {
 	}
 })
 
-// FUNCTIONS
+// ADDITIONAL FUNCTIONS
 // DECODE QUERY PARAMS
 // Example:
 // /api/dbquery/filmy/0/5/categories=cat1&duration=%7B%20%22%24gt%22%3A%20%2260%22%2C%20%22%24lt%22%3A%20%2290%22%20%7D
@@ -1359,18 +1332,10 @@ function decodeQueryParams(queryParams) {
 		}
 	})
 	queryParams = Object.fromEntries(queryParams)
-	/*if (queryParams['order']) {
-		let order = queryParams['order']
-		delete (queryParams['order'])
-		//console.log(queryParams, order)
-		return [queryParams, order]
-	}*/
-	//else {
 	return queryParams
-	//}
 }
 
-//DECODE ORDER PARAMS
+// DECODE ORDER PARAMS
 function decodeOrderParams(param) {
 	param = `{${param}}`
 	param = param.replace(/(['"])?([a-z0-9A-Z_]+)(['"])?:/g, '"$2": ')
@@ -1379,14 +1344,14 @@ function decodeOrderParams(param) {
 }
 
 
-//REMOVE DUPLICATES FROM JSON ARRAY
+// REMOVE DUPLICATES FROM JSON ARRAY
 const by = property => function (object) {
 	const value = object[property]
 	return !(this.has(value) || !this.add(value));
 }
 
 
-//COUNT NEW VALUE AND UPDATE RANK
+// COUNT NEW VALUE AND UPDATE RANK
 async function refreshRankValue(dbName, ratedPositionID, res) {
 	//CALCULATE NEW RANKING
 	console.log('Calculating new ranking value...')
@@ -1399,7 +1364,7 @@ async function refreshRankValue(dbName, ratedPositionID, res) {
 	})
 	ratingsAmount = parseInt(ratingsAmount)
 	let averageRank = ratingsSum / ratingsAmount
-	//SET NEW RANKING IN PROPER COLLECTION
+	// SET NEW RANKING IN PROPER COLLECTION
 	const mapping = [[Film, 'filmy'], [Series, 'seriale'], [Premiere, 'premiers'], [Actor, 'aktorzy']] //key value pairs for proper dbname
 	mapping.forEach(el => {
 		if (dbName == el[1])
@@ -1412,7 +1377,7 @@ async function refreshRankValue(dbName, ratedPositionID, res) {
 	res.send({ averageRank: averageRank.toString(), ratingsAmount: ratingsAmount })
 }
 
-//SOCKET IO - MESSENGER
+// SOCKET IO - MESSENGER
 try {
 	io.on('connection', (socket) => {
 		if (socket.request.session.passport && socket.request.session.passport.user) {
@@ -1434,10 +1399,8 @@ try {
 				io.to(room1).to(room2).to(receiverID).emit('read messages', receiverID)
 			})
 
-			//CHAT MESSAGE - requires fix
+			// CHAT MESSAGE
 			socket.on('chat message', async (msg) => {
-				console.log('chat message!')
-				console.log(msg);
 				// todo: change getting userName and ReceiverName from DB to more efficient way
 				let userName = await User.find({ _id: room }, 'username').exec()
 				userName = userName[0].username
@@ -1524,14 +1487,15 @@ function serverLog(req, method) {
 }
 // END OF ALL GUWNO TEST
 
+// REACT REROUTING
 if (process.env.NODE_ENV === 'production') {
-  // Serve any static files
-  app.use(express.static(path.join(__dirname, 'client/build')));
+	// Serve any static files
+	app.use(express.static(path.join(__dirname, 'client/build')));
 
-  // Handle React routing, return all requests to React app
-  app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-  });
+	// Handle React routing, return all requests to React app
+	app.get('*', function (req, res) {
+		res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+	});
 }
 
 // ************************************************* START SERVER + DATABASE CONNECTIONS ***********************************************

@@ -1,4 +1,6 @@
 .unreadMessagesAmount {
     color: white;
     text-decoration: none;
+    font-size: 10px;
+    margin-left: 2px;
 }

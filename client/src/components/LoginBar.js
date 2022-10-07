@@ -116,7 +116,7 @@ function LoginBar(props) {
                         </a>
 
                         <a data-toggle="collapse" href="#messagesPreviewCollapse" role="button" aria-expanded="false" aria-controls="messagesPreviewCollapse" className="navbar-toggle" id="toggle">
-                            <i className="fa-brands fa-forumbee"><span className="unreadMessagesAmount">{unreadMessagesAmount}</span></i>
+                            <i className="fa-brands fa-forumbee ml-2"><span className="unreadMessagesAmount">{unreadMessagesAmount}</span></i>
                         </a>
 
                         <div className="collapse position-absolute w-100" id="messagesPreviewCollapse" style={{ zIndex: 10000, marginTop: "25px" }}>

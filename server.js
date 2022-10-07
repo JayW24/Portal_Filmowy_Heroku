@@ -541,11 +541,11 @@ app.post('/api/newUser/users', async (req, res, next) => {
 			loginExists = await User.exists({ username: body.username }),
 			emailExists = await User.exists({ email: body.email })
 		if (loginExists) {
-			res.redirect('User login is already in use!')
+			res.send('User login is already in use!')
 			return;
 		}
 		if (emailExists) {
-			res.redirect('User email is already in use!')
+			res.send('User email is already in use!')
 			return;
 		}
 		const salt = await bcrypt.genSalt(10),
@@ -568,9 +568,12 @@ app.post('/api/newUser/users', async (req, res, next) => {
 		await newUser.save()
 		const emailContent = `Potwierdź rejestrację konta przez następujący link: https://portal-filmowy-jw-01.herokuapp.com/user-confirmation/${body.username}/${token}`
 		sendEmail(body.email, `Portal Filmowy - ${body.username} - potwierdzenie rejestracji`, emailContent)
-		res.redirect('Pomyślnie zarejestrowano konto! Aby aktywować, wejdź na swój adres email.')
+		res.status(200);
+		res.send('User registered');
 	}
 	catch (err) {
+		res.status(500);
+		res.send('Server error. Could not register user.')
 		next(err)
 	}
 })

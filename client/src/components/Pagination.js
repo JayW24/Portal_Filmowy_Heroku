@@ -325,14 +325,12 @@ export default class Pagination extends React.Component {
               : null
             }
           </div>
-          {/* */}
         </div>
         {/*RESULTS AMOUNT PER PAGE*/}
         <div className="resultsAmountController d-flex justify-content-center align-items-center bg-light p-3 m-0">
           <span>Ilość wyników na stronie:</span>
           <span className="ml-1">{this.generateSkipChangeButtons()}</span>
         </div>
-        {/* */}
       </div>
     )
   }

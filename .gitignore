@@ -24,6 +24,6 @@ yarn-error.log*
 
 # particular files
 
-credentials.js,
-token.json,
+credentials.js
+token.json
 client_secret.json

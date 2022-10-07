@@ -69,7 +69,7 @@ function Register() {
                         }} />
                         {passwordCheck}<br />
                         {/*DATE-OF-BIRTH*/}
-                        <label className="register-label" for="dateofbirth">Data urodzenia:</label>
+                        <label className="register-label" htmlFor="dateofbirth">Data urodzenia:</label>
                         <input className="register-input" type="datetime-local" name="dateofbirth" onChange={
                             (event) => {
                                 handleDateOfBirthChange(event, setDateOfBirth, setDateOfBirthCheck, setDateOfBirthValidation)
@@ -117,13 +117,18 @@ async function handleSubmit(event, userData, setRegisterResult) {
         const resp = await fetch(`/api/newUser/users`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            // We convert the React state to JSON and send it as the POST body
             body: JSON.stringify(userData)
         })
-        setRegisterResult(resp.url)
+        console.log(resp)
+        if(resp.status == 200) {
+            setRegisterResult("Dziękujemy za rejestrację. Wysłano link aktywacyjny na podany adres e-mail.")
+        }
+        else if(resp.status == 500) {
+            setRegisterResult("Rejestracja nie powiodła się.")
+        }
     }
     catch(err) {
-        alert('Register error!')
+        setRegisterResult('Błąd aplikacji Rejestracja nie powiodła się.')
     }
 }
 

@@ -20,9 +20,9 @@ export default function Footer() {
                         <div className="d-flex w-100 flex-column">
                             <h5>Znajdź nas na:</h5>
                             <div className="d-flex justify-content-around my-auto">
-                                <a href="#"><i className="footer-icon fab fa-facebook"></i></a>
-                                <a href="#"><i className="footer-icon fab fa-instagram"></i></a>
-                                <a href="#"><i className="footer-icon fab fa-twitter-square"></i></a>
+                                <a href="/"><i className="footer-icon fab fa-facebook"></i></a>
+                                <a href="/"><i className="footer-icon fab fa-instagram"></i></a>
+                                <a href="/"><i className="footer-icon fab fa-twitter-square"></i></a>
                             </div>
                         </div>
                     </div>
@@ -31,7 +31,7 @@ export default function Footer() {
                         <div className="flex-column">
                             <h5>Kontakt z redakcją</h5>
                             <div className="d-flex flex-column footer-paragraphs">
-                                <p><i className="fas fa-map-marker-alt"></i> <a href="#">Ul. Specjalna 54</a></p>
+                                <p><i className="fas fa-map-marker-alt"></i> <a href="https://www.google.com/maps/@56.0327094,-32.1752884,8z">Ul. Specjalna 54</a></p>
                                 <p style={{ marginLeft: "16px" }}>64-128, Warszawa</p>
                                 <p><i className="far fa-envelope"></i><a href="mailto:adres@mailowy.pl"> adres.mail@mailowy.pl</a></p>
                                 <p><i className="fas fa-phone"></i> <a href="callto:+48666666666">+ 48 666 777 888</a></p>

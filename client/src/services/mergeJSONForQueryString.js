@@ -2,7 +2,7 @@ function mergeJSONForQueryString(json1, json2) {
     if(Object.keys(json1).length > 0) {
         Object.keys(json1).forEach(function(key) {
             Object.keys(json2).forEach(function(key2) {
-                if(key == key2) {
+                if(key === key2) {
                     json1[key] = json2[key2]
                 }
                 if(!json1.hasOwnProperty(key2) && json2[key2]) {

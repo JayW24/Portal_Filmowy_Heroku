@@ -39,7 +39,7 @@ function Register() {
         else {
             setSendAccess(true)
         }
-    })
+    }, [userNameValidation, passwordValidation, emailValidation, fromValidation, dateOfBirthValidation, aboutValidation])
 
 
     if (registerResult) {
@@ -120,10 +120,10 @@ async function handleSubmit(event, userData, setRegisterResult) {
             body: JSON.stringify(userData)
         })
         console.log(resp)
-        if(resp.status == 200) {
+        if(resp.status === 200) {
             setRegisterResult("Dziękujemy za rejestrację. Wysłano link aktywacyjny na podany adres e-mail.")
         }
-        else if(resp.status == 500) {
+        else if(resp.status === 500) {
             setRegisterResult("Rejestracja nie powiodła się.")
         }
     }

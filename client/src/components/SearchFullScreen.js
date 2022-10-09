@@ -13,7 +13,7 @@ export default function SearchFullScreen(props) {
         {props.searchResult.map(x => {
           return <div className="d-flex align-items-center p-2">
             <div className="d-flex justify-items-center align-items-center">
-              <img className="search-thumbnail" src={x.thumbnail} />
+              <img className="search-thumbnail" src={x.thumbnail} alt={x.thumbnail} />
               <Link className="ml-2" to={`/${getDbNameByType(x.type)}/${x._id}`}><div>{x.name}, type: {x.type}</div></Link>
             </div>
           </div>

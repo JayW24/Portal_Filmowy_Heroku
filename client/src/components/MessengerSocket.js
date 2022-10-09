@@ -27,7 +27,7 @@ function MessengerSocket(props) {
       setReceiverID(receiverID);
     }
     getReceiverId();
-  }, [props.receiver]);
+  }, [props.receiver, socket]);
 
 
   // incoming message
@@ -35,7 +35,7 @@ function MessengerSocket(props) {
     socket.on('chat message', async function (msg) {
       let currentTime = await axios('/api/servertime');
       currentTime = currentTime.data;
-      if (msg.userName == props.receiver || props.sender == msg.userName) {
+      if (msg.userName === props.receiver || props.sender === msg.userName) {
         props.forwardMessageToArr({
           sender: msg.userName,
           time_sent: currentTime,
@@ -45,7 +45,7 @@ function MessengerSocket(props) {
         });
       }
 
-      if (loginIndicator == msg.userName) {
+      if (loginIndicator === msg.userName) {
         setClearTextInput(generateRandomKey(10));
       }
     })
@@ -54,7 +54,7 @@ function MessengerSocket(props) {
     socket.on('read messages', (senderID) => {
       props.forwardMessageStatus(senderID);
     })
-  }, [])
+  }, [loginIndicator, socket, props])
 
   return (
     <MessageInput messageText={messageText} setMessageText={setMessageText}
@@ -63,4 +63,4 @@ function MessengerSocket(props) {
   )
 }
 
-export default MessengerSocket
+export default MessengerSocket;

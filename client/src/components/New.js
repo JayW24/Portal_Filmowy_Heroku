@@ -10,6 +10,7 @@ import CommentForm from './CommentForm';
 import VerticalSpacer from './VerticalSpacer';
 import convertToObjArr from '../services/convertToObjArr';
 import { LoginContext } from './LoginContext';
+import Spinner from './Spinner';
 
 export default function New(props) {
     const loginIndicator = useContext(LoginContext);
@@ -44,21 +45,20 @@ export default function New(props) {
         setCommentToRemove({ comment_Id: null, parent_id: null });
     }
 
-    const getData = async () => {
-        let data = await axios.get(`/api/getoneitem/news/${params.id}`);
-        data = await data.data;
-        data.related_articles = convertToObjArr(data.related_articles);
-        setData(data);
-    }
-
     useEffect(() => {
+        const getData = async () => {
+            let data = await axios.get(`/api/getoneitem/news/${params.id}`);
+            data = await data.data;
+            data.related_articles = convertToObjArr(data.related_articles);
+            setData(data);
+        }
         try {
             getData();
         }
         catch (error) {
             alert('Something gone wrong!');
         }
-    }, [])
+    }, [params.id])
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -73,53 +73,55 @@ export default function New(props) {
                 <meta property="og:title" content="MyApp" />
                 <meta property="og:image" content="path/to/image.jpg" />
             </MetaTags>
-            <div className="container section-block p-2">
-                {ConvertDate(data.date)}
-                <h3>{data.title}</h3>
-                {data.description} <br />
-                <img src={data.photos && data.photos.replace('/uploads/', ':1337/uploads/')} className="img-fluid" />
-                {/*DATA FROM CMS*/}
-                <div>
-                    <HtmlReturner html={data.code} /><br />
-                </div>
-                <hr />
-                <VerticalSpacer />
-                <h3>Podobne artykuły:</h3>
-                <div className="related-articles d-flex flex-column">
-                    {data.related_articles ?
-                        data.related_articles.map(el => <Link key={GenerateRandomKey(10)} to={`/new/${el.url}`}>{el.name}</Link>)
-                        : null}
-                </div>
-                <VerticalSpacer />
-                <hr/>
-                <div className="p-0 m-0">
-                    <h3>Komentarze</h3>
-                    <div className="p-0 m-0">
-                        {loginIndicator ? <div>Dodaj nowy komentarz</div> : <a href="/login"><div className="font-italic">Zaloguj się aby dodać komentarz. <i class="fas fa-sign-in-alt text-primary"></i></div><br /></a>}
-                        {/*Main Thread Comment. Always Active.*/}
-                        <CommentForm
-                            login={loginIndicator}
-                            render={true}
-                            source_id={params.id}
-                            parent_id="0"
-                            liftCommentUp={liftCommentUp}
-                            mainThread={true}
-                            active={true}
-                        />
-                        {loginIndicator ? <hr /> : null}
+            {data.title ?
+                <div className="container section-block p-2">
+                    {ConvertDate(data.date)}
+                    <h3>{data.title}</h3>
+                    {data.description} <br />
+                    <img src={data.photos && data.photos.replace('/uploads/', ':1337/uploads/')} className="img-fluid" alt={data.photos} />
+                    {/*DATA FROM CMS*/}
+                    <div>
+                        <HtmlReturner html={data.code} /><br />
                     </div>
-                    <InfiniteComments
-                        login={loginIndicator}
-                        source_id={params.id}
-                        commentForLift={commentForLift}
-                        liftCommentUp={liftCommentUp}
-                        resetLiftUp={resetLiftUp}
-                        removeCommentApod={removeCommentApod}
-                        commentToRemove={commentToRemove}
-                        resetCommentRemove={resetCommentRemove}
-                    />
+                    <hr />
+                    <VerticalSpacer />
+                    <h3>Podobne artykuły:</h3>
+                    <div className="related-articles d-flex flex-column">
+                        {data.related_articles ?
+                            data.related_articles.map(el => <Link key={GenerateRandomKey(10)} to={`/new/${el.url}`}>{el.name}</Link>)
+                            : null}
+                    </div>
+                    <VerticalSpacer />
+                    <hr />
+                    <div className="p-0 m-0">
+                        <h3>Komentarze</h3>
+                        <div className="p-0 m-0">
+                            {loginIndicator ? <div>Dodaj nowy komentarz</div> : <a href="/login"><div className="font-italic">Zaloguj się aby dodać komentarz. <i className="fas fa-sign-in-alt text-primary"></i></div><br /></a>}
+                            {/*Main Thread Comment. Always Active.*/}
+                            <CommentForm
+                                login={loginIndicator}
+                                render={true}
+                                source_id={params.id}
+                                parent_id="0"
+                                liftCommentUp={liftCommentUp}
+                                mainThread={true}
+                                active={true}
+                            />
+                            {loginIndicator ? <hr /> : null}
+                        </div>
+                        <InfiniteComments
+                            login={loginIndicator}
+                            source_id={params.id}
+                            commentForLift={commentForLift}
+                            liftCommentUp={liftCommentUp}
+                            resetLiftUp={resetLiftUp}
+                            removeCommentApod={removeCommentApod}
+                            commentToRemove={commentToRemove}
+                            resetCommentRemove={resetCommentRemove}
+                        />
+                    </div>
                 </div>
-            </div>
+                : <Spinner />}
         </>
     )
 }

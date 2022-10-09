@@ -1,5 +1,5 @@
 export default function interlocutor(login, sender, receiver) {
-    if (login == sender) {
+    if (login === sender) {
         return receiver
     }
     else {

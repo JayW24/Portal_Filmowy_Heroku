@@ -27,30 +27,30 @@ function UserProfile(props) {
     const params = props.match.params;
     const view = props.match.params.view;
 
-    const fetchData = async () => {
-        const result = await axios.get(
-            `/api/userDetails/${params.username}`,
-        )
-        if (result.status == 200) {
-            const userData = result.data[0];
-            setUserData(userData);
-            setAbout(userData.about);
-            setFrom(userData.from);
-            setCurrentAbout(userData.about);
-            setCurrentFrom(userData.from);
-            setDataLoaded(true);
-        }
-        else {
-            alert('Get user details error!');
-        }
-    }
-
     useEffect(() => {
         // Front end validation
         (aboutValidation && fromValidation && (about !== CurrentAbout || from !== CurrentFrom)) ? setSendAccess(true) : setSendAccess(false);
-    })
+    }, [aboutValidation, fromValidation, setSendAccess, CurrentAbout, CurrentFrom, about, from])
 
     useEffect(() => {
+        const fetchData = async () => {
+            const result = await axios.get(
+                `/api/userDetails/${params.username}`,
+            )
+            if (result.status === 200) {
+                const userData = result.data[0];
+                setUserData(userData);
+                setAbout(userData.about);
+                setFrom(userData.from);
+                setCurrentAbout(userData.about);
+                setCurrentFrom(userData.from);
+                setDataLoaded(true);
+            }
+            else {
+                alert('Get user details error!');
+            }
+        }
+
         try {
             // Fetch user data
             if (!dataLoaded) {
@@ -60,17 +60,17 @@ function UserProfile(props) {
         catch (error) {
             alert('User profile error!');
         }
-    }, [])
+    }, [dataLoaded, params.username])
 
     // User logged in - edit profile
-    if (loginIndicator == params.username && view == undefined) {
+    if (loginIndicator === params.username && view === undefined) {
         return (
             <div class="container section-block p-2 user-profile">
                 <div className="d-flex flex-column justify-content-center align-items-center">
                     <h1>Twój profil</h1>
                     <Link to={`/users/${params.username}/view-as-stranger`}>Wyświetl jako gość</Link>
                     <strong>{userData.username}</strong><br />
-                    <img style={{ borderRadius: "50%", maxHeight: "200px", maxWidth: "200px" }} className="col-lg-2" src={userData.avatar} /><br />
+                    <img style={{ borderRadius: "50%", maxHeight: "200px", maxWidth: "200px" }} className="col-lg-2" src={userData.avatar} alt={userData.avatar} /><br />
                     <UploadAvatar login={loginIndicator} />
                     <VerticalSpacer/>
                 </div>
@@ -106,9 +106,9 @@ function UserProfile(props) {
             <div class="container section-block">
                 <div className="d-flex flex-column justify-content-center align-items-center">
                     {loginIndicator !== params.username ? <Link to={`/messenger/${loginIndicator}/${params.username}`}>Napisz wiadomość</Link> : null}
-                    {loginIndicator == params.username ? <Link to={`/users/${params.username}`}>Edytuj profil</Link> : null}
+                    {loginIndicator === params.username ? <Link to={`/users/${params.username}`}>Edytuj profil</Link> : null}
                     <strong>{userData.username}</strong><br />
-                    <img style={{ borderRadius: "50%", maxHeight: "200px", maxWidth: "200px", border: "1px solid #fff" }} className="col-lg-2" src={userData.avatar} />
+                    <img style={{ borderRadius: "50%", maxHeight: "200px", maxWidth: "200px", border: "1px solid #fff" }} className="col-lg-2" src={userData.avatar} alt={userData.avatar} />
                     <br />
                 </div>
                 <div className="d-flex w-100 justify-content-center flex-column">
@@ -131,7 +131,7 @@ async function handleSubmit(event, userData) {
         // We convert the React state to JSON and send it as the POST body
         body: JSON.stringify(userData)
     })
-    if (response.status == 200) {
+    if (response.status === 200) {
         alert(response.statusText)
         return response.json()
     }

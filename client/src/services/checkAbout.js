@@ -18,7 +18,7 @@ export default function checkAbout(event, setAboutCheck, setAboutValidation) {
         setAboutCheck('')
         setAboutValidation(false)
     }
-    if (event.target.value.length == 0) {
+    if (event.target.value.length === 0) {
         setAboutCheck('')
         setAboutValidation(false)
     }

@@ -12,21 +12,20 @@ export default function CategoriesButtons(props) {
         setChosenCategoryName(categoryName);
     }
 
-    const fetchCategoriesData = async () => {
-        const response = await fetch(props.dbName);
-        const categories = await response.json();
-
-        setCategories(categories);
-    }
-
     useEffect(() => {
+        const fetchCategoriesData = async () => {
+            const response = await fetch(props.dbName);
+            const categories = await response.json();
+    
+            setCategories(categories);
+        }
         try {
             fetchCategoriesData();
         }
         catch (error) {
             alert('Something gone wrong.');
         }
-    }, [])
+    }, [props.dbName])
 
     return (
         <div className="col-sm-12 p-1 m-0 d-flex align-items-center" key={GenerateRandomKey(10)}>

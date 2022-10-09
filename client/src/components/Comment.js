@@ -67,7 +67,7 @@ function createRespForm(parent_id, source_id, _id, login, liftCommentUp, form_id
         .animate( {scrollTop: $(`#${form_id}`).offset().top - 45}, 0 );
 
     // Remove form
-    let id = parent_id == 0 ? parent_id : _id
+    let id = parent_id === 0 ? parent_id : _id
     ReactDOM.render(
         <CommentForm
             login={login}
@@ -81,12 +81,12 @@ function createRespForm(parent_id, source_id, _id, login, liftCommentUp, form_id
 }
 
 function createRespondButton(_id, source_id, parent_id, login, liftCommentUp) {
-    if (login == "User not authorized via email") {
+    if (login === "User not authorized via email") {
         return null;
     }
     if (login) {
         let form_id = GenerateRandomKey(10);
-        let id = parent_id == 0 ? _id : parent_id;
+        let id = parent_id === 0 ? _id : parent_id;
         return (
             <button id={form_id}
                 className="btn btn-success"
@@ -106,7 +106,7 @@ async function removeComment(comment_id, removeCommentApod, parent_id) {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
     })
-    if (response.status == 200) {
+    if (response.status === 200) {
         alert('Comment removed!');
     }
     else {

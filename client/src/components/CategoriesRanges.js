@@ -7,27 +7,27 @@ function CategoriesRanges(props) {
     const propertyName = props.propertyName;
     const [categories, setCategories] = useState([]);
     const [currentCategory, setCurrentCategory] = useState(ParamsToJson(props.urlParams).duration);
-    
-    const fetchCategoriesData = async () => {
-        try {
-            const filtersDataEndpointURL = props.dbName;
-            const result = await axios(filtersDataEndpointURL);
-            setCategories(result.data);
-        }
-        catch (error) {
-            alert('Something gone wrong.');
-        }
-    }
 
     useEffect(() => {
+        const fetchCategoriesData = async () => {
+            try {
+                const filtersDataEndpointURL = props.dbName;
+                const result = await axios(filtersDataEndpointURL);
+                setCategories(result.data);
+            }
+            catch (error) {
+                alert('Something gone wrong.');
+            }
+        }
+
         fetchCategoriesData();
-    }, [])
+    }, [props.dbName])
 
     useEffect(() => {
         if (props.resetFilters > 0) {
             setCurrentCategory(categories[0]);
         }
-    }, [props.resetFilters])
+    }, [props.resetFilters, categories])
 
     return (
         <div className="col-md-4 p-1 m-0 d-flex align-items-center">

@@ -15,12 +15,12 @@ async function login(e, nameRef, passRef, setLoginResponse, history, fetchUserNa
         body: JSON.stringify({ username: username, password: password })
     });
  
-    if (response.status == 200 && response.ok) {
+    if (response.status === 200 && response.ok) {
         setLoginResponse('');
         await fetchUserName();
         history.push("/");
     }
-    else if (response.status == 200 && !response.ok) {
+    else if (response.status === 200 && !response.ok) {
         setLoginResponse('Username or password is wrong!');
     }
     else {

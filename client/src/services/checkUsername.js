@@ -22,7 +22,7 @@ export default async function checkUsername(event, setUserNameCheck, setUserName
     }
     else {
         setUserNameValidation(false)
-        if (event.target.value.length == 0) {
+        if (event.target.value.length === 0) {
             setUserNameCheck("")
         }
         else {

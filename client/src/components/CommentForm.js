@@ -33,7 +33,7 @@ class CommentForm extends React.Component {
 
             liftUp({ ...liftUpData, likes: 0, _id: newID });
 
-            if (form.state.parent_id == 0) {
+            if (form.state.parent_id === 0) {
                 form.setState( {commentContent: ''} );
             }
             else {

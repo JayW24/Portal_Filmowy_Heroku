@@ -11,21 +11,20 @@ export default function CategoriesSort(props) {
     const [sortType, setSortType] = useState(-1);
     const [sortByValues, setSortByValues] = useState([]);
     const [sortTypeValues, setSortTypeValues] = useState([]);
-
-    const setSortingByUrlParams = () => {
-        setSortByValues(sortByData);
-        setSortTypeValues(sortTypeData);
-
-        let params = ParamsToJson(props.urlParams);
-
-        if (params.order) {
-            params = params.order.split(':');
-            setSortBy(params[0]);
-            setSortType(params[1]);
-        }
-    }
     
     useEffect(() => {
+        const setSortingByUrlParams = () => {
+            setSortByValues(sortByData);
+            setSortTypeValues(sortTypeData);
+    
+            let params = ParamsToJson(props.urlParams);
+    
+            if (params.order) {
+                params = params.order.split(':');
+                setSortBy(params[0]);
+                setSortType(params[1]);
+            }
+        }
         setSortingByUrlParams();
     }, [props.urlParams])
 
@@ -35,7 +34,7 @@ export default function CategoriesSort(props) {
             setSortType(1);
             props.handleCategoryChange({ order: `rating:-1` });
         }
-    }, [props.resetFilters])
+    }, [props])
 
     return (
         <div key={GenerateRandomKey(10)} className="col-md-4 p-1 m-0">

@@ -21,7 +21,7 @@ export default function MessengerAvatar(props) {
 
     return (
         <>
-            {avatarPath && <img src={avatarPath == 'default' ? defaultPath : avatarPath} alt='User avatar' class="rounded-circle bg-secondary img-fluid avatarWrapper" />}
+            {avatarPath && <img src={avatarPath === 'default' ? defaultPath : avatarPath} alt='User avatar' class="rounded-circle bg-secondary img-fluid avatarWrapper" />}
         </>
     )
 }

@@ -23,7 +23,7 @@ class InfiniteComments extends React.Component {
                     hasMore,
                 },
             } = this
-            if (error || isLoading || !hasMore) return
+            if (error || isLoading || !hasMore) return null;
             if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight && !isLoading) {
                 loadApods();
             }
@@ -45,7 +45,7 @@ class InfiniteComments extends React.Component {
         if (prevProps.commentToRemove.comment_id !== this.props.commentToRemove.comment_id) {
             if (this.props.commentToRemove.comment_id) {
                 // Remove main comment
-                if (this.props.commentToRemove.parent_id == 0) {
+                if (this.props.commentToRemove.parent_id === 0) {
                     this.setState({
                         apods: this.state.apods.filter(el => {
                             return el._id !== this.props.commentToRemove.comment_id;
@@ -61,7 +61,7 @@ class InfiniteComments extends React.Component {
                     currentApods.forEach(el => {
                         let childComments = el.childComments;
                         childComments && childComments.forEach((e, i) => {
-                            if (e.key == this.props.commentToRemove.comment_id || e.props.data._id == this.props.commentToRemove.comment_id) {
+                            if (e.key === this.props.commentToRemove.comment_id || e.props.data._id === this.props.commentToRemove.comment_id) {
                                 delete el.childComments[i];
                             }
                         })
@@ -77,7 +77,7 @@ class InfiniteComments extends React.Component {
         if (prevProps.commentForLift !== this.props.commentForLift) {
             if (this.props.commentForLift) {
                 // MAIN COMMENT - add to top of apods array
-                if (this.props.commentForLift.parent_id == 0) {
+                if (this.props.commentForLift.parent_id === 0) {
                     const apodsWithNewComment = [this.props.commentForLift].concat(this.state.apods);
 
                     this.setState({ apods: apodsWithNewComment }, () => {
@@ -91,7 +91,7 @@ class InfiniteComments extends React.Component {
                         if (!el.childComments) {
                             el.childComments = [];
                         }
-                        if (el._id == this.props.commentForLift.parent_id) {
+                        if (el._id === this.props.commentForLift.parent_id) {
                             const renderComToAdd = () => {
                                 return <Comment
                                     commentForLift={this.props.commentForLift}
@@ -112,7 +112,7 @@ class InfiniteComments extends React.Component {
 
     loadApods = async () => {
         try {
-            if (this.state.isLoading == false) {
+            if (this.state.isLoading === false) {
                 const loadSpeed = 10;
                 this.setState({ isLoading: true }, async () => {
                     const response = await fetch(`/api/dbquery/comments/${this.state.apods.length}/${loadSpeed}/source_id=${this.props.source_id}&parent_id=0&order=timeCreated:-1`);    //fetch next comment for film with particular ID
@@ -127,7 +127,7 @@ class InfiniteComments extends React.Component {
                                 likes: bodyResults.likes, hasChild: bodyResults.hasChild
                             };
 
-                            if (nextApod.parent_id == 0) {
+                            if (nextApod.parent_id === "0") {
                                 if (nextApod.hasChild) {
                                     const response = await fetch(`/api/dbquery/comments/0/null/parent_id=${nextApod._id}`)  // fetch child comments
                                     const childComments = await response.json()
@@ -177,9 +177,9 @@ class InfiniteComments extends React.Component {
         return (
             <div>
                 {apods.map((apod, index) => {
-                    if (apod.parent_id == 0) {
+                    if (apod.parent_id === "0") {
                         return (
-                            <React.Fragment>
+                            <React.Fragment key={apod._id}>
                                 <Comment
                                     key={apod._id}
                                     commentForLift={this.props.commentForLift}
@@ -189,6 +189,9 @@ class InfiniteComments extends React.Component {
                                     apodColour={commentColoursClasses[index % commentColoursClasses.length]}
                                 />
                             </React.Fragment>)
+                    }
+                    else {
+                        return null;
                     }
                 })}
                 {apods.length > 0 ? <hr /> : null}
@@ -201,7 +204,7 @@ class InfiniteComments extends React.Component {
                     <div>Loading...</div>
                 }
                 {!hasMore &&
-                    <div>Koniec komentarzy <i class="fas fa-check-square text-success"></i></div>
+                    <div>Koniec komentarzy <i className="fas fa-check-square text-success"></i></div>
                 }
             </div>
         )

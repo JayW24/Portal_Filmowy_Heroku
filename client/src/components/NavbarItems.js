@@ -34,7 +34,7 @@ function NavbarItems(props) {
                 else {
                     return navbarItem = (
                         <li key={GenerateRandomKey(10)} className="nav-item dropdown">
-                            <a className="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                            <a className="nav-link dropdown-toggle" href="www.example.com" id="navbardrop" data-toggle="dropdown">
                                 Dropdown link
                             </a>
                             <div className="dropdown-menu">

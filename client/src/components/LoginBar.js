@@ -16,7 +16,7 @@ const LoggedAs = { color: '#cfcfcf' };
 async function logout(e, history, fetchUserName) {
     e.preventDefault();
     const logout = await axios.get('/api/logout');
-    if (logout.status == 200) {
+    if (logout.status === 200) {
         await fetchUserName();
         history.push('/')
     }
@@ -32,15 +32,15 @@ function LoginBar(props) {
     const [newMessages, setNewMessages] = useState([]);
     const history = useHistory();
 
-    const fetchData = async () => {
-        if (loginIndicator) {
-            const amount = await axios(`/api/get-unread-messages/${loginIndicator}`);
-            setUnreadMessagesAmount(amount.data);
-        }
-    }
-
     // fetch amount of unread messages
     useEffect(() => {
+        const fetchData = async () => {
+            if (loginIndicator) {
+                const amount = await axios(`/api/get-unread-messages/${loginIndicator}`);
+                setUnreadMessagesAmount(amount.data);
+            }
+        }
+
         try {
             fetchData();
         }
@@ -77,7 +77,7 @@ function LoginBar(props) {
                 console.log(error);
             }
         }
-    }, [loginIndicator])
+    }, [loginIndicator, newMessages, socket])
 
     //MESSAGES PREVIEW HIDING IF CLICKED OUTSIDE
     useEffect(() => {

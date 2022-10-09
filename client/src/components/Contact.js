@@ -6,12 +6,12 @@ function Contact() {
             <div className="container">
                 <h3>Kontakt z redakcją:</h3>
                 <div className="row">
-                    <div class="col-lg-6 p-0">
-                        <img className="img-fluid" src="/img/building.jpg" />
+                    <div className="col-lg-6 p-0">
+                        <img className="img-fluid" alt="Filmhub building.jpg" src="/img/building.jpg" />
                     </div>
                     <div className="col-lg-6 my-auto">
                         <h3>Dane kontaktowe</h3> <br />
-                        <p><i className="fas fa-map-marker-alt"></i> <a href="#">Ul. Magiczna 54</a></p>
+                        <p><i className="fas fa-map-marker-alt"></i> <a href="https://www.google.com/maps/@56.0327094,-32.1752884,8z">Ul. Magiczna 54</a></p>
                         <p style={{ marginLeft: "16px" }}>64-128, Warszawa</p>
                         <p><i className="far fa-envelope"></i><a href="mailto:adres@mailowy.pl"> adres.mail@mailowy.pl</a></p>
                         <p><i className="fas fa-phone"></i> <a href="callto:+48666666666">+ 48 666 777 888</a></p>

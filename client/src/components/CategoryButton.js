@@ -7,7 +7,7 @@ export default function CategoryButton(props) {
         props.handleCategoryChange(JSON.parse(`{"${props.searchedProperty}": "${props.category[props.propertyName]}"}`));
         props.handleCategoryChangeStyle(props.category[props.propertyName]);
     }
-    const categoryButtonClassName = props.chosenCategoryName==props.category[props.propertyName]? chosenCategoryClasses : unchosenCategoryClasses;
+    const categoryButtonClassName = props.chosenCategoryName===props.category[props.propertyName]? chosenCategoryClasses : unchosenCategoryClasses;
 
     return (
         <button id={props.category._id} className={categoryButtonClassName} key={props.category._id + props.category.name}

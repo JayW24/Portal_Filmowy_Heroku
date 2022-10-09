@@ -42,7 +42,8 @@ export default class Pagination extends React.Component {
 
 
   //ON FILTERS CHANGE
-  handleCategoryChange(queryPart) {           // query part comes from child components and updates state
+  handleCategoryChange(queryPart) {           
+    // query part comes from child components and updates state
     //console.log('======== HANDLE CATEGORY CHANGE ========')
     const result = mergeJSONForQueryString(this.state.query, queryPart);
     const stringifyResult = jsonToParams(result);
@@ -180,27 +181,13 @@ export default class Pagination extends React.Component {
       lowerLimiter = (parseInt(pageNumParam - 3))
 
     for (let i = 0; i <= this.state.currentPagesAmount; i++) {
-      // first        last                                    +/- 2 pages
-      if ((i == 0) || (i == this.state.currentPagesAmount) || ((i >= topLimiterTop) && (i <= topLimiterDown)) || ((i <= topLimiterTop) && (i >= lowerLimiter))) {
+      // first          last                                    +/- 2 pages
+      if ((i === 0) || (i === this.state.currentPagesAmount) || ((i >= topLimiterTop) && (i <= topLimiterDown)) || ((i <= topLimiterTop) && (i >= lowerLimiter))) {
         let skip = i * this.state.limit,
         url = `/${this.props.dbName}/${this.state.queryString}/page=${i + 1}`
-        if (i == 0) {
-          var additional = ' (first)'
-        }
-        else if (i == this.state.currentPagesAmount) {
-          var additional = ' (last)'
-        }
-        else {
-          additional = ''
-        }
         pages.push(
           <Link key={generateRandomKey(10)} to={url}>
             <button id={`paginationPageButton${i + 1}`} className="paginationPage btn btn-light" onClick={() => { this.fetchData(skip, this.state.limit, `/${this.state.queryString}`) }}>
-              {/*FOR TESTING ONLY*/}
-              {/*
-                {`PAGE:${i + 1}${additional}, skip:${skip}, limit: ${this.state.limit}, query: ${this.state.queryString}`}
-              */}
-              {/*END OF FOR TESTING ONLY*/}
               {i + 1}
             </button>
           </Link>
@@ -218,12 +205,11 @@ export default class Pagination extends React.Component {
 
   changeLimit(limit) {
     this.props.match.params.page = 1
-    //console.log('======== changeLimit ========')
     cookies.set('paginationLimit', limit, { path: '/' });
     let currentPagesAmount;
-    if (this.state.queryString == '') {
+    if (this.state.queryString === '') {
       currentPagesAmount = Math.round(this.state.ResultsAmount / limit)
-      if (currentPagesAmount == 1) { currentPagesAmount = 0 }
+      if (currentPagesAmount === 1) { currentPagesAmount = 0 }
       this.setState({ limit: limit, currentPagesAmount: currentPagesAmount, skip: 0 }, () => {
         this.generatePagination()
         this.handleCategoryChange({})
@@ -239,7 +225,6 @@ export default class Pagination extends React.Component {
   }
 
   reset() {
-    //console.log('======== reset ========')
     // reset everything except sorting
     let sorting = this.state.query.order
     this.setState({ query: { order: sorting }, queryString: jsonToParams({ order: sorting }), skip: 0, limit: 5, resetFilters: (this.state.resetFilters + 1) }, () => {
@@ -289,7 +274,7 @@ export default class Pagination extends React.Component {
             <div className="d-block align-items-center">
               <span className="d-inline-block results-title"><h2>Wyniki wyszukiwania</h2></span>
               {this.state.ResultsAmount ?
-              <span className="d-inline-block resultsAmountDescription ml-1 text-muted">({this.state.ResultsAmount == 0 ? 'Nie znaleziono wyników' : `Znaleziono wyników: ${this.state.ResultsAmount}`})</span> : 
+              <span className="d-inline-block resultsAmountDescription ml-1 text-muted">({this.state.ResultsAmount === 0 ? 'Nie znaleziono wyników' : `Znaleziono wyników: ${this.state.ResultsAmount}`})</span> : 
               null
             }   
             </div>

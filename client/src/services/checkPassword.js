@@ -1,6 +1,6 @@
 export default function checkPassword(event, setPasswordCheck, setPasswordValidation) {
     const specials = [".", "\\", ":", ";", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "`", "*"]
-    if (event.target.value == "" || event.target.value == null) {
+    if (event.target.value === "" || event.target.value === null) {
         setPasswordCheck(null)
     }
     else {

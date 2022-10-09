@@ -18,7 +18,7 @@ export default function checkFrom(event, setFromCheck, setFromValidation) {
         setFromCheck('')
         setFromValidation(false)
     }
-    if (event.target.value.length == 0) {
+    if (event.target.value.length === 0) {
         setFromCheck('')
         setFromValidation(false)
     }

@@ -9,7 +9,7 @@ export default function UserConfirmation(props) {
         try {
             const checkConfirmationStatus = async () => {
                 const resp = await axios.get(`/api/userconfirmation/${params.username}/${params.token}`)
-                if (resp.status == 200) {
+                if (resp.status === 200) {
                     setConfirmationStatus(resp.data)
                 }
                 else {
@@ -21,7 +21,7 @@ export default function UserConfirmation(props) {
         catch (err) {
             alert('User confirmation gone wrong.')
         }
-    }, [])
+    }, [params.username, params.token])
     return (
         <div>
             {confirmationStatus}

@@ -22,7 +22,7 @@ export default async function checkEmail(event, setEmailCheck, setEmailValidatio
         }
     }
     else {
-        if (value == '') {
+        if (value === '') {
             setEmailCheck('')
             setEmailValidation(false)
         }

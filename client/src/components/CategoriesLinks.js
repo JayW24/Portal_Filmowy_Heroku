@@ -16,7 +16,7 @@ export default function CategoriesLinks(props) {
             {categories.map(
                 (category, index) =>
                     <Link key={GenerateRandomKey(10)} to={`/${props.dbName}/order=rating:1&categories=${category}/page=1`} >
-                        {index == categories.length - 1 ? category : `${category}, `}
+                        {index === categories.length - 1 ? category : `${category}, `}
                     </Link>)}
         </>
 

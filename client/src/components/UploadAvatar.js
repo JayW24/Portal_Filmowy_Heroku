@@ -19,7 +19,7 @@ function UploadAvatar(props) {
 
     useEffect(() => {
         fileSizeOk && fileFormatOk ? setButtonDisabled(false) : setButtonDisabled(true)
-    })
+    }, [fileSizeOk, fileFormatOk])
 
 
     const onChangeHandler = (event) => {

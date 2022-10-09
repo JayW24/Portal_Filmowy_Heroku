@@ -1,5 +1,5 @@
 export default function messageStyler (login, sender) {
-    if (login == sender) {
+    if (login === sender) {
         // logged user style
         return { bgColors: "bg-primary text-white", side: "justify-content-start", secondary: "text-white" }
     }

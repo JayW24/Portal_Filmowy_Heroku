@@ -33,7 +33,7 @@ function Rate(props) {
             }
         }
         setUserRank()
-    }, [loginIndicator])
+    }, [loginIndicator, params.id])
 
     useEffect(() => {
         setRatingValue(props.film_rating)

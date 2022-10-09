@@ -33,13 +33,13 @@ function MessagesPreview() {
         socket.on('chat message', async function (msg) {
             getPreviewData(setMessagesData);
         })
-    }, [loginIndicator])
+    }, [loginIndicator, socket])
 
     // both users are online
     useEffect(() => {
         // todo: if message is visible in small preview, change it's state
         socket.on('read messages', async (senderID) => {getPreviewData(setMessagesData)});
-    }, [messagesData])
+    }, [messagesData, socket])
 
     if (messagesData) {
         return (

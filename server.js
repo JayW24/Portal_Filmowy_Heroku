@@ -661,7 +661,7 @@ app.delete('/api/deleteComment/:dbName/:id', isLoggedIn, async (req, res, next) 
 			selector2 = { parent_id: mongodb.ObjectId(id) },
 			comment = await db.collection(dbName).findOne(selector)
 		dbLog('Removing comment...', 'findOne()', dbName, JSON.stringify(selector))
-		if (comment.user == req.user.username) {
+		if (comment.user === req.user.username) {
 			// remove comment and all responds to that comment
 			if (comment.parent_id === 0) {
 				await db.collection(dbName).deleteMany(selector2)
@@ -674,7 +674,7 @@ app.delete('/api/deleteComment/:dbName/:id', isLoggedIn, async (req, res, next) 
 				await db.collection(dbName).deleteOne(selector)
 				let parentId = comment.parent_id
 				let otherResps = await Comment.find({ parent_id: parentId })
-				if (otherResps.length == 0) {
+				if (otherResps.length === 0) {
 					await Comment.updateOne({ _id: comment.parent_id }, { hasChild: false })
 				}
 				dbLog('SINGLE comment - succesfully removed.', 'deleteOne()', JSON.stringify(selector2))
@@ -802,7 +802,7 @@ app.get('/api/search/string=:string', async (req, res, next) => {
 		if (string.length <= 30) {
 			let words = string.split(' ')
 			// BLOCK SEARCHING LESS THAN 3 SYMBOLS
-			if (string == "null" || string.length < 3) {
+			if (string === "null" || string.length < 3) {
 				res.send('Type at least 3 characters!')
 			}
 			else {
@@ -811,13 +811,13 @@ app.get('/api/search/string=:string', async (req, res, next) => {
 					var allResults = []
 					words.forEach(async (el, index) => {
 						const docs = await SearchItem.find({ name: new RegExp(el, 'i') }).skip().sort({ name: '-1' }).limit(5)
-						if (allResults.length == 0) {
+						if (allResults.length === 0) {
 							allResults = docs
 						}
 						else {
 							allResults = allResults.concat(docs)
 						}
-						if (index == words.length - 1) {
+						if (index === words.length - 1) {
 							allResults = allResults.filter(by('name'), new Set);
 							res.send(allResults)
 						}
@@ -868,11 +868,11 @@ app.get('/api/userDetails/:username', async (req, res, next) => {
 app.get('/api/checkuserexistence/:username', async (req, res, next) => {
 	try {
 		const user = await User.find({ username: req.params.username })
-		if (user.length == 1) {
+		if (user.length === 1) {
 			res.send(true)		//user exists
 			dbLog('Check user existence.', 'find()', 'users', true)
 		}
-		else if (user.length == 0) {
+		else if (user.length === 0) {
 			res.send(false)		// user doesn't exist
 			dbLog('Check user existence.', 'find()', 'users', false)
 		}
@@ -889,11 +889,11 @@ app.get('/api/checkuserexistence/:username', async (req, res, next) => {
 app.get('/api/checkemailexistence/:email', async (req, res, next) => {
 	try {
 		let email = await User.find({ email: req.params.email })
-		if (email.length == 1) {
+		if (email.length === 1) {
 			res.send(true)		//email exists
 			dbLog('Check email existence.', 'find()', 'users', true)
 		}
-		else if (email.length == 0) {
+		else if (email.length === 0) {
 			res.send(false)		// email doesn't exist
 			dbLog('Check email existence.', 'find()', 'users', false)
 		}
@@ -910,7 +910,7 @@ app.get('/api/checkemailexistence/:email', async (req, res, next) => {
 // UPLOAD AVATAR
 app.post(`/api/uploadavatar/:login`, isLoggedIn, async (req, res, next) => {
 	console.log(`req.user._id: ${req.user._id}`)
-	if (req.user.username == req.params.login) {
+	if (req.user.username === req.params.login) {
 		try {
 			//SAVE FILE
 			var storage = multer.diskStorage({
@@ -958,7 +958,7 @@ app.post(`/api/uploadavatar/:login`, isLoggedIn, async (req, res, next) => {
 // ******************************************************************  MESSAGES ***************************************************************** 
 // VIEW MESSAGES BETWEEN TWO USERS - WITH PAGINATION
 app.get('/api/getmessages/:sender/:receiver/:skip/:limit', isLoggedIn, async (req, res, next) => {
-	if ((req.user.username == req.params.sender) || (req.user.username == req.params.receiver)) {
+	if ((req.user.username === req.params.sender) || (req.user.username === req.params.receiver)) {
 		try {
 			const messages = await Message.find(
 				{
@@ -1089,12 +1089,12 @@ app.get('/api/messagespreview/:skip/:limit', isLoggedIn, async (req, res, next) 
 		let latestMessages = []
 		allMessages.forEach((message) => {
 			// Unread message
-			if (message.time_received == null && !latestMessages.includes(message)) {
+			if (message.time_received === null && !latestMessages.includes(message)) {
 				latestMessages.push(message)
 			}
 			allMessages.forEach((msg) => {
 				// More than one message in conversation. Choose more recent message.
-				if (message.sender == msg.receiver && message.receiver == msg.sender && message.time_sent > msg.time_sent && !latestMessages.includes(message)) {
+				if (message.sender === msg.receiver && message.receiver === msg.sender && message.time_sent > msg.time_sent && !latestMessages.includes(message)) {
 					latestMessages.push(message)
 				}
 			})
@@ -1110,7 +1110,7 @@ app.get('/api/messagespreview/:skip/:limit', isLoggedIn, async (req, res, next) 
 		Array.prototype.getUnique = function () {
 			var uniques = [];
 			for (var i = 0, l = this.length; i < l; ++i) {
-				if (this.lastIndexOf(this[i]) == this.indexOf(this[i])) {
+				if (this.lastIndexOf(this[i]) === this.indexOf(this[i])) {
 					uniques.push(this[i]);
 				}
 			}
@@ -1232,7 +1232,7 @@ app.get('/api/countmissedmessages', async (req, res) => {
 // CHANGE MESSAGE STATUS TO READ && SET time_received
 app.post('/api/readmessage/:message_id', async (req, res) => {
 	if (req.user) {
-		if (req.user.username == req.params.message_id) {
+		if (req.user.username === req.params.message_id) {
 			try {
 				const res = await Message.updateOne({ _id: req.params.message_id, time_received: (new Date).getTime(), status: "read" })
 				res.send(res)
@@ -1367,7 +1367,7 @@ async function refreshRankValue(dbName, ratedPositionID, res) {
 	// SET NEW RANKING IN PROPER COLLECTION
 	const mapping = [[Film, 'filmy'], [Series, 'seriale'], [Premiere, 'premiers'], [Actor, 'aktorzy']] //key value pairs for proper dbname
 	mapping.forEach(el => {
-		if (dbName == el[1])
+		if (dbName === el[1])
 			el[0].findByIdAndUpdate(ratedPositionID, { rating: averageRank, ratingsAmount: ratingsAmount }, (err, docs) => {
 				if (err) {
 					console.log(err)
@@ -1467,7 +1467,7 @@ catch (err) {
 // DB
 function dbLog(communicate, method, dbName, query, results) {
 	try {
-		query == null ? query = 'none' : query = JSON.stringify(query)
+		query === null ? query = 'none' : query = JSON.stringify(query)
 		console.log(colors.FgYellow, `[Database]: ${communicate} Method: ${method} called, dbName: ${dbName}, query: ${query}, results_type: ${typeof (results)}`)
 	}
 	catch (err) {
@@ -1481,7 +1481,7 @@ function serverLog(req, method) {
 		console.log(colors.FgGreen, `[Server]: ${method} ${req.path} | Called by: ${req.user ? req.user.username : 'anonymous'}`)
 	}
 	catch (err) {
-		if (err) { console.log(colors.FgRed, '[Server]: Server error! Method: ' + 'Path:' + req.path + ' called by ' + req.user == undefined ? req.user.username : 'anonymous') }
+		if (err) { console.log(colors.FgRed, '[Server]: Server error! Method: ' + 'Path:' + req.path + ' called by ' + req.user === undefined ? req.user.username : 'anonymous') }
 	}
 }
 // END OF ALL GUWNO TEST

@@ -18,27 +18,27 @@ function Filters(props) {
     const [filters, setFilters] = useState([]);
     const [filtersData, setFiltersData] = useState([]);
 
-    const fetchFiltersData = async () => {
-        const result = await axios(`/api/filters/${props.filters_Id}`);
-
-        if (result.status == 200) {
-            const json = await result.data
-            delete json['_id']
-            setFiltersData(json)
-        }
-        else {
-            alert('Filters error!')
-        }
-    }
-
     useEffect(() => {
+        const fetchFiltersData = async () => {
+            const result = await axios(`/api/filters/${props.filters_Id}`);
+    
+            if (result.status === 200) {
+                const json = await result.data
+                delete json['_id']
+                setFiltersData(json)
+            }
+            else {
+                alert('Filters error!')
+            }
+        }
+
         try {
             fetchFiltersData();
         }
         catch (err) {
-            alert('Filters error!')
+            alert('Filters error!');
         }
-    }, [])
+    }, [props.filters_Id])
 
     useEffect(() => {
         const filtersKeys = Object.keys(filtersData);
@@ -54,7 +54,7 @@ function Filters(props) {
             )
         })
         setFilters(filtersComponents);
-    }, [props.resetFilters, filtersData])
+    }, [props.resetFilters, filtersData, props.handleCategoryChange, props.urlParams])
 
     return (
         <div className="section-block filters d-flex row p-0 m-0">

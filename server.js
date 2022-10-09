@@ -35,18 +35,18 @@ var { request } = require('http')
 var MongoStore = require('connect-mongo')(session);
 const { setTimeout } = require('timers/promises')
 
-// Mongoose Schemas
-const Schemas = require('./schemas');
-const User = Schemas.User;
-const Film = Schemas.Film;
-const Series = Schemas.Series;
-const Actor = Schemas.Actor;
-const Premiere = Schemas.Premiere;
-const Comment = Schemas.Comment;
-const Rating = Schemas.Rating;
-const Message = Schemas.Message;
-const News = Schemas.News;
-const SearchItem = Schemas.SearchItem;
+// Mongoose Models
+const Models = require('./models/models');
+const User = Models.User;
+const Film = Models.Film;
+const Series = Models.Series;
+const Actor = Models.Actor;
+const Premiere = Models.Premiere;
+const Comment = Models.Comment;
+const Rating = Models.Rating;
+const Message = Models.Message;
+const News = Models.News;
+const SearchItem = Models.SearchItem;
 
 // Middleware
 app.use(busboy());

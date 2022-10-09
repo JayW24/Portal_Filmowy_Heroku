@@ -1,6 +1,7 @@
 import React from 'react';
 import debounce from 'lodash.debounce';
 import Comment from './Comment';
+import Spinner from './Spinner';
 
 const commentColoursClasses = ["bg-primary", "bg-secondary", "bg-success", "bg-danger", "bg-warning", "bg-dark"];
 
@@ -201,7 +202,7 @@ class InfiniteComments extends React.Component {
                     </div>
                 }
                 {isLoading &&
-                    <div>Loading...</div>
+                    <Spinner/>
                 }
                 {!hasMore &&
                     <div>Koniec komentarzy <i className="fas fa-check-square text-success"></i></div>

@@ -28,28 +28,8 @@ function MessagesReverse(props) {
 
     //default
     useEffect(() => {
-        const onStart = async () => {
-            try {
-                // SET MESSAGES STATUS
-                await axios.post(`/api/set-messages-status/${props.url_Params.user1}/${props.url_Params.user2}`);
-                // GET MESSAGES
-                let resp = await axios.get(`/api/getmessages/${props.url_Params.user1}/${props.url_Params.user2}/${skip}/${limit}`);
-                let data = resp.data;
-                setItems(data);
-                setSkip(skip + 10);
-                if (resp.data.length) {
-                    setHasMore(true);
-                }
-                else {
-                    setHasMore(false);
-                }
-            }
-            catch (error) {
-                alert('Something gone wrong...')
-            }
-        }
         onStart();
-    }, [props.url_Params.user1, props.url_Params.user2, skip])
+    }, [props.url_Params.user2])
 
     // new message
     useEffect(() => {
@@ -63,7 +43,7 @@ function MessagesReverse(props) {
             }
         }
         newMessage()
-    }, [props.message, items])
+    }, [props.message])
 
     // set status as read in real time
     useEffect(() => {
@@ -75,7 +55,7 @@ function MessagesReverse(props) {
                         currentTime = currentTime.data;
                         let newItems = items;
                         newItems.forEach(el => {
-                            if (el.status === "missed") {
+                            if (el.status == "missed") {
                                 el.status = "read"
                                 el.time_received = currentTime
                             }
@@ -90,14 +70,35 @@ function MessagesReverse(props) {
         catch(error) {
             alert('Something went wrong...');
         }
-    }, [props.status, items])
+    }, [props.status])
+
+    let onStart = async () => {
+        try {
+            // SET MESSAGES STATUS
+            let req = await axios.post(`/api/set-messages-status/${props.url_Params.user1}/${props.url_Params.user2}`);
+            // GET MESSAGES
+            let resp = await axios.get(`/api/getmessages/${props.url_Params.user1}/${props.url_Params.user2}/${skip}/${limit}`);
+            let data = resp.data;
+            setItems(data);
+            setSkip(skip + 10);
+            if (resp.data.length) {
+                setHasMore(true);
+            }
+            else {
+                setHasMore(false);
+            }
+        }
+        catch (error) {
+            alert('Something gone wrong...')
+        }
+    }
 
     const fetchMoreData = () => {
         try {
             setTimeout(async () => {
                 if (hasMore) {
                     let resp = await axios.get(`/api/getmessages/${props.url_Params.user1}/${props.url_Params.user2}/${skip}/${limit}`)
-                    if (resp.status === 200) {
+                    if (resp.status == 200) {
                         let data = resp.data
                         if (data.length > 0) {
                             setItems(items.concat(data))
@@ -125,7 +126,6 @@ function MessagesReverse(props) {
     if (loginIndicator) {
         return (
             <div id="scrollableDiv" style={scrollableDivStyle}>
-                {String(hasMore)}
                 <div className="p-0 bg-white">
                     <InfiniteScroll
                         dataLength={items.length}

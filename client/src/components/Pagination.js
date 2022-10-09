@@ -13,7 +13,6 @@ import Cookies from 'universal-cookie';
 import VerticalSpacer from './VerticalSpacer';
 import generateRandomKey from '../services/GenerateRandomKey';
 import generateSearchTIles from '../services/generateSearchTIles';
-import { timingSafeEqual } from 'crypto';
 import Spinner from './Spinner';
 const cookies = new Cookies();
 const cookiesLimit = cookies.get('paginationLimit');
@@ -242,28 +241,27 @@ export default class Pagination extends React.Component {
   render() {
     return (
       <>
-      {String(this.state.isLoading)}
-        {!this.state.isLoading ?
-          <div className="container">
-            <MetaTags>
-              <title>{firstLetterToUppercase(this.props.dbName)} | FilmHub</title>
-              <meta name="description" content="Some description. Ready to become dynamic." />
-              <meta name="keywords" content="Some, random, keywords, ready, to, become, dynamic"></meta>
-              <meta property="og:title" content="MyApp" />
-              <meta property="og:image" content="path/to/image.jpg" />
-            </MetaTags>
-            {/*FILTERS*/}
-            <Filters handleCategoryChange={this.handleCategoryChange}
-              urlParams={this.props.match.params.query}
-              filtersDbName={this.props.filtersDbName}
-              filters_Id={this.props.filters_Id}
-              resetFilters={this.state.resetFilters}
-            />
-            {/*RESET FILTERS*/}
-            <div id="reset-filters-and-categories" className="text-primary p-1" onClick={() => this.reset()}><i className="fas fa-eraser"></i> RESET FILTRÓW</div>
-            {/* END OF FILTERS*/}
-            {/*CURRENT STATE - FOR TESTING ONLY*/}
-            {/*
+        <MetaTags>
+          <title>{firstLetterToUppercase(this.props.dbName)} | FilmHub</title>
+          <meta name="description" content="Some description. Ready to become dynamic." />
+          <meta name="keywords" content="Some, random, keywords, ready, to, become, dynamic"></meta>
+          <meta property="og:title" content="MyApp" />
+          <meta property="og:image" content="path/to/image.jpg" />
+        </MetaTags>
+
+        <div className="container">
+          {/*FILTERS*/}
+          <Filters handleCategoryChange={this.handleCategoryChange}
+            urlParams={this.props.match.params.query}
+            filtersDbName={this.props.filtersDbName}
+            filters_Id={this.props.filters_Id}
+            resetFilters={this.state.resetFilters}
+          />
+          {/*RESET FILTERS*/}
+          <div id="reset-filters-and-categories" className="text-primary p-1" onClick={() => this.reset()}><i className="fas fa-eraser"></i> RESET FILTRÓW</div>
+          {/* END OF FILTERS*/}
+          {/*CURRENT STATE - FOR TESTING ONLY*/}
+          {/*
       <div style={{ fontSize: '10px', backgroundColor: '#4860c2', color: 'white' }}>
         query: {JSON.stringify(this.state.query)} <br />
         searchString: {this.state.searchString} <br />
@@ -274,58 +272,59 @@ export default class Pagination extends React.Component {
         Current skip: {this.state.skip}
       </div>
       */}
-            <VerticalSpacer />
-            {/*PAGINATION RESULTS*/}
-            <div className="section-block p-3">
+          <VerticalSpacer />
+          {/*PAGINATION RESULTS*/}
+          <div className="section-block p-3">
+            {!this.state.isLoading ?
               <div id="jw-pagination-results-29831">
                 <div className="d-block align-items-center">
                   <span className="d-inline-block results-title"><h2>Wyniki wyszukiwania</h2></span>
                   {this.state.ResultsAmount ?
-                    <span className="d-inline-block resultsAmountDescription ml-1 text-muted">({this.state.ResultsAmount === 0 ? 'Nie znaleziono wyników' : `Znaleziono wyników: ${this.state.ResultsAmount}`})</span> :
+                    <span className="d-inline-block resultsAmountDescription ml-1 text-muted">({this.state.ResultsAmount === 0 &&  this.state.ResultsAmount? 'Nie znaleziono wyników' : `Znaleziono wyników: ${this.state.ResultsAmount}`})</span> :
                     null
                   }
                 </div>
                 <hr />
                 {this.state.data}
               </div>
-              {/*CHOOSE PAGE NUMBER*/}
-              <div className="d-flex justify-content-center align-items-center">
-                {/*PREVIOUS PAGE*/}
-                {this.state.skip > 0 ? // display only if not on first page
-                  <Link key={generateRandomKey(10)} to={`/${this.props.dbName}/${this.state.queryString}/page=${this.props.match.params.page - 1}`}>
-                    <button id={`paginationPageButtonPrevious`}
-                      className="prevPage btn btn-light"
-                      onClick={() => {
-                        this.fetchData(this.state.skip - this.state.limit, this.state.limit, `/${this.state.queryString}`)
-                      }}>
-                      Previous page
-                    </button>
-                  </Link>
-                  : null
-                }
-                {/*PAGES*/}
-                <span className="ml-1">{this.state.paginationPages}</span>
-                {/*NEXT PAGE*/}
-                {this.state.skip + parseInt(this.state.limit) !== (this.state.currentPagesAmount + 1) * parseInt(this.state.limit) ? // display only if not on last page
-                  <Link key={generateRandomKey(10)} to={`/${this.props.dbName}/${this.state.queryString}/page=${parseInt(this.props.match.params.page) + 1}`}>
-                    <button id={`paginationPageButtonNext`}
-                      className="nextPage btn btn-light"
-                      onClick={() => { this.fetchData((parseInt(this.state.skip) + parseInt(this.state.limit)), this.state.limit) }}>
-                      Next page
-                    </button>
-                  </Link>
-                  : null
-                }
-              </div>
-            </div>
-            {/*RESULTS AMOUNT PER PAGE*/}
-            <div className="resultsAmountController d-flex justify-content-center align-items-center bg-light p-3 m-0">
-              <span>Ilość wyników na stronie:</span>
-              <span className="ml-1">{this.generateSkipChangeButtons()}</span>
+              : <Spinner />
+            }
+            {/*CHOOSE PAGE NUMBER*/}
+            <div className="d-flex justify-content-center align-items-center">
+              {/*PREVIOUS PAGE*/}
+              {this.state.skip > 0 ? // display only if not on first page
+                <Link key={generateRandomKey(10)} to={`/${this.props.dbName}/${this.state.queryString}/page=${this.props.match.params.page - 1}`}>
+                  <button id={`paginationPageButtonPrevious`}
+                    className="prevPage btn btn-light"
+                    onClick={() => {
+                      this.fetchData(this.state.skip - this.state.limit, this.state.limit, `/${this.state.queryString}`)
+                    }}>
+                    Previous page
+                  </button>
+                </Link>
+                : null
+              }
+              {/*PAGES*/}
+              <span className="ml-1">{this.state.paginationPages}</span>
+              {/*NEXT PAGE*/}
+              {this.state.skip + parseInt(this.state.limit) !== (this.state.currentPagesAmount + 1) * parseInt(this.state.limit) ? // display only if not on last page
+                <Link key={generateRandomKey(10)} to={`/${this.props.dbName}/${this.state.queryString}/page=${parseInt(this.props.match.params.page) + 1}`}>
+                  <button id={`paginationPageButtonNext`}
+                    className="nextPage btn btn-light"
+                    onClick={() => { this.fetchData((parseInt(this.state.skip) + parseInt(this.state.limit)), this.state.limit) }}>
+                    Next page
+                  </button>
+                </Link>
+                : null
+              }
             </div>
           </div>
-          : <Spinner />
-        }
+          {/*RESULTS AMOUNT PER PAGE*/}
+          <div className="resultsAmountController d-flex justify-content-center align-items-center bg-light p-3 m-0">
+            <span>Ilość wyników na stronie:</span>
+            <span className="ml-1">{this.generateSkipChangeButtons()}</span>
+          </div>
+        </div>
       </>
     )
   }

@@ -13,6 +13,8 @@ import Cookies from 'universal-cookie';
 import VerticalSpacer from './VerticalSpacer';
 import generateRandomKey from '../services/GenerateRandomKey';
 import generateSearchTIles from '../services/generateSearchTIles';
+import { timingSafeEqual } from 'crypto';
+import Spinner from './Spinner';
 const cookies = new Cookies();
 const cookiesLimit = cookies.get('paginationLimit');
 
@@ -36,13 +38,14 @@ export default class Pagination extends React.Component {
       ResultsAmount: null,            //amount of results from database
       currentPagesAmount: null,       //amount of pages depending on resultsamount and some logic
       paginationPages: null,           //rendered html elements to switch page
-      resetFilters: 0
+      resetFilters: 0,
+      isLoading: false
     }
   }
 
 
   //ON FILTERS CHANGE
-  handleCategoryChange(queryPart) {           
+  handleCategoryChange(queryPart) {
     // query part comes from child components and updates state
     //console.log('======== HANDLE CATEGORY CHANGE ========')
     const result = mergeJSONForQueryString(this.state.query, queryPart);
@@ -85,11 +88,12 @@ export default class Pagination extends React.Component {
 
 
   async fetchData(skip, limit) {
+    this.setState({ isLoading: true });
     try {
       var response = await fetch(`/api/dbquery/${this.props.dbName}/${skip}/${limit}${this.state.queryString ? '/' + this.state.queryString : ""}`);
       let data = await response.json();
       data = generateSearchTIles(data, this.props.path);  // map to HTML
-      this.setState({ data: data, skip: skip }, () => {
+      this.setState({ data: data, skip: skip, isLoading: false }, () => {
         this.generatePagination();
       })
     }
@@ -127,8 +131,8 @@ export default class Pagination extends React.Component {
         })
         // RESULTS AMOUNT || COOKIES
         const resultsAmountButtonsMap = { 5: '0', 10: '1', 25: '2', 50: '3' },
-        // change results limit from cookies
-        cookiesLimit = cookies.get('paginationLimit') ? cookies.get('paginationLimit') : 5  // default is 5
+          // change results limit from cookies
+          cookiesLimit = cookies.get('paginationLimit') ? cookies.get('paginationLimit') : 5  // default is 5
         $(`#paginationLimit${resultsAmountButtonsMap[cookiesLimit]}`).css("color", "#004ebd")
         $(`#paginationLimit${resultsAmountButtonsMap[cookiesLimit]}`).addClass("active")
         // RESULTS AMOUNT || ONCLICK
@@ -161,17 +165,17 @@ export default class Pagination extends React.Component {
         $("#paginationPageButton1").css("color", "#004ebd")
         $("#paginationPageButton1").addClass("active")
       }
-    // JQUERY EVENTS - SCROLLING 
-    $(".paginationPage, .paginationLimit, .nextPage, .prevPage").click(function () {
-      $([document.documentElement, document.body]).animate({
-        scrollTop: $("#jw-pagination-results-29831").offset().top - 80             // element coordinates - (navbar + loginbar height)
-      }, 0)
-    })
-    $('#reset-filters-and-categories').click(() => {
-      $([document.documentElement, document.body]).animate({
-        scrollTop: 0
-      }, 0)
-    })
+      // JQUERY EVENTS - SCROLLING 
+      $(".paginationPage, .paginationLimit, .nextPage, .prevPage").click(function () {
+        $([document.documentElement, document.body]).animate({
+          scrollTop: $("#jw-pagination-results-29831").offset().top - 80             // element coordinates - (navbar + loginbar height)
+        }, 0)
+      })
+      $('#reset-filters-and-categories').click(() => {
+        $([document.documentElement, document.body]).animate({
+          scrollTop: 0
+        }, 0)
+      })
     })
     // END OF JQUERY EVENTS HANDLING
 
@@ -184,7 +188,7 @@ export default class Pagination extends React.Component {
       // first          last                                    +/- 2 pages
       if ((i === 0) || (i === this.state.currentPagesAmount) || ((i >= topLimiterTop) && (i <= topLimiterDown)) || ((i <= topLimiterTop) && (i >= lowerLimiter))) {
         let skip = i * this.state.limit,
-        url = `/${this.props.dbName}/${this.state.queryString}/page=${i + 1}`
+          url = `/${this.props.dbName}/${this.state.queryString}/page=${i + 1}`
         pages.push(
           <Link key={generateRandomKey(10)} to={url}>
             <button id={`paginationPageButton${i + 1}`} className="paginationPage btn btn-light" onClick={() => { this.fetchData(skip, this.state.limit, `/${this.state.queryString}`) }}>
@@ -237,86 +241,92 @@ export default class Pagination extends React.Component {
 
   render() {
     return (
-      <div className="container">
-        <MetaTags>
-          <title>{firstLetterToUppercase(this.props.dbName)} | FilmHub</title>
-          <meta name="description" content="Some description. Ready to become dynamic." />
-          <meta name="keywords" content="Some, random, keywords, ready, to, become, dynamic"></meta>
-          <meta property="og:title" content="MyApp" />
-          <meta property="og:image" content="path/to/image.jpg" />
-        </MetaTags>
-        {/*FILTERS*/}
-        <Filters handleCategoryChange={this.handleCategoryChange}
-          urlParams={this.props.match.params.query}
-          filtersDbName={this.props.filtersDbName}
-          filters_Id={this.props.filters_Id}
-          resetFilters={this.state.resetFilters}
-        />
-        {/*RESET FILTERS*/}
-        <div id="reset-filters-and-categories" className="text-primary p-1" onClick={() => this.reset()}><i className="fas fa-eraser"></i> RESET FILTRÓW</div>
-        {/* END OF FILTERS*/}
-        {/*CURRENT STATE - FOR TESTING ONLY*/}
-        {/*
-        <div style={{ fontSize: '10px', backgroundColor: '#4860c2', color: 'white' }}>
-          query: {JSON.stringify(this.state.query)} <br />
-          searchString: {this.state.searchString} <br />
-          searchStringFromURLParam: {this.state.searchStringFromUrlParam} <br />
-          queryString: {JSON.stringify(this.state.queryString)} <br />
-          Current pages amount: {this.state.currentPagesAmount + 1}<br />
-          Current limit: {this.state.limit}<br />
-          Current skip: {this.state.skip}
-        </div>
-        */}
-        <VerticalSpacer />
-        {/*PAGINATION RESULTS*/}
-        <div className="section-block p-3">
-          <div id="jw-pagination-results-29831">
-            <div className="d-block align-items-center">
-              <span className="d-inline-block results-title"><h2>Wyniki wyszukiwania</h2></span>
-              {this.state.ResultsAmount ?
-              <span className="d-inline-block resultsAmountDescription ml-1 text-muted">({this.state.ResultsAmount === 0 ? 'Nie znaleziono wyników' : `Znaleziono wyników: ${this.state.ResultsAmount}`})</span> : 
-              null
-            }   
-            </div>
-            <hr />
-            {this.state.data}
-          </div>
-          {/*CHOOSE PAGE NUMBER*/}
-          <div className="d-flex justify-content-center align-items-center">
-            {/*PREVIOUS PAGE*/}
-            {this.state.skip > 0 ? // display only if not on first page
-              <Link key={generateRandomKey(10)} to={`/${this.props.dbName}/${this.state.queryString}/page=${this.props.match.params.page - 1}`}>
-                <button id={`paginationPageButtonPrevious`}
-                  className="prevPage btn btn-light"
-                  onClick={() => {
-                    this.fetchData(this.state.skip - this.state.limit, this.state.limit, `/${this.state.queryString}`)
-                  }}>
-                  Previous page
-                </button>
-              </Link>
-              : null
-            }
-            {/*PAGES*/}
-            <span className="ml-1">{this.state.paginationPages}</span>
-            {/*NEXT PAGE*/}
-            {this.state.skip + parseInt(this.state.limit) !== (this.state.currentPagesAmount + 1) * parseInt(this.state.limit) ? // display only if not on last page
-              <Link key={generateRandomKey(10)} to={`/${this.props.dbName}/${this.state.queryString}/page=${parseInt(this.props.match.params.page) + 1}`}>
-                <button id={`paginationPageButtonNext`}
-                  className="nextPage btn btn-light"
-                  onClick={() => { this.fetchData((parseInt(this.state.skip) + parseInt(this.state.limit)), this.state.limit) }}>
-                  Next page
-                </button>
-              </Link>
-              : null
-            }
-          </div>
-        </div>
-        {/*RESULTS AMOUNT PER PAGE*/}
-        <div className="resultsAmountController d-flex justify-content-center align-items-center bg-light p-3 m-0">
-          <span>Ilość wyników na stronie:</span>
-          <span className="ml-1">{this.generateSkipChangeButtons()}</span>
-        </div>
+      <>
+      {String(this.state.isLoading)}
+        {!this.state.isLoading ?
+          <div className="container">
+            <MetaTags>
+              <title>{firstLetterToUppercase(this.props.dbName)} | FilmHub</title>
+              <meta name="description" content="Some description. Ready to become dynamic." />
+              <meta name="keywords" content="Some, random, keywords, ready, to, become, dynamic"></meta>
+              <meta property="og:title" content="MyApp" />
+              <meta property="og:image" content="path/to/image.jpg" />
+            </MetaTags>
+            {/*FILTERS*/}
+            <Filters handleCategoryChange={this.handleCategoryChange}
+              urlParams={this.props.match.params.query}
+              filtersDbName={this.props.filtersDbName}
+              filters_Id={this.props.filters_Id}
+              resetFilters={this.state.resetFilters}
+            />
+            {/*RESET FILTERS*/}
+            <div id="reset-filters-and-categories" className="text-primary p-1" onClick={() => this.reset()}><i className="fas fa-eraser"></i> RESET FILTRÓW</div>
+            {/* END OF FILTERS*/}
+            {/*CURRENT STATE - FOR TESTING ONLY*/}
+            {/*
+      <div style={{ fontSize: '10px', backgroundColor: '#4860c2', color: 'white' }}>
+        query: {JSON.stringify(this.state.query)} <br />
+        searchString: {this.state.searchString} <br />
+        searchStringFromURLParam: {this.state.searchStringFromUrlParam} <br />
+        queryString: {JSON.stringify(this.state.queryString)} <br />
+        Current pages amount: {this.state.currentPagesAmount + 1}<br />
+        Current limit: {this.state.limit}<br />
+        Current skip: {this.state.skip}
       </div>
+      */}
+            <VerticalSpacer />
+            {/*PAGINATION RESULTS*/}
+            <div className="section-block p-3">
+              <div id="jw-pagination-results-29831">
+                <div className="d-block align-items-center">
+                  <span className="d-inline-block results-title"><h2>Wyniki wyszukiwania</h2></span>
+                  {this.state.ResultsAmount ?
+                    <span className="d-inline-block resultsAmountDescription ml-1 text-muted">({this.state.ResultsAmount === 0 ? 'Nie znaleziono wyników' : `Znaleziono wyników: ${this.state.ResultsAmount}`})</span> :
+                    null
+                  }
+                </div>
+                <hr />
+                {this.state.data}
+              </div>
+              {/*CHOOSE PAGE NUMBER*/}
+              <div className="d-flex justify-content-center align-items-center">
+                {/*PREVIOUS PAGE*/}
+                {this.state.skip > 0 ? // display only if not on first page
+                  <Link key={generateRandomKey(10)} to={`/${this.props.dbName}/${this.state.queryString}/page=${this.props.match.params.page - 1}`}>
+                    <button id={`paginationPageButtonPrevious`}
+                      className="prevPage btn btn-light"
+                      onClick={() => {
+                        this.fetchData(this.state.skip - this.state.limit, this.state.limit, `/${this.state.queryString}`)
+                      }}>
+                      Previous page
+                    </button>
+                  </Link>
+                  : null
+                }
+                {/*PAGES*/}
+                <span className="ml-1">{this.state.paginationPages}</span>
+                {/*NEXT PAGE*/}
+                {this.state.skip + parseInt(this.state.limit) !== (this.state.currentPagesAmount + 1) * parseInt(this.state.limit) ? // display only if not on last page
+                  <Link key={generateRandomKey(10)} to={`/${this.props.dbName}/${this.state.queryString}/page=${parseInt(this.props.match.params.page) + 1}`}>
+                    <button id={`paginationPageButtonNext`}
+                      className="nextPage btn btn-light"
+                      onClick={() => { this.fetchData((parseInt(this.state.skip) + parseInt(this.state.limit)), this.state.limit) }}>
+                      Next page
+                    </button>
+                  </Link>
+                  : null
+                }
+              </div>
+            </div>
+            {/*RESULTS AMOUNT PER PAGE*/}
+            <div className="resultsAmountController d-flex justify-content-center align-items-center bg-light p-3 m-0">
+              <span>Ilość wyników na stronie:</span>
+              <span className="ml-1">{this.generateSkipChangeButtons()}</span>
+            </div>
+          </div>
+          : <Spinner />
+        }
+      </>
     )
   }
 }

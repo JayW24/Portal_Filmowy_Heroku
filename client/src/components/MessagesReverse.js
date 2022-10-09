@@ -81,7 +81,6 @@ function MessagesReverse(props) {
             let data = resp.data;
             setItems(data);
             setSkip(skip + 10);
-            console.log(resp.data)
             if (resp.data.length) {
                 setHasMore(true);
             }

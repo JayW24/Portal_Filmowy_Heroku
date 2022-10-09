@@ -10,7 +10,7 @@ const busboy = require('connect-busboy');
 const http = require('http');
 const server = http.createServer(app);
 const colors = require('./colorfulLogs').colors;
-const connectionString = require('./credentials').connectionString;
+const connectionString = require('./env/credentials').connectionString;
 const { fork } = require('child_process')	// for multi thread
 var multer = require('multer');
 var cookieParser = require('cookie-parser');
@@ -213,12 +213,12 @@ const readline = require('readline'),
 		'https://www.googleapis.com/auth/gmail.compose',
 		'https://www.googleapis.com/auth/gmail.send'
 	]
-const TOKEN_PATH = 'token.json'
+const TOKEN_PATH = './env/token.json'
 
 function sendEmail(to, subject, emailContent) {
 	const args = { to: to, subject: subject, emailContent: emailContent }
 	console.log(colors.FgMagenta, '[Google Api]: sending email... Args:' + JSON.stringify(args))
-	fs.readFile('client_secret.json', (err, content) => {
+	fs.readFile('./env/client_secret.json', (err, content) => {
 		if (err) return console.log('Error loading client secret file:', err)
 		// Authorize a client with credentials, then call the Gmail API.
 		authorize(JSON.parse(content), sendMessage, to, subject, emailContent)
@@ -1381,7 +1381,6 @@ async function refreshRankValue(dbName, ratedPositionID, res) {
 try {
 	io.on('connection', (socket) => {
 		if (socket.request.session.passport && socket.request.session.passport.user) {
-			console.log('[JW] user connected, recognized by passport!');
 			let room = socket.request.session.passport.user
 			console.log(colors.FgMagenta, `[Socket IO]: Recognized user connected. socket.id: ${socket.id}, room: ${room}`)
 			socket.join(room)

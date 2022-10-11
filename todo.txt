@@ -3,3 +3,4 @@
 3. Refactoring i poprawa struktury folderów projektu.
 4. Poprawić stylowanie.
 5. Usunąć JQUERy.
+6. Po zalogowaniu się na nieistniejącego użytkownika dać komunikat że nie istnieje. Obecnie jest przekierowanie na główną i tyle.

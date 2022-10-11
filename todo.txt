@@ -1,6 +1,9 @@
 1. Ogarnąć pliki statyczne.
-2. Spróbować przywrócić CMS.
+2. Wrzucić CMS na HEROKU.
 3. Refactoring i poprawa struktury folderów projektu.
 4. Poprawić stylowanie.
 5. Usunąć JQUERy.
 6. Po zalogowaniu się na nieistniejącego użytkownika dać komunikat że nie istnieje. Obecnie jest przekierowanie na główną i tyle.
+7. server.js 39 -> 49 zmienić na restrukturyzacje
+8. Usunąć wszystkie generateRandomKey
+strapi: npm run develop

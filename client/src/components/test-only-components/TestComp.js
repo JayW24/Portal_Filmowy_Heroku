@@ -46,6 +46,7 @@ export default function TestComp(props) {
     }
 
     useEffect(() => {
+        alert('ok')
         fetchUsers();
     }, [])
 

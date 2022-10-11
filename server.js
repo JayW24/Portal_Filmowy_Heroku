@@ -90,8 +90,6 @@ passport.deserializeUser(function (id, done) {
 	})
 });
 
-
-// ROUTES
 // *********************************************************  PASSPORT JS ***************************************************************
 
 passport.use(new localStrategy(async function (username, password, done) {
@@ -138,6 +136,8 @@ function collectionNotAllowed(req, res, next) {
 		res.status(405).send("Not allowed to finish this action.")
 	}
 }
+
+// ROUTES
 
 // Get Logged User Username
 app.get('/api/loggedUserUsername', isLoggedIn, (req, res) => {
@@ -390,7 +390,6 @@ app.get('/api/pagesamount/:dbname/:query?', async (req, res, next) => {
 				duration = { $gt: parseInt(duration[0]), $lt: parseInt(duration[1]) }
 				decodedQueryParams['duration'] = duration
 			}
-			
 			//CATEGORIES
 			if (decodedQueryParams['categories']) { (decodedQueryParams['categories']) = new RegExp((decodedQueryParams['categories']), 'i') }
 			db.collection(`${dbname}`).find(decodedQueryParams).count().then(amount => {
@@ -1387,6 +1386,7 @@ try {
 
 			// READ MESSAGES IF USER JOINED CONVERSATION
 			socket.on('read messages', async (receiverID) => {
+				console.log('[JW] read messages!')
 				console.log('read messages')
 				let room1 = `${room}+${receiverID}`
 				let room2 = `${receiverID}+${room}`
@@ -1400,6 +1400,7 @@ try {
 
 			// CHAT MESSAGE
 			socket.on('chat message', async (msg) => {
+				console.log('[JW] chat message!')
 				// todo: change getting userName and ReceiverName from DB to more efficient way
 				let userName = await User.find({ _id: room }, 'username').exec()
 				userName = userName[0].username

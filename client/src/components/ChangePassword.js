@@ -14,11 +14,12 @@ function ChangePassword() {
 
     const onSubmit = async (event) => {
         try {
-            event.preventDefault()
+            event.preventDefault();
             const response = await axios.put('/api/editpassword', { oldPass: oldPass, newPass: newPass });
-            setpasswordChangeResponse(response);
+            setpasswordChangeResponse(response.data);
         }
         catch (error) {
+            alert('error!')
             setpasswordChangeResponse('Something went wrong...');
         }
     }

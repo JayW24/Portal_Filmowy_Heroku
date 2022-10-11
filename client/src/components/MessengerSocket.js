@@ -21,13 +21,13 @@ function MessengerSocket(props) {
   // emit reading messages
   useEffect(() => {
     const getReceiverId = async () => {
-      let dat = await axios(`/api/get-user-id/${props.receiver}`);   //REMOVE THIS DUPLICATE
+      let dat = await axios(`/api/get-user-id/${props.receiver}`);
       let receiverID = dat.data._id;
       socket.emit('read messages', receiverID);
       setReceiverID(receiverID);
     }
     getReceiverId();
-  }, [props.receiver, socket]);
+  }, []);
 
 
   // incoming message
@@ -54,7 +54,7 @@ function MessengerSocket(props) {
     socket.on('read messages', (senderID) => {
       props.forwardMessageStatus(senderID);
     })
-  }, [loginIndicator, socket, props])
+  }, [])
 
   return (
     <MessageInput messageText={messageText} setMessageText={setMessageText}

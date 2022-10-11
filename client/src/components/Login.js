@@ -20,10 +20,11 @@ async function login(e, nameRef, passRef, setLoginResponse, history, fetchUserNa
         await fetchUserName();
         history.push("/");
     }
-    else if (response.status === 200 && !response.ok) {
+    else if(response.status === 404) {
         setLoginResponse('Username or password is wrong!');
     }
     else {
+        console.log(response)
         setLoginResponse('There is some problem with login to application. Try again later.');
     }
 }

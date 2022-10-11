@@ -38,7 +38,7 @@ function Filters(props) {
         catch (err) {
             alert('Filters error!');
         }
-    }, [props.filters_Id])
+    }, [])
 
     useEffect(() => {
         const filtersKeys = Object.keys(filtersData);
@@ -54,7 +54,7 @@ function Filters(props) {
             )
         })
         setFilters(filtersComponents);
-    }, [props.resetFilters, filtersData, props.handleCategoryChange, props.urlParams])
+    }, [props.resetFilters, filtersData])
 
     return (
         <div className="section-block filters d-flex row p-0 m-0">

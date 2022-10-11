@@ -9,11 +9,7 @@ import Pagination from './components/Pagination';
 import Contact from './components/Contact';
 import Position from './components/Position';
 import axios from 'axios';
-import {
-  Router,
-  Switch,
-  Route
-} from "react-router-dom";
+import { Router, Switch, Route } from "react-router-dom";
 import history from './history';
 import MetaTags from 'react-meta-tags';
 import Register from './components/Register';
@@ -25,7 +21,6 @@ import New from './components/New';
 import { LoginContext } from './components/LoginContext';
 import { SocketContext } from './components/SocketContext';
 import socketIOClient from "socket.io-client";
-import GenerateRandomKey from './services/GenerateRandomKey';
 import NavbarVerticalSpacer from './components/NavbarVerticalSpacer';
 import TestComp from './components/test-only-components/TestComp';
 import TestComp2 from './components/test-only-components/TestComp2';
@@ -40,7 +35,7 @@ function App() {
   const [socket, setSocket] = useState(null);
 
   const fetchUserName = async () => {
-    setSocket(socketIOClient(endPoint))
+    setSocket(socketIOClient(endPoint));
     const result = await axios('/api/loggedUserUsername');
     setUserName(result.data.username);
     setUserID(result.data.userID);
@@ -69,42 +64,24 @@ function App() {
               <Route name="home" exact path="/">
                 <News url="/api/dbquery/news" />
               </Route>
-              <Route key="filmy" name="filmy" path="/filmy/:query?/page=:page?" render={(props) => (
-                <Pagination {...props} dbName="filmy" filters_Id="616e75558fdb4466b5b12710" path="film" />
-              )}>
-              </Route>
-              <Route key="seriale" name="seriale" path="/seriale/:query?/page=:page?" render={(props) => (
-                <Pagination {...props} dbName="seriale" filters_Id="616e75558fdb4466b5b12710" path="serial" />
-              )}>
-              </Route>
-              <Route key="premiery" name="premiery" path="/premiery/:query?/page=:page?" render={(props) => (
-                <Pagination {...props} dbName="premiery" filters_Id="616ea4271e98ed37c074c28a" path="premiera" />
-              )}>
-              </Route>
-              <Route key="aktorzy" name="aktorzy" path="/aktorzy/:query?/page=:page?" render={(props) => (
-                <Pagination {...props} dbName="aktorzy" filters_Id="616ea1ed1e98ed37c074c289" path="aktor" />
-              )}>
-              </Route>
-              <Route name="new" path="/new/:id" render={(props) => (<New key={GenerateRandomKey(10)} path="new" {...props}></New>)}></Route>
-              <Route name="film" path="/film/:id" render={(props) => (<Position key={GenerateRandomKey(10)} dbName="filmy" path="film" {...props}></Position>)}></Route>
-              <Route name="serial" path="/serial/:id" render={(props) => (<Position key={GenerateRandomKey(10)} dbName="seriale" path="serial" {...props}></Position>)}></Route>
-              <Route name="premiera" path="/premiera/:id" render={(props) => (<Position key={GenerateRandomKey(10)} dbName="premiery" path="premiera" {...props}></Position>)}></Route>
-              <Route name="aktor" path="/aktor/:id" render={(props) => (<Position key={GenerateRandomKey(10)} dbName="aktorzy" path="aktor" {...props}></Position>)}></Route>
+              <Route key="filmy" name="filmy" path="/filmy/:query?/page=:page?" render={(props) => (<Pagination {...props} dbName="filmy" filters_Id="616e75558fdb4466b5b12710" path="film" />)}></Route>
+              <Route key="seriale" name="seriale" path="/seriale/:query?/page=:page?" render={(props) => (<Pagination {...props} dbName="seriale" filters_Id="616e75558fdb4466b5b12710" path="serial" />)}></Route>
+              <Route key="premiery" name="premiery" path="/premiery/:query?/page=:page?" render={(props) => (<Pagination {...props} dbName="premiery" filters_Id="616ea4271e98ed37c074c28a" path="premiera" />)}></Route>
+              <Route key="aktorzy" name="aktorzy" path="/aktorzy/:query?/page=:page?" render={(props) => (<Pagination {...props} dbName="aktorzy" filters_Id="616ea1ed1e98ed37c074c289" path="aktor" />)}></Route>
+              <Route name="new" path="/new/:id" render={(props) => (<New key="new" path="new" {...props}></New>)}></Route>
+              <Route name="film" path="/film/:id" render={(props) => (<Position key="film" dbName="filmy" path="film" {...props}></Position>)}></Route>
+              <Route name="serial" path="/serial/:id" render={(props) => (<Position key="serial" dbName="seriale" path="serial" {...props}></Position>)}></Route>
+              <Route name="premiera" path="/premiera/:id" render={(props) => (<Position key="premiera" dbName="premiery" path="premiera" {...props}></Position>)}></Route>
+              <Route name="aktor" path="/aktor/:id" render={(props) => (<Position key="aktor" dbName="aktorzy" path="aktor" {...props}></Position>)}></Route>
               <Route name="contact" path="/contact"><Contact /></Route>
               <Route key="register" name="register" path="/register"><Register /></Route>
               <Route key="user-profile" name="user-profile" path="/users/:username/:view?" render={(props) => (<UserProfile {...props} />)} />
               <Route key="user-confirmation" name="user-confirmation" path="/user-confirmation/:username/:token" render={(props) => (<UserConfirmation {...props} />)} />
               <Route key="messagespreviewbig" name="messagespreviewbig" path="/messagespreviewbig" render={(props) => (<MessagesPreviewBig {...props} />)} />
               <Route name="messenger" path="/messenger/:user1/:user2" render={(props) => <Messenger {...props} />} />
-              <Route name="test" path="/test">
-                  <TestComp/>
-              </Route>
-              <Route name="test2" path="/test2">
-                  <TestComp2/>
-              </Route>
-              <Route name="test3" path="/test3">
-                  <TestComp3/>
-              </Route>
+              <Route name="test" path="/test"><TestComp/></Route>
+              <Route name="test2" path="/test2"><TestComp2/></Route>
+              <Route name="test3" path="/test3"><TestComp3/></Route>
             </Switch>
           </Router>
         </SocketContext.Provider>

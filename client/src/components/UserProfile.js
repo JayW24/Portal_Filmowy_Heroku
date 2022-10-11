@@ -10,10 +10,34 @@ import checkAbout from '../services/checkAbout';
 import UserProp from './UserProp';
 import VerticalSpacer from './VerticalSpacer';
 import UserEditableField from './UserEditableField';
+import Spinner from './Spinner';
+
+// Handle submit
+async function handleSubmit(event, userData) {
+    event.preventDefault();
+    const response = await fetch(`/api/editUser`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        // We convert the React state to JSON and send it as the POST body
+        body: JSON.stringify(userData)
+    })
+    if (response.status === 200) {
+        alert(response.statusText)
+        return response.json()
+    }
+    else {
+        alert('Update user data error.')
+    }
+}
+
+// Handle change
+function handleChange(event, setUserData) {
+    setUserData(event.target.value)
+}
 
 function UserProfile(props) {
     const loginIndicator = useContext(LoginContext);
-    const [userData, setUserData] = useState('');
+    const [userData, setUserData] = useState(null);
     const [about, setAbout] = useState('');
     const [CurrentAbout, setCurrentAbout] = useState('');
     const [aboutCheck, setAboutCheck] = useState('');
@@ -65,44 +89,47 @@ function UserProfile(props) {
     // User logged in - edit profile
     if (loginIndicator === params.username && view === undefined) {
         return (
+            userData ?
             <div class="container section-block p-2 user-profile">
-                <div className="d-flex flex-column justify-content-center align-items-center">
-                    <h1>Twój profil</h1>
-                    <Link to={`/users/${params.username}/view-as-stranger`}>Wyświetl jako gość</Link>
-                    <strong>{userData.username}</strong><br />
-                    <img style={{ borderRadius: "50%", maxHeight: "200px", maxWidth: "200px" }} className="col-lg-2" src={userData.avatar} alt={userData.avatar} /><br />
-                    <UploadAvatar login={loginIndicator} />
-                    <VerticalSpacer/>
-                </div>
-                {/* ------------------------------------- Basic data------------------------------------- */}
-                <div>
-                    <h1 className="font-italic">Dane użytkownika:</h1> <br />
-                    <UserProp name={'Data urodzenia'} value={ConvertDate(userData.dateofbirth)} />
-                    <UserProp name={'Ilość komentarzy'} value={userData.commentsamount} />
-                    <UserProp name={'Ilość ocen'} value={userData.ratingsamount} />
-                </div>
-                {/* ----------------------------------- End of basic data--------------------------------- */}
-                <hr/>
-                <form onSubmit={event => handleSubmit(event, { about, from })}>
-                    <h1 className="font-italic">Edytuj profil:</h1>
-                    <br />
-                    {/* --------------------------------- Editable data----------------------------------- */}
-                    {/*Edit Password*/}
-                    <ChangePassword />
-                    {/*Edit 'From'*/}
-                    <UserEditableField name="Pochodzenie" defaultValue={from} handleChange={handleChange} setVal={setFrom} checkVal={checkFrom} setValCheck={setFromCheck} setValValidation={setFromValidation} valCheck={fromCheck}/>
-                    {/*Edit 'About'*/}
-                    <UserEditableField name="O mnie" defaultValue={about} handleChange={handleChange} setVal={setAbout} checkVal={checkAbout} setValCheck={setAboutCheck} setValValidation={setAboutValidation} valCheck={aboutCheck}/>
-                    <button className="btn btn-primary w-100 border-0" type="submit" disabled={!sendAccess}>Zmień dane</button>
-                    {/* --------------------------------- End of editable data---------------------------- */}
-                </form>
+            <div className="d-flex flex-column justify-content-center align-items-center">
+                <h1>Twój profil</h1>
+                <Link to={`/users/${params.username}/view-as-stranger`}>Wyświetl jako gość</Link>
+                <strong>{userData.username}</strong><br />
+                <img style={{ borderRadius: "50%", maxHeight: "200px", maxWidth: "200px" }} className="col-lg-2" src={userData.avatar} alt={userData.avatar} /><br />
+                <UploadAvatar login={loginIndicator} />
                 <VerticalSpacer/>
             </div>
+            {/* ------------------------------------- Basic data------------------------------------- */}
+            <div>
+                <h1 className="font-italic">Dane użytkownika:</h1> <br />
+                <UserProp name={'Data urodzenia'} value={ConvertDate(userData.dateofbirth)} />
+                <UserProp name={'Ilość komentarzy'} value={userData.commentsamount} />
+                <UserProp name={'Ilość ocen'} value={userData.ratingsamount} />
+            </div>
+            {/* ----------------------------------- End of basic data--------------------------------- */}
+            <hr/>
+            <form onSubmit={event => handleSubmit(event, { about, from })}>
+                <h1 className="font-italic">Edytuj profil:</h1>
+                <br />
+                {/* --------------------------------- Editable data----------------------------------- */}
+                {/*Edit Password*/}
+                <ChangePassword />
+                {/*Edit 'From'*/}
+                <UserEditableField name="Pochodzenie" defaultValue={from} handleChange={handleChange} setVal={setFrom} checkVal={checkFrom} setValCheck={setFromCheck} setValValidation={setFromValidation} valCheck={fromCheck}/>
+                {/*Edit 'About'*/}
+                <UserEditableField name="O mnie" defaultValue={about} handleChange={handleChange} setVal={setAbout} checkVal={checkAbout} setValCheck={setAboutCheck} setValValidation={setAboutValidation} valCheck={aboutCheck}/>
+                <button className="btn btn-primary w-100 border-0" type="submit" disabled={!sendAccess}>Zmień dane</button>
+                {/* --------------------------------- End of editable data---------------------------- */}
+            </form>
+            <VerticalSpacer/>
+        </div>
+        : <Spinner/>
         )
     }
     // User not logged in - view as stranger
     else {
         return (
+            userData ?
             <div class="container section-block">
                 <div className="d-flex flex-column justify-content-center align-items-center">
                     {loginIndicator !== params.username ? <Link to={`/messenger/${loginIndicator}/${params.username}`}>Napisz wiadomość</Link> : null}
@@ -119,30 +146,9 @@ function UserProfile(props) {
                     <UserProp name={'O użytowniku'} value={userData.about} />
                 </div>
             </div>
+            : <Spinner/>
         )
     }
-}
-// Handle submit
-async function handleSubmit(event, userData) {
-    event.preventDefault();
-    const response = await fetch(`/api/editUser`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        // We convert the React state to JSON and send it as the POST body
-        body: JSON.stringify(userData)
-    })
-    if (response.status === 200) {
-        alert(response.statusText)
-        return response.json()
-    }
-    else {
-        alert('Update user data error.')
-    }
-}
-
-// Handle change
-function handleChange(event, setUserData) {
-    setUserData(event.target.value)
 }
 
 export default UserProfile;

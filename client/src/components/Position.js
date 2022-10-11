@@ -11,6 +11,7 @@ import ResponsiveGallery from './ResponsiveGallery';
 import VerticalSpacer from './VerticalSpacer';
 import Tags from './Tags';
 import Spinner from './Spinner';
+import HtmlReturner from './HtmlReturner';
 import '../styles/Film.css';
 //import HtmlReturner from './HtmlReturner';
 
@@ -85,11 +86,11 @@ function Film(props) {
                             </div>
                         </div>
                         {/*HTML FROM CSS - NOT NECESSARY HERE BUT IT WORKS*/}
-                        {/*
+                        {
                             <div className="cms-content p-2 text-center">
                                 <HtmlReturner html={positionData.longDescriptionHTML} />
                             </div>
-                        */}
+                        }
                         <ResponsiveGallery folderName='/img/films_galleries' urls={positionData.photos}></ResponsiveGallery>
                         <Similar text="Podobne filmy" path="film" data={positionData.similar} />
                     </div>

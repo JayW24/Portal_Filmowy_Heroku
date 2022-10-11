@@ -202,7 +202,7 @@ export default class Pagination extends React.Component {
 
   generateSkipChangeButtons() {
     let limits = [5, 10, 25, 50]
-    limits = limits.map((x, index) => { return <button key={`limit${x}`} className="paginationLimit btn btn-light" id={`paginationLimit${index}`} onClick={() => this.changeLimit(x)}>{x}</button> })
+    limits = limits.map((limit, index) => { return <button key={`limit${limit}`} className="paginationLimit btn btn-light" id={`paginationLimit${index}`} onClick={() => this.changeLimit(limit)}>{limit}</button> })
     return limits
   }
 

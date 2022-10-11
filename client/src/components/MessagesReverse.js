@@ -70,7 +70,7 @@ function MessagesReverse(props) {
         catch(error) {
             alert('Something went wrong...');
         }
-    }, [props.status])
+    }, [])
 
     let onStart = async () => {
         try {

@@ -11,19 +11,19 @@ function CommentLikes(props) {
     const loginIndicator = useContext(LoginContext);
     const [usersLiked, setUsersLiked] = useState('secondary');
 
-    useEffect(() => {
-        const fetchLike = async () => {
-            if (loginIndicator) {
-                let resp = await axios.get(`/api/checkifuserlikedcomment/${props.comment_id}`);
-                if (resp.status === 200) {
-                    setCommentLiked(resp.data);
-                }
-                else {
-                    alert('User likes error.');
-                }
+    const fetchLike = async () => {
+        if (loginIndicator) {
+            let resp = await axios.get(`/api/checkifuserlikedcomment/${props.comment_id}`);
+            if (resp.status == 200) {
+                setCommentLiked(resp.data);
+            }
+            else {
+                alert('User likes error.');
             }
         }
+    }
 
+    useEffect(() => {
         try {
             // Check if comment is liked by user
             fetchLike();
@@ -31,7 +31,7 @@ function CommentLikes(props) {
         catch (error) {
             alert('Something went wrong!');
         }
-    }, [loginIndicator, props.comment_id])
+    }, [])
 
 
     useEffect(() => {
@@ -81,7 +81,7 @@ async function likeComment(event, comment_id, setLikesAmount, commentLiked, setC
     try {
         event.preventDefault();
         let data = await axios.post(`/api/comment_likes/post/${comment_id}`);
-        if (data.data === "Nie jesteś zalogowany.") {
+        if (data.data == "Nie jesteś zalogowany.") {
             alert(data.data);
         }
         else {

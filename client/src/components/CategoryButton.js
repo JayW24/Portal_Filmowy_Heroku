@@ -1,6 +1,6 @@
 import React from 'react';
-const unchosenCategoryClasses = 'btn btn-primary';
-const chosenCategoryClasses = 'bg-secondary';
+const unchosenCategoryClasses = 'btn-secondary border-secondary';
+const chosenCategoryClasses = 'btn-primary border-primary';
 
 export default function CategoryButton(props) {
     const handleCategoryChangeAndStyleChange = function() {
@@ -10,7 +10,7 @@ export default function CategoryButton(props) {
     const categoryButtonClassName = props.chosenCategoryName===props.category[props.propertyName]? chosenCategoryClasses : unchosenCategoryClasses;
 
     return (
-        <button id={props.category._id} className={categoryButtonClassName} key={props.category._id + props.category.name}
+        <button id={props.category._id} className={`btn text-white ${categoryButtonClassName}`} key={props.category._id + props.category.name}
             onClick={() => {
                 handleCategoryChangeAndStyleChange();
             }}>

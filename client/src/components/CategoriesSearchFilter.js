@@ -31,7 +31,7 @@ function CategoriesSearchFilter(props) {
     }, [props.resetFilters])
 
     return (
-        <div className="col-md-4 p-1 m-0 d-flex align-items-center">
+        <div className="col-md-4 p-1 m-0 d-flex align-items-center justify-content-between">
             <h5 className="mr-1 mt-1">Szukaj: </h5>
             <input value={inputVal} id="searchFilter" type="text" placeholder="Nazwa" onChange={onInputChange} autoComplete="off" />
         </div>

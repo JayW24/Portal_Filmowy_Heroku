@@ -38,7 +38,7 @@ export default function CategoriesSort(props) {
 
     return (
         <div key={GenerateRandomKey(10)} className="col-md-4 p-1 m-0">
-            <div className="d-flex align-items-center">
+            <div className="d-flex align-items-center justify-content-between">
                 <h5 className="mr-1 mt-1">Sortowanie:</h5>
                 <select name="sortBy" id="sortBy" value={sortBy} onChange={event => {
                     setSortBy(event.target.value);
@@ -49,7 +49,7 @@ export default function CategoriesSort(props) {
                     }
                 </select>
             </div>
-            <div className="d-flex align-items-center">
+            <div className="d-flex align-items-center justify-content-between">
                 <h5 className="mr-1 mt-1">Typ sortowania:</h5>
                 <select name="sortType" id="sortType" value={sortType} onChange={event => {
                     setSortType(event.target.value);

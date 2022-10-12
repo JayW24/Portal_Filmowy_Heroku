@@ -32,7 +32,7 @@ export default function CategoriesButtons(props) {
     }, [props.resetFilters])
 
     return (
-        <div className="col-sm-12 p-1 m-0 d-flex align-items-center" key={GenerateRandomKey(10)}>
+        <div className="col-sm-12 p-1 m-0 d-flex flex-wrap align-items-center justify-content-between" key="categories-filter">
             <h5 className="mr-1 mt-1">Kategoria: </h5>
                 {categories.map((category, index) => (
                     <CategoryButton key={`${category}-${index}`} category={category} searchedProperty={searchedProperty} chosenCategoryName={chosenCategoryName}

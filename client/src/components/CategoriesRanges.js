@@ -30,7 +30,7 @@ function CategoriesRanges(props) {
     }, [props.resetFilters, categories])
 
     return (
-        <div className="col-md-4 p-1 m-0 d-flex align-items-center">
+        <div className="col-md-4 p-1 m-0 d-flex align-items-center justify-content-between">
             <h5 className="mt-1 mr-1">Czas trwania filmu:</h5>
             <div style={{ color: 'dodgerblue', listStyleType: 'none', display: 'flex' }}>
                 <select name="sortBy" id="sortBy" value={currentCategory} onChange={event => {

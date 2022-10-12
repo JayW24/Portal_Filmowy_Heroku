@@ -12,11 +12,14 @@ function Messenger(props) {
     const forwardMessageToArr = (item) => {
             setMessage(item)
         };
-    let trigger = 0;                                     // iterate to make obj different, so it triggers Messages Reverse on props change
+  
     const forwardMessageStatus = (item) => {             // lift up status
-        trigger += 1
-        setStatus({ item: item, trigger: trigger })
+        setStatus({ item: item });
     };
+
+    const resetStatus = () => {
+        setStatus(undefined);
+    }
 
     if (loginIndicator) {
         return (
@@ -30,7 +33,7 @@ function Messenger(props) {
                 </MetaTags>
                 <div className="d-flex justify-content-center">
                     <div className="d-flex col-sm-12 col-md-6 col-lg-4 flex-column">
-                        <MessagesReverse url_Params={props.match.params} sender={props.match.params.user1} receiver={props.match.params.user2} message={message} status={status} />
+                        <MessagesReverse url_Params={props.match.params} sender={props.match.params.user1} receiver={props.match.params.user2} message={message} status={status} resetStatus={resetStatus} />
                         <MessengerSocket sender={props.match.params.user1} receiver={props.match.params.user2} forwardMessageToArr={forwardMessageToArr} forwardMessageStatus={forwardMessageStatus} />
                     </div>
                 </div>

@@ -3,12 +3,11 @@ import { SocketContext } from './SocketContext';
 import { LoginContext } from './LoginContext';
 import axios from 'axios';
 import MessageInput from './MessageInput';
-import generateRandomKey from '../services/GenerateRandomKey';
 
 function MessengerSocket(props) {
   const [messageText, setMessageText] = useState('');
   const [response, setResponse] = useState('');
-  const [clearTextInput, setClearTextInput] = useState(generateRandomKey(10));
+  const [clearTextInput, setClearTextInput] = useState(null);
   const [receiverID, setReceiverID] = useState('');
   const socket = useContext(SocketContext);
   const loginIndicator = useContext(LoginContext);
@@ -27,7 +26,7 @@ function MessengerSocket(props) {
       setReceiverID(receiverID);
     }
     getReceiverId();
-  }, []);
+  }, [props.receiver, socket]);
 
 
   // incoming message
@@ -46,7 +45,7 @@ function MessengerSocket(props) {
       }
 
       if (loginIndicator === msg.userName) {
-        setClearTextInput(generateRandomKey(10));
+        setClearTextInput("clear");
       }
     })
 
@@ -58,7 +57,7 @@ function MessengerSocket(props) {
 
   return (
     <MessageInput messageText={messageText} setMessageText={setMessageText}
-      response={response} setResponse={setResponse} clearTextInput={clearTextInput} liftMessageToSend={liftMessageToSend}
+      response={response} setResponse={setResponse} clearTextInput={clearTextInput} setClearTextInput={setClearTextInput} liftMessageToSend={liftMessageToSend}
     />
   )
 }

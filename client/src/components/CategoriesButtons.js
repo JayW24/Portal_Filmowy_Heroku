@@ -27,6 +27,10 @@ export default function CategoriesButtons(props) {
         }
     }, [props.dbName])
 
+    useEffect(() => {
+        setChosenCategoryName(null);
+    }, [props.resetFilters])
+
     return (
         <div className="col-sm-12 p-1 m-0 d-flex align-items-center" key={GenerateRandomKey(10)}>
             <h5 className="mr-1 mt-1">Kategoria: </h5>

@@ -36,10 +36,8 @@ function MessagesReverse(props) {
         const newMessage = async () => {
             if (props.message) {
                 const newItem = props.message
-                if (!items.includes(newItem)) {                     // prevents from running multiple times error
-                    let newItems = [newItem].concat(items);
-                    setItems(newItems);
-                }
+                let newItems = [newItem].concat(items);
+                setItems(newItems);
             }
         }
         newMessage()
@@ -65,12 +63,13 @@ function MessagesReverse(props) {
                     }
                 }
                 messagesStatus()
+                props.resetStatus();
             }
         }
-        catch(error) {
+        catch (error) {
             alert('Something went wrong...');
         }
-    }, [])
+    }, [props.status])
 
     let onStart = async () => {
         try {

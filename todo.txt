@@ -6,4 +6,10 @@
 6. Po zalogowaniu się na nieistniejącego użytkownika dać komunikat że nie istnieje. Obecnie jest przekierowanie na główną i tyle.
 7. server.js 39 -> 49 zmienić na restrukturyzacje
 8. Usunąć wszystkie generateRandomKey
+9. Poprawić fetche.
+10. Naprawić pobieranie avatara.
+
+
+server: nodemon server
+frontend: npm start
 strapi: npm run develop

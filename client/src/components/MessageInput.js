@@ -10,6 +10,7 @@ function MessageInput(props) {
 
     useEffect(() => {
         setMessageText("");
+        props.setClearTextInput(null);
     }, [props.clearTextInput])
 
     return (

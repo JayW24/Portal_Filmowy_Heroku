@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const uploadFile = async (event, file, fileName, loginIndicator) => {
+const uploadAvatar = async (event, file, fileName, loginIndicator, setNewPath) => {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("fileName", fileName);
@@ -9,10 +9,10 @@ const uploadFile = async (event, file, fileName, loginIndicator) => {
             `/api/uploadavatar/${loginIndicator}`,
             formData
         );
-        alert(res.statusText)
+        setNewPath(res.data.newAvatarPath);
     } catch (err) {
         alert(err)
     }
 }
 
-export default uploadFile
+export default uploadAvatar;

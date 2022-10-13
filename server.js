@@ -887,9 +887,14 @@ app.get('/api/user/:username', async (req, res, next) => {
 app.get('/api/userDetails/:username', async (req, res, next) => {
 	try {
 		const userData = await User.find({ username: req.params.username }).select('username dateofbirth from commentsamount ratingsamount avatar about');
-
-		res.send(userData);
 		dbLog('GET user details.', 'find() + select()', 'users', userData);
+		
+		if(userData.length > 0) {
+			res.send(userData);
+		}
+		else {
+			res.sendStatus(404);
+		}
 	}
 	catch (err) {
 		next(err);
@@ -958,10 +963,12 @@ app.post(`/api/uploadavatar/:login`, isLoggedIn, async (req, res, next) => {
 			});
 			// FIND OLD FILE NAME
 			const user = await User.findOne({ username: req.user.username }, "avatar");
+			if(user.avatar) {
 			// REMOVE OLD AVATAR FILE
 			dbLog('Find old avatar file name', 'findOne', 'users', JSON.stringify({ username: req.user.username }), user);
 			let oldFilePath = (__dirname.replace(/\\/g, "/") + "/public" + user.avatar);
 			fs.unlink(oldFilePath);
+			}
 
 			//UPLOAD NEW AVATAR FILE
 			var uploadAvatar = multer({ storage: storage }).single('file')
@@ -977,7 +984,7 @@ app.post(`/api/uploadavatar/:login`, isLoggedIn, async (req, res, next) => {
 				const avatarPath = { avatar: `/img/avatars/${req.file.filename}` };
 				const updateAvatar = await User.updateOne(selector, avatarPath);
 				dbLog('Updating avatar in DB.', 'updateOne()', 'users', JSON.stringify(selector, JSON.stringify(updateAvatar)), updateAvatar);
-				return res.send('File uploaded correctly!');
+				return res.send({ newAvatarPath: `/img/avatars/${req.file.filename}`});
 			})
 		}
 		catch (err) {

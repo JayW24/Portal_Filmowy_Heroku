@@ -47,9 +47,20 @@ function UserProfile(props) {
     const [CurrentFrom, setCurrentFrom] = useState('');
     const [fromCheck, setFromCheck] = useState('');
     const [fromValidation, setFromValidation] = useState(true);
-    const [dataLoaded, setDataLoaded] = useState(false);
+    const [dataFetched, setDataFetched] = useState(null);
+    const [userNotFound, setUserNotFound] = useState(false);
     const params = props.match.params;
     const view = props.match.params.view;
+    const defaultPath = '/img/avatars/defaultAvatar.jpg';
+
+    const setNewPath = (newPath) => {
+        if (newPath) {
+            setUserData({ ...userData, avatar: newPath });
+        }
+        else {
+            alert('Error during avatar change...')
+        }
+    }
 
     useEffect(() => {
         // Front end validation
@@ -58,9 +69,16 @@ function UserProfile(props) {
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await axios.get(
-                `/api/userDetails/${params.username}`,
-            )
+            try{
+                var result = await axios.get(`/api/userDetails/${params.username}`);
+            }
+            catch(err) {
+                if(err.response.status === 404) {
+                    setUserNotFound(true);
+                    return;
+                }
+            }
+
             if (result.status === 200) {
                 const userData = result.data[0];
                 setUserData(userData);
@@ -68,7 +86,11 @@ function UserProfile(props) {
                 setFrom(userData.from);
                 setCurrentAbout(userData.about);
                 setCurrentFrom(userData.from);
-                setDataLoaded(true);
+                setDataFetched(true);
+                alert('res status == 200')
+            }
+            else if(result.status === 200 && result.data === 'not found') {
+
             }
             else {
                 alert('Get user details error!');
@@ -76,77 +98,77 @@ function UserProfile(props) {
         }
 
         try {
-            // Fetch user data
-            if (!dataLoaded) {
-                fetchData();
-            }
+            fetchData();
         }
         catch (error) {
             alert('User profile error!');
         }
-    }, [dataLoaded, params.username])
+    }, [params.username])
 
     // User logged in - edit profile
+    if(userNotFound) {
+        return(<div className=" container section-block"><h1 className="display-6">User not found!</h1></div>)
+    }
     if (loginIndicator === params.username && view === undefined) {
         return (
-            userData ?
-            <div class="container section-block p-2 user-profile">
-            <div className="d-flex flex-column justify-content-center align-items-center">
-                <h1>Twój profil</h1>
-                <Link to={`/users/${params.username}/view-as-stranger`}>Wyświetl jako gość</Link>
-                <strong>{userData.username}</strong><br />
-                <img style={{ borderRadius: "50%", maxHeight: "200px", maxWidth: "200px" }} className="col-lg-2" src={userData.avatar} alt={userData.avatar} /><br />
-                <UploadAvatar login={loginIndicator} />
-                <VerticalSpacer/>
-            </div>
-            {/* ------------------------------------- Basic data------------------------------------- */}
-            <div>
-                <h1 className="font-italic">Dane użytkownika:</h1> <br />
-                <UserProp name={'Data urodzenia'} value={ConvertDate(userData.dateofbirth)} />
-                <UserProp name={'Ilość komentarzy'} value={userData.commentsamount} />
-                <UserProp name={'Ilość ocen'} value={userData.ratingsamount} />
-            </div>
-            {/* ----------------------------------- End of basic data--------------------------------- */}
-            <hr/>
-            <form onSubmit={event => handleSubmit(event, { about, from })}>
-                <h1 className="font-italic">Edytuj profil:</h1>
-                <br />
-                {/* --------------------------------- Editable data----------------------------------- */}
-                {/*Edit Password*/}
-                <ChangePassword />
-                {/*Edit 'From'*/}
-                <UserEditableField name="Pochodzenie" defaultValue={from} handleChange={handleChange} setVal={setFrom} checkVal={checkFrom} setValCheck={setFromCheck} setValValidation={setFromValidation} valCheck={fromCheck}/>
-                {/*Edit 'About'*/}
-                <UserEditableField name="O mnie" defaultValue={about} handleChange={handleChange} setVal={setAbout} checkVal={checkAbout} setValCheck={setAboutCheck} setValValidation={setAboutValidation} valCheck={aboutCheck}/>
-                <button className="btn btn-primary w-100 border-0" type="submit" disabled={!sendAccess}>Zmień dane</button>
-                {/* --------------------------------- End of editable data---------------------------- */}
-            </form>
-            <VerticalSpacer/>
-        </div>
-        : <Spinner/>
+            dataFetched ?
+                <div class="container section-block p-2 user-profile">
+                    <div className="d-flex flex-column justify-content-center align-items-center">
+                        <h1>Twój profil</h1>
+                        <Link to={`/users/${params.username}/view-as-stranger`}>Wyświetl jako gość</Link>
+                        <strong>{userData.username}</strong><br />
+                        <img style={{ borderRadius: "50%", maxHeight: "200px", maxWidth: "200px" }} className="col-lg-2" src={userData.avatar ? userData.avatar : defaultPath} alt={userData.avatar ? userData.avatar : "userAvatar"} /><br />
+                        <UploadAvatar login={loginIndicator} setNewPath={setNewPath} />
+                        <VerticalSpacer />
+                    </div>
+                    {/* ------------------------------------- Basic data------------------------------------- */}
+                    <div>
+                        <h1 className="font-italic">Dane użytkownika:</h1> <br />
+                        <UserProp name={'Data urodzenia'} value={ConvertDate(userData.dateofbirth)} />
+                        <UserProp name={'Ilość komentarzy'} value={userData.commentsamount} />
+                        <UserProp name={'Ilość ocen'} value={userData.ratingsamount} />
+                    </div>
+                    {/* ----------------------------------- End of basic data--------------------------------- */}
+                    <hr />
+                    <form onSubmit={event => handleSubmit(event, { about, from })}>
+                        <h1 className="font-italic">Edytuj profil:</h1>
+                        <br />
+                        {/* --------------------------------- Editable data----------------------------------- */}
+                        {/*Edit Password*/}
+                        <ChangePassword />
+                        {/*Edit 'From'*/}
+                        <UserEditableField name="Pochodzenie" defaultValue={from} handleChange={handleChange} setVal={setFrom} checkVal={checkFrom} setValCheck={setFromCheck} setValValidation={setFromValidation} valCheck={fromCheck} />
+                        {/*Edit 'About'*/}
+                        <UserEditableField name="O mnie" defaultValue={about} handleChange={handleChange} setVal={setAbout} checkVal={checkAbout} setValCheck={setAboutCheck} setValValidation={setAboutValidation} valCheck={aboutCheck} />
+                        <button className="btn btn-primary w-100 border-0" type="submit" disabled={!sendAccess}>Zmień dane</button>
+                        {/* --------------------------------- End of editable data---------------------------- */}
+                    </form>
+                    <VerticalSpacer />
+                </div>
+                : <Spinner />
         )
     }
     // User not logged in - view as stranger
     else {
         return (
-            userData ?
-            <div class="container section-block">
-                <div className="d-flex flex-column justify-content-center align-items-center">
-                    {loginIndicator !== params.username ? <Link to={`/messenger/${loginIndicator}/${params.username}`}>Napisz wiadomość</Link> : null}
-                    {loginIndicator === params.username ? <Link to={`/users/${params.username}`}>Edytuj profil</Link> : null}
-                    <strong>{userData.username}</strong><br />
-                    <img style={{ borderRadius: "50%", maxHeight: "200px", maxWidth: "200px", border: "1px solid #fff" }} className="col-lg-2" src={userData.avatar} alt={userData.avatar} />
-                    <br />
+            dataFetched ?
+                <div class="container section-block">
+                    <div className="d-flex flex-column justify-content-center align-items-center">
+                        {loginIndicator !== params.username ? <Link to={`/messenger/${loginIndicator}/${params.username}`}>Napisz wiadomość</Link> : null}
+                        {loginIndicator === params.username ? <Link to={`/users/${params.username}`}>Edytuj profil</Link> : null}
+                        <strong>{userData.username}</strong><br />
+                        <img style={{ borderRadius: "50%", maxHeight: "200px", maxWidth: "200px", border: "1px solid #fff" }} className="col-lg-2" src={userData.avatar ? userData.avatar : defaultPath} alt={userData.avatar ? userData.avatar : "userAvatar"} />
+                        <br />
+                    </div>
+                    <div className="d-flex flex-wrap w-100 justify-content-center flex-column bg-light">
+                        <UserProp name={'Data urodzenia'} value={ConvertDate(userData.dateofbirth)} />
+                        <UserProp name={'Ilość komentarzy'} value={userData.commentsamount} />
+                        <UserProp name={'Ilość ocen'} value={userData.ratingsamount} />
+                        <UserProp name={'Z'} value={userData.from} />
+                        <UserProp name={'O użytowniku'} value={userData.about} />
+                    </div>
                 </div>
-                <div className="d-flex w-100 justify-content-center flex-column bg-light">
-                    <UserProp name={'Data urodzenia'} value={ConvertDate(userData.dateofbirth)} />
-                    <UserProp name={'Ilość komentarzy'} value={userData.commentsamount} />
-                    <UserProp name={'Ilość ocen'} value={userData.ratingsamount} />
-                    <UserProp name={'Z'} value={userData.from} />
-                    <UserProp name={'O użytowniku'} value={userData.about} />
-                </div>
-            </div>
-            : <Spinner/>
+                : <Spinner />
         )
     }
 }

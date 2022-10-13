@@ -22,7 +22,6 @@ padding: 0px !important;
     transform: rotate(20deg);
 }
 
-
 @media screen and (max-width: 992px) {
     .form-inline {
       margin-top: 15px !important;

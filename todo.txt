@@ -5,6 +5,7 @@
 9. Poprawić fetche.
 11. Poprawić wygląd na mobilce.
 12. Poprawić wygląd messengera.
+13. Poprawić wygląd navbara.
 
 server: nodemon server
 frontend: npm start

@@ -20,7 +20,7 @@ function Filters(props) {
     useEffect(() => {
         const fetchFiltersData = async () => {
             const result = await axios(`/api/filters/${props.filters_Id}`);
-    
+
             if (result.status === 200) {
                 const json = await result.data;
                 delete json['_id'];
@@ -45,11 +45,13 @@ function Filters(props) {
         filtersKeys.forEach((filterKey, index) => {
             let Type = filtersMap[filterKey];
             filtersComponents.push(
-                <Type key={`filter${index}`} urlParams={props.urlParams}
-                    {...filtersData[filterKey]}
-                    handleCategoryChange={props.handleCategoryChange}
-                    resetFilters={props.resetFilters}
-                />
+                <div className={`${index%2==0? "bg-white" : "bg-light"}`}>
+                    <Type key={`filter${index}`} urlParams={props.urlParams}
+                        {...filtersData[filterKey]}
+                        handleCategoryChange={props.handleCategoryChange}
+                        resetFilters={props.resetFilters}
+                    />
+                </div>
             )
         })
         setFilters(filtersComponents);

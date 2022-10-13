@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import GenerateRandomKey from '../services/GenerateRandomKey';
 import CategoryButton from './CategoryButton';
 
 export default function CategoriesButtons(props) {
@@ -32,7 +31,7 @@ export default function CategoriesButtons(props) {
     }, [props.resetFilters])
 
     return (
-        <div className="col-sm-12 p-1 m-0 d-flex flex-wrap align-items-center justify-content-between" key="categories-filter">
+        <div className="col-sm-12 p-1 m-0 d-flex flex-wrap align-items-center" key="categories-filter">
             <h5 className="mr-1 mt-1">Kategoria: </h5>
                 {categories.map((category, index) => (
                     <CategoryButton key={`${category}-${index}`} category={category} searchedProperty={searchedProperty} chosenCategoryName={chosenCategoryName}

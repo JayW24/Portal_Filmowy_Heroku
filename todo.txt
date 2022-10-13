@@ -8,6 +8,7 @@
 8. Usunąć wszystkie generateRandomKey
 9. Poprawić fetche.
 10. Naprawić pobieranie avatara.
+11. Poprawić wygląd na mobilce.
 
 
 server: nodemon server

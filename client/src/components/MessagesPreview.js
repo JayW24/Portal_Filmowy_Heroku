@@ -44,6 +44,7 @@ function MessagesPreview() {
         return (
             <div>
                 {messagesData.map(messageData => <MessagesPreviewMessage key={`message_${messageData._id}`} login={loginIndicator} data={messageData} />)}
+                {messagesData.length === 0 ? <p className="font-italic text-secondary mt-2">You have no messages.</p> : null}
                 <hr style={{marginBottom: "10px"}}/>
                 <Link to={'/messagespreviewbig'}>ZOBACZ WSZYSTKIE</Link>
             </div>

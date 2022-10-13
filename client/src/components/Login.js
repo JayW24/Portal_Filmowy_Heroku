@@ -43,7 +43,7 @@ function Login(props) {
                     <div>
                         <h1>Zaloguj się</h1>
                     </div>
-                    <div class="form-group">
+                    <div className="form-group">
                         <label>Nazwa użytkownika: </label>
                         <input
                             ref={nameRef}

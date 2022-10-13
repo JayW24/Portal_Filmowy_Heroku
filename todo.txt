@@ -2,14 +2,9 @@
 2. Wrzucić CMS na HEROKU.
 3. Refactoring i poprawa struktury folderów projektu.
 4. Poprawić stylowanie.
-6. Po zalogowaniu się na nieistniejącego użytkownika dać komunikat że nie istnieje. Obecnie jest przekierowanie na główną i tyle.
-7. server.js 39 -> 49 zmienić na restrukturyzacje
 9. Poprawić fetche.
-10. Naprawić pobieranie avatara.
 11. Poprawić wygląd na mobilce.
-12. Naprawić dublujące się komenty.
-13. Usunać jquery i bootstrapa z index.html
-
+12. Poprawić wygląd messengera.
 
 server: nodemon server
 frontend: npm start

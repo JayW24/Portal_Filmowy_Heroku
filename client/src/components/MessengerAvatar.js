@@ -8,9 +8,16 @@ export default function MessengerAvatar(props) {
     useEffect(() => {
         const fetchPath = async () => {
             try {
+                if(localStorage.getItem(props.name)) {
+                    setAvatarPath(localStorage.getItem(props.name));
+                    return;
+                }
+
                 const req = await axios.get(`/api/user-avatar/${props.name}`);
                 const path = req.data;
+
                 setAvatarPath(`${path}`);
+                localStorage.setItem(props.name, `${path}`);
             }
             catch (error) {
                 alert('Something gone wrong!');

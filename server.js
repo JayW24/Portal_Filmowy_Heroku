@@ -11,7 +11,6 @@ const http = require('http');
 const server = http.createServer(app);
 const colors = require('./colorfulLogs').colors;
 const connectionString = require('./env/credentials').connectionString;
-const { fork } = require('child_process')	// for multi thread
 var multer = require('multer');
 var cookieParser = require('cookie-parser');
 var crypt = require('crypto');
@@ -29,24 +28,11 @@ var mongoose = require('mongoose')
 var passport = require('passport')
 var localStrategy = require('passport-local').Strategy
 var bcrypt = require('bcrypt')
-var { resolveNaptr } = require('dns')
-var { query } = require('express')
-var { request } = require('http')
 var MongoStore = require('connect-mongo')(session);
-const { setTimeout } = require('timers/promises')
 
 // Mongoose Models
 const Models = require('./models/models');
-const User = Models.User;
-const Film = Models.Film;
-const Series = Models.Series;
-const Actor = Models.Actor;
-const Premiere = Models.Premiere;
-const Comment = Models.Comment;
-const Rating = Models.Rating;
-const Message = Models.Message;
-const News = Models.News;
-const SearchItem = Models.SearchItem;
+const {User, Film, Series, Actor, Premiere, Comment, Rating, Message, News, SearchItem} = Models;
 
 // Middleware
 app.use(busboy());

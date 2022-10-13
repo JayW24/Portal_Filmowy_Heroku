@@ -1,11 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
-import GenerateRandomKey from '../services/GenerateRandomKey';
 import axios from 'axios';
 import { LoginContext } from './LoginContext';
 
 function CommentLikes(props) {
-    const _id = GenerateRandomKey(10);
-    const collapse_id = GenerateRandomKey(10);
     const [likesAmount, setLikesAmount] = useState(null);
     const [commentLiked, setCommentLiked] = useState(false);
     const loginIndicator = useContext(LoginContext);
@@ -33,14 +30,13 @@ function CommentLikes(props) {
         }
     }, [])
 
-
     useEffect(() => {
         setLikesAmount(props.likes);
         setUsersLiked(usersThatLikedButtonStyle(props.likes));
     }, [props.likes])
 
     return (
-        <div id={_id} className="d-flex justify-items-center align-items-center">
+        <div className="d-flex justify-items-center align-items-center">
             {/*LIKE BUTTON*/}
             {loginIndicator &&
                 <button onClick={event => { likeComment(event, props.comment_id, setLikesAmount, commentLiked, setCommentLiked, setUsersLiked) }}
@@ -54,22 +50,22 @@ function CommentLikes(props) {
 
             {/*USERS THAT LIKED*/}
             <button disabled={usersThatLikedButtonStyleState(likesAmount)}
-                onClick={event => { showUsersThatLiked(event, props.comment_id, collapse_id, props.likersGetter) }}
-                className={`btn btn-${usersLiked}`} data-toggle="collapse" data-target={`#${collapse_id}`} aria-expanded="false"
-                aria-controls={collapse_id}>
+                onClick={event => { showUsersThatLiked(event, props.comment_id, props.likersGetter) }}
+                className={`btn btn-${usersLiked}`} data-toggle="collapse" data-target={`#${props.comment_id}`} aria-expanded="false"
+                aria-controls={props.comment_id}>
                 <i className="fas fa-users text-white"></i>
             </button>
         </div>
     )
 }
 
-async function showUsersThatLiked(event, comment_id, collapse_id, likersGetter) {
+async function showUsersThatLiked(event, comment_id, likersGetter) {
     try {
         event.preventDefault();
         const data = await axios.get(`/api/comment_likes/${comment_id}`);
         let users = data.data;
         users = users.split(', ');
-        likersGetter({ users: users, collapse_id: collapse_id });
+        likersGetter({ users: users, collapse_id: comment_id });
     }
     catch (error) {
         alert('Something went wrong!');
@@ -96,31 +92,16 @@ async function likeComment(event, comment_id, setLikesAmount, commentLiked, setC
 }
 
 function usersThatLikedButtonStyle(amount) {
-    if (amount > 0) {
-        return 'primary';
-    }
-    else {
-        return 'secondary';
-    }
+    return amount > 0 ? 'primary' : 'secondary';
 }
 
 function usersThatLikedButtonStyleState(amount) {
-    if (amount > 0) {
-        return false;
-    }
-    else {
-        return true;
-    }
+    return amount > 0 ? false : true;
 }
 
 
 function commentLikedStyler(data) {
-    if (data) {
-        return 'btn-success';
-    }
-    else {
-        return 'btn-outline-success';
-    }
+    return data? 'btn-success' : 'btn-outline-success';
 }
 
 export default CommentLikes;

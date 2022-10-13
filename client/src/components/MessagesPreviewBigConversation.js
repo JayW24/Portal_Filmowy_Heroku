@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import GenerateRandomKey from '../services/GenerateRandomKey';
 import interlocutor from '../services/interlocutor';
 import '../styles/MessagesPreviewBigConversation.css';
 import { LoginContext } from './LoginContext';
@@ -14,7 +13,7 @@ export default function MessagesPreviewBigConversation(props) {
     return (
         <>
             <Link to={`/messenger/${loginIndicator}/${interlocutor(loginIndicator, props.sender, props.receiver)}`}>
-                <div key={GenerateRandomKey(10)} className="MessagesPreviewBigConversation d-flex col-sm-12 p-0 m-0 mb-2 row hoverer">
+                <div key="messenger-preview-big-conversation" className="MessagesPreviewBigConversation d-flex col-sm-12 p-0 m-0 mb-2 row hoverer">
                     <div className="d-flex col-sm-12 col-md-2 align-items-center justify-content-around">
                         <MessengerAvatar name={interlctr} />
                         {interlocutor(loginIndicator, props.sender, props.receiver)}

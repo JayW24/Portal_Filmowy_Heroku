@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import ParamsToJson from '../services/ParamsToJson';
-import GenerateRandomKey from '../services/GenerateRandomKey';
 
 const sortByData = [['rating', 'ocena'], ['name', 'nazwa']];
 const sortTypeData = [[-1, 'malejąco'], [1, 'rosnąco']];
@@ -37,7 +36,7 @@ export default function CategoriesSort(props) {
     }, [props])
 
     return (
-        <div key={GenerateRandomKey(10)} className="col-md-4 p-1 m-0">
+        <div className="col-md-4 p-1 m-0">
             <div className="d-flex align-items-center justify-content-between">
                 <h5 className="mr-1 mt-1">Sortowanie:</h5>
                 <select name="sortBy" id="sortBy" value={sortBy} onChange={event => {
@@ -45,7 +44,7 @@ export default function CategoriesSort(props) {
                     props.handleCategoryChange({ order: `${event.target.value}:${sortType}` });
                 }}>
                     {sortByValues
-                        .map(sortByOption => <option key={GenerateRandomKey(10)} value={sortByOption[0]}>{sortByOption[1]}</option>)
+                        .map((sortByOption, index) => <option key={`sortByOption${index}`} value={sortByOption[0]}>{sortByOption[1]}</option>)
                     }
                 </select>
             </div>
@@ -55,7 +54,7 @@ export default function CategoriesSort(props) {
                     setSortType(event.target.value);
                     props.handleCategoryChange({ order: `${sortBy}:${event.target.value}` });
                 }}>
-                    {sortTypeValues.map(sortTypeOption => <option key={GenerateRandomKey(10)} value={sortTypeOption[0]}>{sortTypeOption[1]}</option>)}
+                    {sortTypeValues.map((sortTypeOption, index) => <option key={`sortTypeOption${index}`} value={sortTypeOption[0]}>{sortTypeOption[1]}</option>)}
                 </select>
             </div>
         </div>

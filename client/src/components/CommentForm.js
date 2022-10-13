@@ -1,7 +1,6 @@
 import React from 'react';
 import { LoginContext } from './LoginContext';
 import '../styles/CommentForm.css';
-import GenerateRandomKey from '../services/GenerateRandomKey';
 
 class CommentForm extends React.Component {
     static contextType = LoginContext
@@ -56,9 +55,8 @@ class CommentForm extends React.Component {
 
     render() {
         if (this.props.login && this.state.active) {
-            let formID = GenerateRandomKey(10)
             return (
-                <form id={formID} className="w-100" onSubmit={event => { this.handleSubmit(event, this) }}>
+                <form className="w-100" onSubmit={event => { this.handleSubmit(event, this) }}>
                     <div className="d-flex">
                         <label className=" col-sm-12 p-0 m-0 d-flex flex-column">
                             <textarea
@@ -70,7 +68,7 @@ class CommentForm extends React.Component {
                             />
                             <div className="d-flex w-100 p-0 m-0">
                                 <input className={`btn btn-success ${this.props.mainThread ? `col-sm-12` : `col-sm-10`} p-0 m-0`} type="submit" value="Opublikuj" />
-                                {this.props.mainThread ? null : <button onClick={() => { this.removeCommentForm(formID) }} className="btn btn-secondary col-sm-2 p-0 m-0 border-none remove-comment-input" type="button">X</button>}
+                                {this.props.mainThread ? null : <button onClick={() => { this.removeCommentForm() }} className="btn btn-secondary col-sm-2 p-0 m-0 border-none remove-comment-input" type="button">X</button>}
                             </div>
                         </label>
                     </div>

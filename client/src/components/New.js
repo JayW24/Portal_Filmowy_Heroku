@@ -4,7 +4,6 @@ import axios from 'axios';
 import MetaTags from 'react-meta-tags';
 import HtmlReturner from './HtmlReturner';
 import { Link } from 'react-router-dom';
-import GenerateRandomKey from '../services/GenerateRandomKey';
 import InfiniteComments from './InfiniteComments';
 import CommentForm from './CommentForm';
 import VerticalSpacer from './VerticalSpacer';
@@ -88,7 +87,7 @@ export default function New(props) {
                     <h3>Podobne artykuły:</h3>
                     <div className="related-articles d-flex flex-column">
                         {data.related_articles ?
-                            data.related_articles.map(el => <Link key={GenerateRandomKey(10)} to={`/new/${el.url}`}>{el.name}</Link>)
+                            data.related_articles.map((related_article, index) => <Link key={`${related_article.name}-${index}`} to={`/new/${related_article.url}`}>{related_article.name}</Link>)
                             : null}
                     </div>
                     <VerticalSpacer />

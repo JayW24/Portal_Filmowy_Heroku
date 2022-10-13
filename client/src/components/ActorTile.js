@@ -13,6 +13,7 @@ export default function ActorTile(props) {
                 <div className="col-sm-9 col-md-8 col-lg-9 d-flex flex-column justify-content-center">
                     <Link to={`/${props.path}/${props._id}`}><h5>{props.name}</h5></Link>
                     <div>Data urodzenia: {props.dateOfBirth}</div>
+                    <div>Opis: {props.shortDescription.substring(0, 250)}...</div>
                     <div>Ocena: {Math.round(props.rating* 100) / 100}</div>
                 </div>
             </div>

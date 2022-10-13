@@ -122,6 +122,12 @@ a:hover {
   border-right: none !important;
   min-width: 100px;
 }
+
+.btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+
 /*because navbar position=fixed*/
 @media only screen and (max-width: 381px) {
   .navbarDistance {

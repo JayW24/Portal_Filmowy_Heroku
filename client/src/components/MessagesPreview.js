@@ -3,7 +3,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import MessagesPreviewMessage from './MessagesPreviewMessage';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import GenerateRandomKey from '../services/GenerateRandomKey';
 import { SocketContext } from './SocketContext';
 
 async function getPreviewData(setMessagesData) {
@@ -44,7 +43,7 @@ function MessagesPreview() {
     if (messagesData) {
         return (
             <div>
-                {messagesData.map(el => <MessagesPreviewMessage key={GenerateRandomKey(10)} login={loginIndicator} data={el} />)}
+                {messagesData.map(messageData => <MessagesPreviewMessage key={`message_${messageData._id}`} login={loginIndicator} data={messageData} />)}
                 <hr style={{marginBottom: "10px"}}/>
                 <Link to={'/messagespreviewbig'}>ZOBACZ WSZYSTKIE</Link>
             </div>

@@ -1,12 +1,10 @@
 import ReactDOM from 'react-dom';
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import CommentForm from './CommentForm';
 import { Link } from 'react-router-dom';
 import ConvertDate from '../services/ConvertDate';
-import GenerateRandomKey from '../services/GenerateRandomKey';
 import { LoginContext } from './LoginContext';
 import CommentLikes from './CommentLikes';
-import $ from 'jquery';
 import '../styles/Comment.css';
 
 export default function Comment(props) {
@@ -18,6 +16,7 @@ export default function Comment(props) {
         console.log(likers.users);
         setLikers(likers.users);
     };
+    const currentRespRef = useRef(null);
 
     return (
         <>
@@ -31,7 +30,7 @@ export default function Comment(props) {
                     <div className="d-flex w-100 justify-content-between">
                         {/*COMMENT CONTROLS*/}
                         <div>
-                            {createRespondButton(props.data._id, props.data.source_id, props.data.parent_id, loginIndicator, props.liftCommentUp)}
+                            {createRespondButton(props.data._id, props.data.source_id, props.data.parent_id, loginIndicator, props.liftCommentUp, currentRespRef)}
                             {createRemoveButton(props.data.user, loginIndicator, props.data._id, props.removeCommentApod, props.data.parent_id)}
                         </div>
                         {/*COMMENT LIKES*/}
@@ -43,7 +42,7 @@ export default function Comment(props) {
                     {likers && collapseID ?
                         <div className="collapse d-flex w-100 justify-content-end" id={collapseID}>
                             <div>
-                                {likers.map(user => <Link key={GenerateRandomKey(10)} className="mr-1 text-success" to={`/users/${user}`}>{user}</Link>)}
+                                {likers.map(user => <Link key={`userLink_${user}`} className="mr-1 text-success" to={`/users/${user}`}>{user}</Link>)}
                             </div>
                         </div>
                         : null
@@ -61,36 +60,34 @@ export default function Comment(props) {
     )
 }
 
-function createRespForm(parent_id, source_id, _id, login, liftCommentUp, form_id) {
-    // Scroll to created form
-    $([document.documentElement, document.body])
-        .animate( {scrollTop: $(`#${form_id}`).offset().top - 45}, 0 );
-
+async function createRespForm(parent_id, source_id, _id, login, liftCommentUp, currentRespRef) {
     // Remove form
     let id = parent_id == 0 ? parent_id : _id
     ReactDOM.render(
-        <CommentForm
-            login={login}
-            comment_id={_id}
-            parent_id={parent_id}
-            source_id={source_id}
-            liftCommentUp={liftCommentUp}
-            mainThread={false}
-        />,
-        document.getElementById(id))
+        <div ref={currentRespRef}>
+            <CommentForm
+                login={login}
+                comment_id={_id}
+                parent_id={parent_id}
+                source_id={source_id}
+                liftCommentUp={liftCommentUp}
+                mainThread={false}
+            />
+        </div>,
+        document.getElementById(id));
+    currentRespRef.current.scrollIntoView({ behavior: "smooth", block: 'center' });
 }
 
-function createRespondButton(_id, source_id, parent_id, login, liftCommentUp) {
+function createRespondButton(_id, source_id, parent_id, login, liftCommentUp, currentRespRef) {
     if (login == "User not authorized via email") {
         return null;
     }
     if (login) {
-        let form_id = GenerateRandomKey(10);
         let id = parent_id == 0 ? _id : parent_id;
         return (
-            <button id={form_id}
+            <button
                 className="btn btn-success"
-                onClick={ () => { createRespForm(id, source_id, _id, login, liftCommentUp, form_id) }}>
+                onClick={() => { createRespForm(id, source_id, _id, login, liftCommentUp, currentRespRef) }}>
                 Odpowiedz
             </button>
         )
@@ -113,7 +110,6 @@ async function removeComment(comment_id, removeCommentApod, parent_id) {
         alert(response.text());
     }
 }
-
 
 function createRemoveButton(user, login, comment_id, removeCommentApod, parent_id) {
     if (user === login) {

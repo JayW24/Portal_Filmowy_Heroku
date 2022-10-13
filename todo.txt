@@ -1,11 +1,10 @@
 1. Ogarnąć pliki statyczne.
 2. Wrzucić CMS na HEROKU.
 3. Refactoring i poprawa struktury folderów projektu.
-4. Poprawić stylowanie.
 9. Poprawić fetche.
 11. Poprawić wygląd na mobilce.
 12. Poprawić wygląd messengera.
-13. Poprawić wygląd navbara.
+13. Poprawić wygląd navbara na mobilce.
 
 server: nodemon server
 frontend: npm start

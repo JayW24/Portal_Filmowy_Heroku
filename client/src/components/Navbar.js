@@ -28,7 +28,7 @@ function Navbar(props) {
             <nav className="navbar navbar-expand-lg navbar-light bg-light" style={{ fontSize: '#40px' }}>
                 <div className="container">
                     <a className="navbar-brand" href="/">
-                        <strong>FilmHub <i className="fas fa-film"></i></strong>
+                        <strong><span id="logo-text">FilmHub </span><i className="fas fa-film"></i></strong>
                     </a>
                     <div className="collapse navbar-collapse col-sm-8" id="navbarTogglerDemo02">
                         <ul className="navbar-nav w-100 justify-content-between">

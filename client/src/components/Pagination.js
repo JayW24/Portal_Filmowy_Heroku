@@ -91,7 +91,7 @@ export default class Pagination extends React.Component {
       this.setState({ data: data, skip: skip, isLoading: false }, () => {
         this.generatePagination();
       })
-      this.searchResultsTopRef.current.scrollIntoView({ behavior: "smooth", block: 'center' });
+      this.searchResultsTopRef.current.scrollIntoView({ behavior: "smooth" });
     }
     catch (error) {
       alert('Something gone wrong!');

@@ -138,7 +138,7 @@ function UserProfile(props) {
                     <img style={{ borderRadius: "50%", maxHeight: "200px", maxWidth: "200px", border: "1px solid #fff" }} className="col-lg-2" src={userData.avatar} alt={userData.avatar} />
                     <br />
                 </div>
-                <div className="d-flex w-100 justify-content-center flex-column">
+                <div className="d-flex w-100 justify-content-center flex-column bg-light">
                     <UserProp name={'Data urodzenia'} value={ConvertDate(userData.dateofbirth)} />
                     <UserProp name={'Ilość komentarzy'} value={userData.commentsamount} />
                     <UserProp name={'Ilość ocen'} value={userData.ratingsamount} />

@@ -58,7 +58,7 @@ function UserProfile(props) {
             setUserData({ ...userData, avatar: newPath });
         }
         else {
-            alert('Error during avatar change...')
+            alert('Error during avatar change...');
         }
     }
 
@@ -69,11 +69,11 @@ function UserProfile(props) {
 
     useEffect(() => {
         const fetchData = async () => {
-            try{
+            try {
                 var result = await axios.get(`/api/userDetails/${params.username}`);
             }
-            catch(err) {
-                if(err.response.status === 404) {
+            catch (err) {
+                if (err.response.status === 404) {
                     setUserNotFound(true);
                     return;
                 }
@@ -87,9 +87,8 @@ function UserProfile(props) {
                 setCurrentAbout(userData.about);
                 setCurrentFrom(userData.from);
                 setDataFetched(true);
-                alert('res status == 200')
             }
-            else if(result.status === 200 && result.data === 'not found') {
+            else if (result.status === 200 && result.data === 'not found') {
 
             }
             else {
@@ -106,8 +105,8 @@ function UserProfile(props) {
     }, [params.username])
 
     // User logged in - edit profile
-    if(userNotFound) {
-        return(<div className=" container section-block"><h1 className="display-6">User not found!</h1></div>)
+    if (userNotFound) {
+        return (<div className=" container section-block"><h1 className="display-6">User not found!</h1></div>)
     }
     if (loginIndicator === params.username && view === undefined) {
         return (

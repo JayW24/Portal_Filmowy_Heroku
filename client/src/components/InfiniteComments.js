@@ -115,9 +115,12 @@ class InfiniteComments extends React.Component {
             if (this.state.isLoading == false) {
                 const loadSpeed = 10;
                 this.setState({ isLoading: true }, async () => {
+                    console.log(`/api/dbquery/comments/${this.state.apods.length}/${loadSpeed}/source_id=${this.props.source_id}&parent_id=0&order=timeCreated:-1`);
+                    console.log('Apods before:')
+                    console.log(this.state.apods)
                     const response = await fetch(`/api/dbquery/comments/${this.state.apods.length}/${loadSpeed}/source_id=${this.props.source_id}&parent_id=0&order=timeCreated:-1`);    //fetch next comment for film with particular ID
                     const results = await response.json();
-
+                    console.log(results)
                     if (results[0]) {
                         for (const comment of results) {
                             let bodyResults = comment;
@@ -146,8 +149,6 @@ class InfiniteComments extends React.Component {
                                 }
 
                                 this.setState({
-                                    hasMore: (this.state.apods.length < this.state.total - 1),
-                                    isLoading: false,
                                     apods: [
                                         ...this.state.apods,
                                         nextApod
@@ -155,6 +156,10 @@ class InfiniteComments extends React.Component {
                                 })
                             }
                         }
+                        this.setState({
+                            hasMore: (this.state.apods.length < this.state.total - 1),
+                            isLoading: false
+                        })
                     }
                     else {
                         this.setState({ hasMore: false, isLoading: false });

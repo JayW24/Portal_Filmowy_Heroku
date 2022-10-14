@@ -5,21 +5,29 @@ import getDbNameByType from '../services/getDbNameByType'
 export default function SearchFullScreen(props) {
   return (
     <div className="full-screen-search">
-      <button className="close-button search-button" onClick={props.onClose}>X</button>
-      <label>Szukaj...</label>
-      <input className="full-screen-search-input" type="text" autoComplete="off" name="searchlarge" onChange={props.onChange} />
-      WYNIKI:
-      <div id="full-screen-search-results" onClick={props.onClose}>
-        {props.searchResult.map(x => {
-          return <div className="d-flex align-items-center p-2">
-            <div className="d-flex justify-items-center align-items-center">
-              <img className="search-thumbnail" src={x.thumbnail} alt={x.thumbnail} />
-              <Link className="ml-2" to={`/${getDbNameByType(x.type)}/${x._id}`}><div>{x.name}, type: {x.type}</div></Link>
-            </div>
-          </div>
-        })}
+      <div>
+        <button className="close-button search-button" onClick={props.onClose}>X</button>
+        <label>Szukaj...</label>
+        <input id="fullScreenSearchInput" className="full-screen-search-input" type="text" autoComplete="off" name="searchlarge" onChange={props.onChange} />
+        Wyniki:
+        <div id="full-screen-search-results" onClick={props.onClose}>
+          {props.searchResult.map(searchResult => {
+            return (
+              <Link to={`/${getDbNameByType(searchResult.type)}/${searchResult._id}`}>
+                <div className="d-flex align-items-center p-0 m-0 mb-1 search-item">
+                  <div className="col-1 d-flex justify-content-center p-1 search-item-img-container">
+                    <img className="search-thumbnail" src={searchResult.thumbnail} alt={searchResult.thumbnail} />
+                  </div>
+                  <div className="col-11 d-flex align-items-center">
+                    <div>{searchResult.name} <span className="text-secondary">({searchResult.type})</span></div>
+                  </div>
+                </div>
+              </Link>
+            )
+          })}
+        </div>
+        <br />
       </div>
-      <br />
     </div>
   )
 }

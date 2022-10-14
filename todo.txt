@@ -3,9 +3,6 @@
 3. Refactoring i poprawa struktury folderów projektu.
 9. Poprawić fetche.
 11. Poprawić wygląd na mobilce.
-12. Poprawić wygląd messengera.
-13. Poprawić wygląd navbara na mobilce.
-14. Zmienić wygląd searcha mobilnego.
 
 server: nodemon server
 frontend: npm start

@@ -1,9 +1,9 @@
 import React from 'react'
 import { Link } from "react-router-dom";
 import roundRating from '../services/roundRating';
-const thumbnailHeight = { height: '150px' }
+const thumbnailHeight = { height: '150px' };
 
-//This is a single film component with basic info such as rating, duration, thumbnail etc.
+//This is a single premiere component with basic info such as rating, duration, thumbnail etc.
 export default function PremiereTile(props) {
     return (
         <>

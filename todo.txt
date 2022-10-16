@@ -1,7 +1,7 @@
 1. Ogarnąć pliki statyczne.
 2. Wrzucić CMS na HEROKU.
 3. Refactoring i poprawa struktury folderów projektu.
-9. Poprawić fetche.
+9. Poprawić fetche. Dodać clean up function.
 11. Poprawić wygląd na mobilce.
 
 server: nodemon server

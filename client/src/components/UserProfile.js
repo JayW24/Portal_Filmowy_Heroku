@@ -12,7 +12,8 @@ import VerticalSpacer from './VerticalSpacer';
 import UserEditableField from './UserEditableField';
 import Spinner from './Spinner';
 
-// Handle submit
+const avatarImgStyle = { borderRadius: "50%", maxHeight: "200px", maxWidth: "200px", border: "1px solid #fff" };
+
 async function handleSubmit(event, userData) {
     event.preventDefault();
     const response = await fetch(`/api/editUser`, {
@@ -30,7 +31,6 @@ async function handleSubmit(event, userData) {
     }
 }
 
-// Handle change
 function handleChange(event, setUserData) {
     setUserData(event.target.value)
 }
@@ -88,9 +88,6 @@ function UserProfile(props) {
                 setCurrentFrom(userData.from);
                 setDataFetched(true);
             }
-            else if (result.status === 200 && result.data === 'not found') {
-
-            }
             else {
                 alert('Get user details error!');
             }
@@ -116,31 +113,24 @@ function UserProfile(props) {
                         <h1>Twój profil</h1>
                         <Link to={`/users/${params.username}/view-as-stranger`}>Wyświetl jako gość</Link>
                         <strong>{userData.username}</strong><br />
-                        <img style={{ borderRadius: "50%", maxHeight: "200px", maxWidth: "200px" }} className="col-lg-2" src={userData.avatar ? userData.avatar : defaultPath} alt={userData.avatar ? userData.avatar : "userAvatar"} /><br />
+                        <img style={avatarImgStyle} className="col-lg-2" src={userData.avatar ? userData.avatar : defaultPath} alt={userData.avatar ? userData.avatar : "userAvatar"} /><br />
                         <UploadAvatar login={loginIndicator} setNewPath={setNewPath} />
                         <VerticalSpacer />
                     </div>
-                    {/* ------------------------------------- Basic data------------------------------------- */}
                     <div>
                         <h1 className="font-italic">Dane użytkownika:</h1> <br />
                         <UserProp name={'Data urodzenia'} value={ConvertDate(userData.dateofbirth)} />
                         <UserProp name={'Ilość komentarzy'} value={userData.commentsamount} />
                         <UserProp name={'Ilość ocen'} value={userData.ratingsamount} />
                     </div>
-                    {/* ----------------------------------- End of basic data--------------------------------- */}
                     <hr />
                     <form onSubmit={event => handleSubmit(event, { about, from })}>
                         <h1 className="font-italic">Edytuj profil:</h1>
                         <br />
-                        {/* --------------------------------- Editable data----------------------------------- */}
-                        {/*Edit Password*/}
                         <ChangePassword />
-                        {/*Edit 'From'*/}
                         <UserEditableField name="Pochodzenie" defaultValue={from} handleChange={handleChange} setVal={setFrom} checkVal={checkFrom} setValCheck={setFromCheck} setValValidation={setFromValidation} valCheck={fromCheck} />
-                        {/*Edit 'About'*/}
                         <UserEditableField name="O mnie" defaultValue={about} handleChange={handleChange} setVal={setAbout} checkVal={checkAbout} setValCheck={setAboutCheck} setValValidation={setAboutValidation} valCheck={aboutCheck} />
                         <button className="btn btn-primary w-100 border-0" type="submit" disabled={!sendAccess}>Zmień dane</button>
-                        {/* --------------------------------- End of editable data---------------------------- */}
                     </form>
                     <VerticalSpacer />
                 </div>
@@ -156,10 +146,10 @@ function UserProfile(props) {
                         {loginIndicator !== params.username ? <Link to={`/messenger/${loginIndicator}/${params.username}`}>Napisz wiadomość</Link> : null}
                         {loginIndicator === params.username ? <Link to={`/users/${params.username}`}>Edytuj profil</Link> : null}
                         <strong>{userData.username}</strong><br />
-                        <img style={{ borderRadius: "50%", maxHeight: "200px", maxWidth: "200px", border: "1px solid #fff" }} className="col-lg-2" src={userData.avatar ? userData.avatar : defaultPath} alt={userData.avatar ? userData.avatar : "userAvatar"} />
+                        <img style={avatarImgStyle} className="col-lg-2" src={userData.avatar ? userData.avatar : defaultPath} alt={userData.avatar ? userData.avatar : "userAvatar"} />
                         <br />
                     </div>
-                    <div className="d-flex flex-wrap w-100 justify-content-center flex-column bg-light">
+                    <div className="d-flex flex-wrap justify-content-center flex-column bg-light">
                         <UserProp name={'Data urodzenia'} value={ConvertDate(userData.dateofbirth)} />
                         <UserProp name={'Ilość komentarzy'} value={userData.commentsamount} />
                         <UserProp name={'Ilość ocen'} value={userData.ratingsamount} />

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 function NewsCarouselItem(props) {
     return (
         <div>
-            <div className="w-100 text-right">
+            <div>
                 <Link to={`/new/${props._id}`}>
                     <NewsCarouselCard title={props.title} description={props.description} thumbnail={props.thumbnail} />
                 </Link>

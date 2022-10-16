@@ -74,12 +74,12 @@ export default function New(props) {
             </MetaTags>
             {data.title ?
                 <div className="container section-block p-2">
-                    {ConvertDate(data.date)}
+                    <p className="text-secondary">{ConvertDate(data.date)}</p>
                     <h3>{data.title}</h3>
                     {data.description} <br />
-                    <img src={data.photos && data.photos.replace('/uploads/', ':1337/uploads/')} className="img-fluid" alt={data.photos} />
+                    <img src={data.photos && data.photos.replace('/uploads/', ':1337/uploads/')} className="img-fluid mt-2" alt={data.photos} />
                     {/*DATA FROM CMS*/}
-                    <div>
+                    <div className="mt-2">
                         <HtmlReturner html={data.code} /><br />
                     </div>
                     <hr />

@@ -240,7 +240,7 @@ export default class Pagination extends React.Component {
                     : null
                   }
                   {/*PAGES*/}
-                  <span className="ml-1">{this.state.paginationPages}</span>
+                  <span>{this.state.paginationPages}</span>
                   {/*NEXT PAGE*/}
                   {this.state.skip + parseInt(this.state.limit) !== (this.state.currentPagesAmount + 1) * parseInt(this.state.limit) ? // display only if not on last page
                     <Link key="nextPageLink" to={`/${this.props.dbName}/${this.state.queryString}/page=${parseInt(this.props.match.params.page) + 1}`}>
@@ -254,7 +254,7 @@ export default class Pagination extends React.Component {
                   }
                 </div>
                 {/*RESULTS AMOUNT PER PAGE*/}
-                <div className="resultsAmountController d-flex justify-content-center align-items-center bg-light p-3 m-0">
+                <div className="resultsAmountController d-flex justify-content-center align-items-center bg-light p-3 m-0 mt-2">
                   <span>Ilość wyników na stronie:</span>
                   <span className="ml-1">{this.generateSkipChangeButtons()}</span>
                 </div>

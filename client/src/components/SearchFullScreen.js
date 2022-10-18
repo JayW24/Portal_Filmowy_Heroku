@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 import { Link } from "react-router-dom";
+import getDbNameByType from '../services/getDbNameByType';
 
-import getDbNameByType from '../services/getDbNameByType'
 export default function SearchFullScreen(props) {
   return (
     <div className="full-screen-search">

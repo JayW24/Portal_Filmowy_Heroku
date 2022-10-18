@@ -15,7 +15,7 @@ import HtmlReturner from './HtmlReturner';
 import '../styles/Film.css';
 //import HtmlReturner from './HtmlReturner';
 
-function Film(props) {
+function Position(props) {
     const loginIndicator = useContext(LoginContext)
     const [positionData, setPositionData] = useState('');
     const [commentForLift, setCommentForLift] = useState(null);
@@ -72,22 +72,24 @@ function Film(props) {
             {positionData ?
                 <>
                     <div className="container section-block">
+                        {/*BASIC DATA*/}
                         <div className="row m-0 p-2">
                             <NameAndThumbnail name={positionData.name} thumbnail={positionData.thumbnail} />
                             <div className="col-sm-9 m-0 p-0">
                                 <Rate film_rating={positionData.rating} source_id={positionData._id} dbName={props.dbName} params={params} ratingsAmount={positionData.ratingsAmount} />
-                                {positionData.categories ? <Categories dbName={props.dbName} categories={positionData.categories} /> : null}
-                                {positionData.dateOfBirth ? <PositionParam name="Data urodzenia" value={positionData.dateOfBirth} /> : null}
-                                {positionData.duration ? <PositionParam name="Czas trwania" value={positionData.duration} /> : null}
-                                {positionData.yearOfProduction ? <PositionParam name="Rok produkcji" value={`${positionData.yearOfProduction} r.`} /> : null}
-                                {positionData.episodesAmount ? <PositionParam name="Ilość odcinków" value={positionData.episodesAmount} /> : null}
-                                <VerticalSpacer />
+                                {positionData.categories && <Categories dbName={props.dbName} categories={positionData.categories} />}
+                                {positionData.dateOfBirth && <PositionParam name="Data urodzenia" value={positionData.dateOfBirth} /> }
+                                {positionData.duration && <PositionParam name="Czas trwania" value={positionData.duration} /> }
+                                {positionData.yearOfProduction && <PositionParam name="Rok produkcji" value={`${positionData.yearOfProduction} r.`} />}
+                                {positionData.episodesAmount && <PositionParam name="Ilość odcinków" value={positionData.episodesAmount} />}
+                                <VerticalSpacer /><br/>
                                 <p className="text-justify">{positionData.shortDescription}<br /></p>
                             </div>
                         </div>
-                        {/*HTML FROM CSS - NOT NECESSARY HERE BUT IT WORKS*/}
+                        <hr/>
+                        {/*HTML FROM CSS*/}
                         {
-                            <div className="cms-content p-2 text-center">
+                            <div className="cms-content p-2">
                                 <HtmlReturner html={positionData.longDescriptionHTML} />
                             </div>
                         }
@@ -98,6 +100,7 @@ function Film(props) {
                     <div className="section-block container p-2">
                         <h3>Komentarze</h3>
                         <div>
+                        <VerticalSpacer />
                             {loginIndicator ? <div>Dodaj nowy komentarz</div> : <a href="/login"><div className="font-italic">Zaloguj się aby dodać komentarz. <i className="fas fa-sign-in-alt text-primary"></i></div><br /></a>}
                             {/*Main Thread Comment. Always Active.*/}
                             <CommentForm
@@ -128,4 +131,4 @@ function Film(props) {
     )
 }
 
-export default Film;
+export default Position;

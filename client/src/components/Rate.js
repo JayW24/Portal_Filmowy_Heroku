@@ -1,46 +1,46 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { LoginContext } from './LoginContext'
-import roundRating from '../services/roundRating'
-import ratePossibility from '../services/ratePossibility'
-import ratingRangeInput from '../services/ratingRangeInput'
-import '../styles/Rate.css'
+import React, { useState, useEffect, useContext } from 'react';
+import { LoginContext } from './LoginContext';
+import roundRating from '../services/roundRating';
+import ratePossibility from '../services/ratePossibility';
+import ratingRangeInput from '../services/ratingRangeInput';
+import '../styles/Rate.css';
 
 
 function Rate(props) {
-    const [userRatingValue, setUserRatingValue] = useState(10),
-    [ratingValue, setRatingValue] = useState("Ocena"),
-    [ratingsAmount, setRatingsAmount] = useState(null),
-    loginIndicator = useContext(LoginContext),
-    params = props.params
+    const [userRatingValue, setUserRatingValue] = useState(10);
+    const [ratingValue, setRatingValue] = useState("Ocena");
+    const [ratingsAmount, setRatingsAmount] = useState(null);
+    const loginIndicator = useContext(LoginContext);
+    const params = props.params;
 
     //SET USER RANKING, IF USER DIDN'T RANKED SET RANGE INPUT DEFAULT VALUE TO 10 (MAX)
     useEffect(() => {
         const setUserRank = async () => {
             try {
                 if (loginIndicator) {
-                    let userRank = await fetch(`/api/dbquery/ratings/0/1/username=${loginIndicator}&ratedPositionID=${params.id}`)
-                    userRank = await userRank.json()
+                    let userRank = await fetch(`/api/dbquery/ratings/0/1/username=${loginIndicator}&ratedPositionID=${params.id}`);
+                    userRank = await userRank.json();
                     if (userRank.length > 0) {
-                        setUserRatingValue(userRank[0].rating)
+                        setUserRatingValue(userRank[0].rating);
                     }
                     else {
-                        setUserRatingValue("Brak oceny")
+                        setUserRatingValue("Brak oceny");
                     }
                 }
             }
             catch(err) {
-                alert('Rating error!')
+                alert('Rating error!');
             }
         }
         setUserRank()
     }, [loginIndicator, params.id])
 
     useEffect(() => {
-        setRatingValue(props.film_rating)
+        setRatingValue(props.film_rating);
     }, [props.film_rating])
 
     useEffect(() => {
-        setRatingsAmount(props.ratingsAmount)
+        setRatingsAmount(props.ratingsAmount);
     }, [props.ratingsAmount])
 
     return (
@@ -57,18 +57,18 @@ function Rate(props) {
 
 async function handleSubmit(event, source_id, userRatingValue, dbName, setRatingValue, setRatingsAmount) {
     try {
-        event.preventDefault()
+        event.preventDefault();
         const resp = await fetch(`/api/rate/${dbName}/${source_id}/${userRatingValue}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-        })
-        const data = await resp.json()
-        setRatingValue(parseFloat(data.averageRank))
-        setRatingsAmount(data.ratingsAmount)
-        alert('New rank added!')
+        });
+        const data = await resp.json();
+        setRatingValue(parseFloat(data.averageRank));
+        setRatingsAmount(data.ratingsAmount);
+        alert('New rank added!');
     }
     catch(error) {
-        alert('Rating gone wrong.')
+        alert('Rating gone wrong.');
     }
 }
 

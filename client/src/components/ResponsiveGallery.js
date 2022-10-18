@@ -1,6 +1,6 @@
-import React from 'react'
-import { SRLWrapper } from "simple-react-lightbox"
-import ResponsiveGalleryCard from './ResponsiveGalleryCard'
+import React from 'react';
+import { SRLWrapper } from "simple-react-lightbox";
+import ResponsiveGalleryCard from './ResponsiveGalleryCard';
 
 // USE THE IMPORT BELOW INSTEAD IF YOU ARE USING THE PRO VERSION
 // import { SRLWrapper } from 'simple-react-lightbox-pro'

@@ -23,16 +23,16 @@ async function handleSubmit(event, userData) {
         body: JSON.stringify(userData)
     })
     if (response.status === 200) {
-        alert(response.statusText)
-        return response.json()
+        alert(response.statusText);
+        return response.json();
     }
     else {
-        alert('Update user data error.')
+        alert('Update user data error.');
     }
 }
 
 function handleChange(event, setUserData) {
-    setUserData(event.target.value)
+    setUserData(event.target.value);
 }
 
 function UserProfile(props) {

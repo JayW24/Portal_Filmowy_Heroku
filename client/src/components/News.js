@@ -63,7 +63,7 @@ function News(props) {
                             )}
                         </div>
                         {/*CAROUSEL*/}
-                        <div className="card-group col-sm-12 col-md-6 p-0 m-0">
+                        <div className="card-group col-sm-12 col-md-6 p-0 m-0 bg-white">
                             <Swiper className="card mySwiper"
                                 spaceBetween={0}
                                 centeredSlides={true}
@@ -75,7 +75,7 @@ function News(props) {
                     </div>
                     <VerticalSpacer />
                     {/*REST OF ITEMS - SMALLER SIZE*/}
-                    <div className="card-group m-0 p-0">
+                    <div className="card-group m-0 p-0 bg-white">
                         {restOfNewsData.map((newsItemallNewsDataForProps, index) =>
                             <div key={`${newsItemallNewsDataForProps}${index}`} className="col-sm-4 p-0 m-0">
                                 <div className="card p-2 rounded-0 border-0">

@@ -1,5 +1,5 @@
-import React from 'react'
-import ResponsiveGalleryImage from './ResponsiveGalleryImage'
+import React from 'react';
+import ResponsiveGalleryImage from './ResponsiveGalleryImage';
 
 function ResponsiveGalleryCard(props) {
     return (
@@ -9,4 +9,4 @@ function ResponsiveGalleryCard(props) {
     )
 }
 
-export default ResponsiveGalleryCard
+export default ResponsiveGalleryCard;

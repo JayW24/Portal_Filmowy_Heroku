@@ -1,14 +1,14 @@
-import React, { useState } from 'react'
-import SearchField from './SearchField'
+import React, { useState } from 'react';
+import SearchField from './SearchField';
 import SearchFullScreen from './SearchFullScreen';
-import sleep from '../services/sleep'
+import sleep from '../services/sleep';
 import '../styles/Search.css';
 
 
 function Search() {
-  const [showLargeSearch, setshowLargeSearch] = useState({ display: 'none' }),
-  [_form, set_form] = useState(''),
-  [searchResult, setSearchResult] = useState([])
+  const [showLargeSearch, setshowLargeSearch] = useState({ display: 'none' });
+  const [_form, set_form] = useState('');
+  const [searchResult, setSearchResult] = useState([]);
 
   const _handleChange = (e) => {
     e.preventDefault();
@@ -22,7 +22,7 @@ function Search() {
       }
       else {
         _form.search.value = e.target.value;
-        _handleData(e)
+        _handleData(e);
       }
     }
     else {
@@ -33,36 +33,35 @@ function Search() {
 
   const _handleClose = e => {
     e.preventDefault();
-    setshowLargeSearch({ display: 'none' })
+    setshowLargeSearch({ display: 'none' });
   }
 
   const _handleData = async (e) => {
     try {
-      const targetVal = e.target.value
+      const targetVal = e.target.value;
       if (e.target.value.length >= 3) {
         //let startTime = performance.now()
-        await sleep(300)  //300ms delay
-        const resp = await fetch(`/api/search/string=${targetVal}`)
-        let data = await resp.json()
+        await sleep(300);  //300ms delay
+        const resp = await fetch(`/api/search/string=${targetVal}`);
+        let data = await resp.json();
         if (data.length !== 0) {
-          setSearchResult(data)
+          setSearchResult(data);
         }
         else {
-          setSearchResult('No results')
-          setSearchResult([])
+          setSearchResult('No results');
+          setSearchResult([]);
         }
         //var endTime = performance.now()
         //console.log('Diff=' + `(${endTime-startTime})` + 'ms')
       }
       else {
-        setSearchResult([])
+        setSearchResult([]);
       }
     }
     catch (error) {
-      alert('Something went wrong!')
+      alert('Something went wrong!');
     }
   }
-
 
   return (
     <div className="d-flex align-items-center">

@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react'
-import checkPassword from '../services/checkPassword'
-import checkAbout from '../services/checkAbout'
-import checkUsername from '../services/checkUsername'
-import checkEmail from '../services/checkEmail'
-import checkFrom from '../services/checkFrom'
-import { LoginContext } from './LoginContext'
-import handleDateOfBirthChange from '../services/handleDateOfBirthChange'
-import '../styles/Register.css'
+import React, { useState, useEffect, useContext } from 'react';
+import checkPassword from '../services/checkPassword';
+import checkAbout from '../services/checkAbout';
+import checkUsername from '../services/checkUsername';
+import checkEmail from '../services/checkEmail';
+import checkFrom from '../services/checkFrom';
+import { LoginContext } from './LoginContext';
+import handleDateOfBirthChange from '../services/handleDateOfBirthChange';
+import '../styles/Register.css';
 
 
 function Register() {
@@ -30,14 +30,14 @@ function Register() {
         [aboutCheck, setAboutCheck] = useState(''),
         [aboutValidation, setAboutValidation] = useState(false),
         [registerResult, setRegisterResult] = useState(null),
-        [sendAccess, setSendAccess] = useState(true)
+        [sendAccess, setSendAccess] = useState(true);
 
     useEffect(() => {
         if (userNameValidation && passwordValidation && emailValidation && fromValidation && dateOfBirthValidation && aboutValidation) {
-            setSendAccess(false)
+            setSendAccess(false);
         }
         else {
-            setSendAccess(true)
+            setSendAccess(true);
         }
     }, [userNameValidation, passwordValidation, emailValidation, fromValidation, dateOfBirthValidation, aboutValidation])
 
@@ -106,7 +106,7 @@ function Register() {
 }
 
 function handleChange(event, setUserData) {
-    setUserData({ [event.target.name]: event.target.value })
+    setUserData({ [event.target.name]: event.target.value });
 }
 
 
@@ -121,14 +121,14 @@ async function handleSubmit(event, userData, setRegisterResult) {
         })
         console.log(resp)
         if(resp.status === 200) {
-            setRegisterResult("Dziękujemy za rejestrację. Wysłano link aktywacyjny na podany adres e-mail.")
+            setRegisterResult("Dziękujemy za rejestrację. Wysłano link aktywacyjny na podany adres e-mail.");
         }
         else if(resp.status === 500) {
-            setRegisterResult("Rejestracja nie powiodła się.")
+            setRegisterResult("Rejestracja nie powiodła się.");
         }
     }
     catch(err) {
-        setRegisterResult('Błąd aplikacji Rejestracja nie powiodła się.')
+        setRegisterResult('Błąd aplikacji Rejestracja nie powiodła się.');
     }
 }
 

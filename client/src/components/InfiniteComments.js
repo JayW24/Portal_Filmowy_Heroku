@@ -202,7 +202,7 @@ class InfiniteComments extends React.Component {
                     <div>Loading...</div>
                 }
                 {!hasMore &&
-                    <div>Koniec komentarzy <i class="fas fa-check-square text-success"></i></div>
+                    <div>Koniec komentarzy <i className="fas fa-check-square text-success"></i></div>
                 }
             </div>
         )

@@ -9,9 +9,14 @@ function ratePossibility(userRatingValue, loginIndicator) {
         )
     }
     else {
-        return  <a className="font-italic" href="/login">
-                     Zaloguj się aby ocenić <i className="fas fa-sign-in-alt"></i>
+        return (
+            <>
+                <br/>
+                <a className="font-italic" href="/login">
+                    Zaloguj się aby ocenić <i className="fas fa-sign-in-alt"></i>
                 </a>
+            </>
+        )
     }
 }
 

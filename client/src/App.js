@@ -62,7 +62,7 @@ function App() {
             <Switch>
               <Route name="login" path="/login"><Login fetchUserName={fetchUserName}/></Route>
               <Route name="home" exact path="/">
-                <News url="/api/dbquery/news/0/10/order=date:-1" />
+                <News url="/api/dbquery/news/0/11/order=date:-1" />
               </Route>
               <Route key="filmy" name="filmy" path="/filmy/:query?/page=:page?" render={(props) => (<Pagination {...props} dbName="filmy" filters_Id="616e75558fdb4466b5b12710" path="film" />)}></Route>
               <Route key="seriale" name="seriale" path="/seriale/:query?/page=:page?" render={(props) => (<Pagination {...props} dbName="seriale" filters_Id="616e75558fdb4466b5b12710" path="serial" />)}></Route>

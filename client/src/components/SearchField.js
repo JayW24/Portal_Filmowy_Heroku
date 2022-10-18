@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import '../styles/Search.css';
 
 export default function SearchField(props) {

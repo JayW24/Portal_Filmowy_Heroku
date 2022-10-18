@@ -45,6 +45,7 @@ export default function New(props) {
     }
 
     useEffect(() => {
+        const abortController = new AbortController();
         const getData = async () => {
             let data = await axios.get(`/api/getoneitem/news/${params.id}`);
             data = await data.data;
@@ -57,6 +58,11 @@ export default function New(props) {
         catch (error) {
             alert('Something gone wrong!');
         }
+
+        return () => {
+            abortController.abort();
+        };
+
     }, [params.id])
 
     useEffect(() => {

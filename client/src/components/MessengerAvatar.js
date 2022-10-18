@@ -6,6 +6,7 @@ export default function MessengerAvatar(props) {
     const defaultPath = '/img/avatars/defaultAvatar.jpg';
 
     useEffect(() => {
+        const abortController = new AbortController();
         const fetchPath = async () => {
             try {
                 if(localStorage.getItem(props.name)) {
@@ -22,6 +23,11 @@ export default function MessengerAvatar(props) {
             catch (error) {
                 alert('Something gone wrong!');
             }
+
+            return () => {
+                abortController.abort();
+            };
+            
         }
         fetchPath();
     }, [props.name])

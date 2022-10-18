@@ -15,6 +15,7 @@ function Rate(props) {
 
     //SET USER RANKING, IF USER DIDN'T RANKED SET RANGE INPUT DEFAULT VALUE TO 10 (MAX)
     useEffect(() => {
+        const abortController = new AbortController();
         const setUserRank = async () => {
             try {
                 if (loginIndicator) {
@@ -32,7 +33,17 @@ function Rate(props) {
                 alert('Rating error!');
             }
         }
-        setUserRank()
+        try {
+            setUserRank()
+        }
+        catch(err) {
+            alert('Something gone wrong with rating...')
+        }
+
+        return () => {
+            abortController.abort();
+        };
+
     }, [loginIndicator, params.id])
 
     useEffect(() => {

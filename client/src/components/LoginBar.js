@@ -34,19 +34,25 @@ function LoginBar(props) {
 
     // fetch amount of unread messages
     useEffect(() => {
+        const abortController = new AbortController();
         const fetchData = async () => {
             if (loginIndicator) {
                 const amount = await axios(`/api/get-unread-messages/${loginIndicator}`);
                 setUnreadMessagesAmount(amount.data);
             }
         }
-
+        
         try {
             fetchData();
         }
         catch (error) {
             alert('Something went wrong!');
         }
+
+        return () => {
+            abortController.abort();
+        };
+
     }, [loginIndicator])
 
     // Socket context for notifications. Count new messages.

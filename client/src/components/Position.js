@@ -43,6 +43,7 @@ function Position(props) {
     }
 
     useEffect(() => {
+        const abortController = new AbortController();
         const fetchData = async () => {
             let response = await fetch(`/api/getoneitem/${props.dbName}/${params.id}`);
             if (response.status === 200) {
@@ -60,6 +61,11 @@ function Position(props) {
         catch (error) {
             alert('Something gone wrong!');
         }
+
+        return () => {
+            abortController.abort();
+        };
+
     }, [props.dbName, params.id])
 
     useEffect(() => {

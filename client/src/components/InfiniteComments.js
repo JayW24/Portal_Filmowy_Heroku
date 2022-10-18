@@ -31,6 +31,7 @@ class InfiniteComments extends React.Component {
     }
 
     async componentDidMount() {
+        const abortController = new AbortController();
         try {
             const res = await fetch(`/api/pagesamount/comments/source_id=${this.props.source_id}`);
             const resultsQuantity = await res.json();
@@ -39,6 +40,11 @@ class InfiniteComments extends React.Component {
         catch (error) {
             alert('Something went wrong!');
         }
+
+        return () => {
+            abortController.abort();
+        };
+        
     }
 
     componentDidUpdate(prevProps, prevState) {

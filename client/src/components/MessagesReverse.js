@@ -45,6 +45,8 @@ function MessagesReverse(props) {
 
     // set status as read in real time
     useEffect(() => {
+        const abortController = new AbortController();
+
         try {
             if (props.status && items.length > 0) {
                 const messagesStatus = async () => {
@@ -69,6 +71,11 @@ function MessagesReverse(props) {
         catch (error) {
             alert('Something went wrong...');
         }
+
+        return () => {
+            abortController.abort();
+        };
+
     }, [props.status])
 
     let onStart = async () => {

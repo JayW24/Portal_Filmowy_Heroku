@@ -6,6 +6,7 @@ export default function UserConfirmation(props) {
         [confirmationStatus, setConfirmationStatus] = useState('');
 
     useEffect(() => {
+        const abortController = new AbortController();
         try {
             const checkConfirmationStatus = async () => {
                 const resp = await axios.get(`/api/userconfirmation/${params.username}/${params.token}`);
@@ -21,6 +22,11 @@ export default function UserConfirmation(props) {
         catch (err) {
             alert('User confirmation gone wrong.');
         }
+
+        return () => {
+            abortController.abort();
+        };
+        
     }, [params.username, params.token])
     return (
         <div>

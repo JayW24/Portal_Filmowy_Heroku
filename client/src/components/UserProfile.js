@@ -68,6 +68,7 @@ function UserProfile(props) {
     }, [aboutValidation, fromValidation, setSendAccess, CurrentAbout, CurrentFrom, about, from])
 
     useEffect(() => {
+        const abortController = new AbortController();
         const fetchData = async () => {
             try {
                 var result = await axios.get(`/api/userDetails/${params.username}`);
@@ -99,6 +100,11 @@ function UserProfile(props) {
         catch (error) {
             alert('User profile error!');
         }
+
+        return () => {
+            abortController.abort();
+        };
+        
     }, [params.username])
 
     // User logged in - edit profile

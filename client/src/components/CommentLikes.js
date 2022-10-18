@@ -21,6 +21,8 @@ function CommentLikes(props) {
     }
 
     useEffect(() => {
+        const abortController = new AbortController();
+
         try {
             // Check if comment is liked by user
             fetchLike();
@@ -28,6 +30,11 @@ function CommentLikes(props) {
         catch (error) {
             alert('Something went wrong!');
         }
+
+        return () => {
+            abortController.abort();
+        };
+        
     }, [])
 
     useEffect(() => {

@@ -12,18 +12,25 @@ export default function CategoriesButtons(props) {
     }
 
     useEffect(() => {
+        const abortController = new AbortController();
         const fetchCategoriesData = async () => {
             const response = await fetch(props.dbName);
             const categories = await response.json();
     
             setCategories(categories);
         }
+
         try {
             fetchCategoriesData();
         }
         catch (error) {
-            alert('Something gone wrong.');
+            alert('Something gone wrong with fetching categories...');
         }
+
+        return () => {
+            abortController.abort();
+          };
+
     }, [props.dbName])
 
     useEffect(() => {

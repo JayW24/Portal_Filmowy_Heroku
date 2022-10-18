@@ -18,6 +18,7 @@ function Filters(props) {
     const [filtersData, setFiltersData] = useState([]);
 
     useEffect(() => {
+        const abortController = new AbortController();
         const fetchFiltersData = async () => {
             const result = await axios(`/api/filters/${props.filters_Id}`);
 
@@ -37,6 +38,11 @@ function Filters(props) {
         catch (err) {
             alert('Filters error!');
         }
+
+        return () => {
+            abortController.abort();
+        };
+        
     }, [])
 
     useEffect(() => {

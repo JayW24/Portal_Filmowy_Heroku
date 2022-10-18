@@ -8,6 +8,7 @@ function CategoriesRanges(props) {
     const [currentCategory, setCurrentCategory] = useState(ParamsToJson(props.urlParams).duration);
 
     useEffect(() => {
+        const abortController = new AbortController();
         const fetchCategoriesData = async () => {
             try {
                 const filtersDataEndpointURL = props.dbName;
@@ -15,11 +16,16 @@ function CategoriesRanges(props) {
                 setCategories(result.data);
             }
             catch (error) {
-                alert('Something gone wrong.');
+                alert('Something gone wrong fetching categories ranges...');
             }
         }
 
         fetchCategoriesData();
+
+        return () => {
+            abortController.abort();
+        };
+
     }, [props.dbName])
 
     useEffect(() => {

@@ -14,7 +14,7 @@ function MessagesPreviewBig(props) {
     const limit = 5;
 
     useEffect(() => {
-        try {
+        const abortController = new AbortController();
             const onStart = async () => {
                 const resp = await axios.get(`/api/messagespreview/${skip}/${limit}`);
                 const data = resp.data;
@@ -31,11 +31,18 @@ function MessagesPreviewBig(props) {
                 //resp.data.length > 0 ? setHasMore(true) : setHasMore(false);
                 setDataFetched(true);
             }
+
+        try {
             onStart();
         }
+
         catch (error) {
             alert('Something went wrong!');
         }
+
+        return () => {
+            abortController.abort();
+        };
     }, [])
 
     const fetchMoreData = async () => {

@@ -19,6 +19,7 @@ function MessengerSocket(props) {
 
   // emit reading messages
   useEffect(() => {
+    const abortController = new AbortController();
     const getReceiverId = async () => {
       let dat = await axios(`/api/get-user-id/${props.receiver}`);
       let receiverID = dat.data._id;
@@ -26,11 +27,17 @@ function MessengerSocket(props) {
       setReceiverID(receiverID);
     }
     getReceiverId();
+
+    return () => {
+      abortController.abort();
+    };
+
   }, [props.receiver, socket]);
 
 
   // incoming message
   useEffect(() => {
+    const abortController = new AbortController();
     socket.on('chat message', async function (msg) {
       let currentTime = await axios('/api/servertime');
       currentTime = currentTime.data;
@@ -47,6 +54,11 @@ function MessengerSocket(props) {
       if (loginIndicator === msg.userName) {
         setClearTextInput("clear");
       }
+
+      return () => {
+        abortController.abort();
+      };
+      
     })
 
     // users are present - set all messages statuses as read

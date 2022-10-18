@@ -1580,3 +1580,18 @@ mongodb.MongoClient.connect(connectionString, connectionOptions, function (err, 
 		console.log(err);
 	})
 });
+
+// Update many items basing on one properly filled item
+
+// async function updateItems() {
+// 	const referenceFilm = await Film.findOne({_id: '60a391cbe2ed0736243405cf'});
+// 	const referenceDescriptionHTML = referenceFilm.longDescriptionHTML;
+// 	Series.updateMany({}, {longDescriptionHTML: referenceDescriptionHTML}, (err, docs) => {
+// 		if(err) {
+// 			console.log(err)
+// 		}
+// 		console.log('docs updated')
+// 		console.log(docs);
+// 	})
+// }
+// updateItems();

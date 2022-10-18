@@ -17,6 +17,7 @@ function News(props) {
     const [restOfNewsData, setRestOfNewsData] = useState([]);
 
     useEffect(() => {
+        const abortController = new AbortController();
         const fetchallNewsData = async () => {
             const resp = await fetch(props.url);
             const allNewsData = await resp.json();
@@ -44,7 +45,17 @@ function News(props) {
             setRestOfNewsData(restOfNewsItemsallNewsData);
             setFirstNewsItem(firstNewsItemallNewsData);
         }
-        fetchallNewsData();
+        try {
+            fetchallNewsData();
+        }
+        catch(err) {
+            alert('Something gone wrong...')
+        }
+
+        return () => {
+            abortController.abort();
+        };
+        
     }, [props.url]);
 
     return (

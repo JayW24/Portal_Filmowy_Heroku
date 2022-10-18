@@ -24,6 +24,7 @@ export default function CategoriesSort(props) {
                 setSortType(params[1]);
             }
         }
+        
         setSortingByUrlParams();
     }, [props.urlParams])
 

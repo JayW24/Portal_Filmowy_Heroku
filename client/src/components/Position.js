@@ -86,7 +86,7 @@ function Position(props) {
                                 {positionData.categories && <Categories dbName={props.dbName} categories={positionData.categories} />}
                                 {positionData.dateOfBirth && <PositionParam name="Data urodzenia" value={positionData.dateOfBirth} /> }
                                 {positionData.duration && <PositionParam name="Czas trwania" value={positionData.duration} /> }
-                                {positionData.yearOfProduction && <PositionParam name="Rok produkcji" value={`${positionData.yearOfProduction} r.`} />}
+                                {positionData.yearOfProduction && <PositionParam name="Rok produkcji" value={`${positionData.yearOfProduction}`} />}
                                 {positionData.episodesAmount && <PositionParam name="Ilość odcinków" value={positionData.episodesAmount} />}
                                 <VerticalSpacer /><br/>
                                 <p className="text-justify">{positionData.shortDescription}<br /></p>

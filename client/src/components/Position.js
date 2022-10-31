@@ -20,7 +20,8 @@ function Position(props) {
     const [positionData, setPositionData] = useState('');
     const [commentForLift, setCommentForLift] = useState(null);
     const [commentToRemove, setCommentToRemove] = useState({ comment_Id: null, parent_id: null });
-    const [resetComments] = useState(null);
+    const [resetComments, setResetComments] = useState(null);
+    const resetCommentsXX = () => {setResetComments(null)};
     const params = props.match.params;
 
     //LIFT UP COMMENT

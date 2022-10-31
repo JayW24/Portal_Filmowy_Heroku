@@ -6,9 +6,9 @@ export default function Similar(props) {
     return (
         <div className="p-2">
             {props.text}:
-            <div className="similar--s d-flex flex-column">
+            <div className="similar d-flex flex-column">
                 {props.data ? convertToObjArr(props.data).map((similar, index) => {
-                    return <Link key={`${similar.name}_${index}`} to={`/${props.path}/${similar.url}`}>{similar.name}</Link>
+                    return <div className="d-flex"><Link key={`${similar.name}_${index}`} to={`/${props.path}/${similar.url}`}>{similar.name}</Link></div>
                 }) : null}
             </div>
         </div>

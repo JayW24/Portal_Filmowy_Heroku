@@ -49,6 +49,9 @@ class InfiniteComments extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
+        if(prevProps.source_id !== this.props.source_id) {
+            this.setState({error: false, hasMore: true, isLoading: false, apods: [], total: null,})
+        }
         if (prevProps.commentToRemove.comment_id !== this.props.commentToRemove.comment_id) {
             if (this.props.commentToRemove.comment_id) {
                 // Remove main comment

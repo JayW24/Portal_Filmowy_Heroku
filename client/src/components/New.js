@@ -51,6 +51,7 @@ export default function New(props) {
             data = await data.data;
             data.related_articles = convertToObjArr(data.related_articles);
             setData(data);
+            window.scrollTo(0, 0);
         }
         try {
             getData();

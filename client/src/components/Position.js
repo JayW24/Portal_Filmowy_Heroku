@@ -20,6 +20,7 @@ function Position(props) {
     const [positionData, setPositionData] = useState('');
     const [commentForLift, setCommentForLift] = useState(null);
     const [commentToRemove, setCommentToRemove] = useState({ comment_Id: null, parent_id: null });
+    const [resetComments] = useState(null);
     const params = props.match.params;
 
     //LIFT UP COMMENT
@@ -49,9 +50,10 @@ function Position(props) {
             if (response.status === 200) {
                 let data = await response.json();
                 setPositionData(data);
+                window.scrollTo(0, 0);
             }
             else {
-                alert('Something gone wrong!');
+                alert('Getting data gone wrong!');
             }
         }
 
@@ -59,7 +61,7 @@ function Position(props) {
             fetchData();
         }
         catch (error) {
-            alert('Something gone wrong!');
+            alert('Getting data gone wrong!');
         }
 
         return () => {
@@ -67,10 +69,6 @@ function Position(props) {
         };
 
     }, [props.dbName, params.id])
-
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, [])
 
     return (
         <>
@@ -129,6 +127,7 @@ function Position(props) {
                             removeCommentApod={removeCommentApod}
                             commentToRemove={commentToRemove}
                             resetCommentRemove={resetCommentRemove}
+                            resetComments={resetComments}
                         />
                     </div>
                 </> : <Spinner />

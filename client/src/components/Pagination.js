@@ -217,17 +217,14 @@ export default class Pagination extends React.Component {
               <div id="jw-pagination-results-29831">
                 <div ref={this.searchResultsTopRef} className="d-block align-items-center">
                   <span className="d-inline-block results-title"><h2 className="display-6">Wyniki wyszukiwania</h2></span>
-                  {this.state.ResultsAmount ?
-                    <span className="d-inline-block resultsAmountDescription ml-1 text-muted">({this.state.ResultsAmount === 0 && this.state.ResultsAmount ? 'Nie znaleziono wyników' : `Znaleziono wyników: ${this.state.ResultsAmount}`})</span> :
-                    null
-                  }
+                  <span className="d-inline-block resultsAmountDescription ml-1 text-muted">({this.state.ResultsAmount === 0 && this.state.ResultsAmount ? 'Nie znaleziono wyników' : `Znaleziono wyników: ${this.state.ResultsAmount}`})</span>
                 </div>
                 <hr />
                 {this.state.data}
                 {/*CHOOSE PAGE NUMBER*/}
                 <div className="d-flex justify-content-center align-items-center">
                   {/*PREVIOUS PAGE*/}
-                  {this.state.skip > 0 ? // display only if not on first page
+                  {this.state.skip > 0  && this.state.ResultsAmount !== 0? // display only if not on first page
                     <Link key="previousPageLink" to={`/${this.props.dbName}/${this.state.queryString}/page=${this.props.match.params.page - 1}`}>
                       <button id={`paginationPageButtonPrevious`}
                         className="prevPage btn btn-light"
@@ -242,7 +239,7 @@ export default class Pagination extends React.Component {
                   {/*PAGES*/}
                   <span>{this.state.paginationPages}</span>
                   {/*NEXT PAGE*/}
-                  {this.state.skip + parseInt(this.state.limit) !== (this.state.currentPagesAmount + 1) * parseInt(this.state.limit) ? // display only if not on last page
+                  {this.state.skip + parseInt(this.state.limit) !== (this.state.currentPagesAmount + 1) * parseInt(this.state.limit) && this.state.ResultsAmount !== 0? // display only if not on last page
                     <Link key="nextPageLink" to={`/${this.props.dbName}/${this.state.queryString}/page=${parseInt(this.props.match.params.page) + 1}`}>
                       <button id={`paginationPageButtonNext`}
                         className="nextPage btn btn-light"

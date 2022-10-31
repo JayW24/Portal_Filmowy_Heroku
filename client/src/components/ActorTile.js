@@ -6,7 +6,6 @@ const imageContainerClassName = "col-sm-3 col-md-4 col-lg-3 d-flex align-items-c
 const imageClassName="img-fluid";
 const dataClassName="col-sm-9 col-md-8 col-lg-9 d-flex flex-column justify-content-center";
 const actorTileClassName = "d-flex row";
-const actorPropertyClassName = "text-secondary";
 const actorDescriptionClassName = "font-italic";
 const limitDescription = (description) => description.substring(0, 250);
 const descriptionIsLong = (description) => {
@@ -24,8 +23,8 @@ export default function ActorTile(props) {
                 </div>
                 <div className={dataClassName}>
                     <Link to={`/${props.path}/${props._id}`}><h5>{props.name}</h5></Link>
-                    <div><strong className={actorPropertyClassName}>Data urodzenia: </strong>{props.dateOfBirth}r.</div>
-                    <div><strong className={actorPropertyClassName}>Ocena: </strong>{roundRating(props.rating)}</div>
+                    <div><strong>Data urodzenia: </strong>{props.dateOfBirth}r.</div>
+                    <div><strong>Ocena: </strong>{roundRating(props.rating)}</div>
                     <div><p className={actorDescriptionClassName}>{limitDescription(props.shortDescription)}{descriptionIsLong(props.shortDescription)}</p></div>
                 </div>
             </div>

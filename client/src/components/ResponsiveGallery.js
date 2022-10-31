@@ -7,8 +7,8 @@ import ResponsiveGalleryCard from './ResponsiveGalleryCard';
 
 function ResponsiveGallery(props) {
   return (
-    <div className="container p-2 responsive-gallery">
-      <h3>Galeria</h3>
+    <div className="container p-0 responsive-gallery">
+      <h3 className="p-2">Galeria</h3>
       <SRLWrapper>
         <div className="d-flex p-0 m-0 card-deck row">
           {props.urls? props.urls

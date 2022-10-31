@@ -1585,8 +1585,8 @@ mongodb.MongoClient.connect(connectionString, connectionOptions, function (err, 
 
 // async function updateItems() {
 // 	const referenceFilm = await Film.findOne({_id: '60a391cbe2ed0736243405cf'});
-// 	const referenceDescriptionHTML = referenceFilm.longDescriptionHTML;
-// 	Series.updateMany({}, {longDescriptionHTML: referenceDescriptionHTML}, (err, docs) => {
+// 	const referencePhotos = referenceFilm.photos;
+// 	Premiere.updateMany({}, {photos: referencePhotos}, (err, docs) => {
 // 		if(err) {
 // 			console.log(err)
 // 		}

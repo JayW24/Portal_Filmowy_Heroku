@@ -1540,7 +1540,6 @@ function serverLog(req, method) {
 		if (err) { console.log(colors.FgRed, '[Server]: Server error! Method: ' + 'Path:' + req.path + ' called by ' + req.user === undefined ? req.user.username : 'anonymous') ;}
 	}
 }
-// END OF ALL GUWNO TEST
 
 // REACT REROUTING
 if (process.env.NODE_ENV === 'production') {

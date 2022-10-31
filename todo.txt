@@ -3,6 +3,8 @@
 3. Refactoring i poprawa struktury folderów projektu.
 9. Poprawić fetche. Dodać clean up function.
 11. Poprawić wygląd na mobilce.
+12. Zastostosować ImageLoading do wszystkich <img/>
+13. Zmienić rating liczbowy na gwiazdki
 
 server: nodemon server
 frontend: npm start

@@ -19,14 +19,12 @@ export default function CategoriesButtons(props) {
     
             setCategories(categories);
         }
-
         try {
             fetchCategoriesData();
         }
         catch (error) {
             alert('Something gone wrong with fetching categories...');
         }
-
         return () => {
             abortController.abort();
           };

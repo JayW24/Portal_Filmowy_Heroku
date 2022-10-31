@@ -1,5 +1,4 @@
-
- html {
+html {
   height: 100%;
   box-sizing: border-box;
   margin: 0;
@@ -12,14 +11,14 @@
   box-sizing: inherit;
 }
 
- body {
-    background-color: #ecf0f1;
-    position: relative;
-    margin: 0;
-    padding: 0;
-    padding-bottom: 185px;
-    min-height: 100%;
-  }
+body {
+  background-color: #ecf0f1;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  padding-bottom: 185px;
+  min-height: 100%;
+}
 
 
 .header {
@@ -49,19 +48,19 @@
 a:hover {
   color: #67b4c2 !important;
   transition: 0.2s;
-  }
+}
 
-  h3 {
-    color: #023678
-  }
+h3 {
+  color: #023678;
+}
 
-  div {
-    border-radius: 0px !important;
-  }
+div {
+  border-radius: 0px !important;
+}
 
-  .row {
-    margin-left: 0px;
-  }
+.row {
+  margin-left: 0px;
+}
 
 .section-block {
   background-color: white;
@@ -100,8 +99,10 @@ button {
   border-radius: 0px !important;
 }
 
-textarea:focus, input:focus, .uneditable-input:focus {   
-  border-color:dodgerblue !important;
+textarea:focus,
+input:focus,
+.uneditable-input:focus {
+  border-color: dodgerblue !important;
   outline: 0 none !important;
 }
 

@@ -36,6 +36,7 @@ class InfiniteComments extends React.Component {
             const res = await fetch(`/api/pagesamount/comments/source_id=${this.props.source_id}`);
             const resultsQuantity = await res.json();
             this.setState({ total: resultsQuantity });
+            this.loadApods();
         }
         catch (error) {
             alert('Something went wrong!');

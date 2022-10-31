@@ -5,7 +5,6 @@ const sortByData = [['rating', 'ocena'], ['name', 'nazwa']];
 const sortTypeData = [[-1, 'malejąco'], [1, 'rosnąco']];
 
 export default function CategoriesSort(props) {
-
     const [sortBy, setSortBy] = useState('rating');
     const [sortType, setSortType] = useState(-1);
     const [sortByValues, setSortByValues] = useState([]);

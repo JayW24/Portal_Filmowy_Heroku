@@ -2,7 +2,7 @@
 2. Refactoring i poprawa struktury folderów projektu.
 3. Naprawić zliczanie ocen.
 4. Naprawić przechowywanie liczby wyników w ciastkach.
-5. Dodać zakładkę z opisem projektu.
+5. Dodać zakładkę z opisem projektu
 
 server: nodemon server
 frontend: npm start

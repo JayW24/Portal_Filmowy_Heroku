@@ -11,11 +11,11 @@ export default function SeriesTile(props) {
                 </div>
                 <div className="col-sm-9 col-md-8 col-lg-9 d-flex flex-column justify-content-center">
                     <Link to={`/${props.path}/${props._id}`}><h5>{props.name}</h5></Link>
-                    <div>Czas: {props.duration}min</div>
-                    <div>Rok: {props.yearOfProduction}</div>
-                    <div>Kategorie: {props.categories}</div>
-                    <div>Ocena: {props.rating}</div>
-                    <div>Liczba odcinków: {props.episodesAmount}</div>
+                    <div><strong>Czas trwania:</strong> {props.duration}min</div>
+                    <div><strong>Rok:</strong> {props.yearOfProduction}</div>
+                    <div><strong>Kategorie:</strong> {props.categories}</div>
+                    <div><strong>Ocena:</strong> {props.rating}</div>
+                    <div><strong>Liczba odcinków:</strong> {props.episodesAmount}</div>
                 </div>
             </div>
             <br />

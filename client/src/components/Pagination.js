@@ -31,7 +31,7 @@ export default class Pagination extends React.Component {
       queryString: '',                //query to database - String
       searchString: '',
       searchStringFromUrlParam: '',
-      ResultsAmount: null,            //amount of results from database
+      resultsAmount: null,            //amount of results from database
       currentPagesAmount: null,       //amount of pages depending on resultsamount and some logic
       paginationPages: null,           //rendered html elements to switch page
       resetFilters: 0,
@@ -104,7 +104,7 @@ export default class Pagination extends React.Component {
     query = jsonToParams(query);
     const response = await fetch(`/api/pagesamount/${this.props.dbName}/${query}`);
     let pagesAmount = await response.json();
-    this.setState({ ResultsAmount: (pagesAmount), currentPagesAmount: (Math.ceil(pagesAmount / this.state.limit) - 1) }, () => { this.generatePagination() });
+    this.setState({ resultsAmount: (pagesAmount), currentPagesAmount: (Math.ceil(pagesAmount / this.state.limit) - 1) }, () => { this.generatePagination() });
   }
 
   generatePagination() {
@@ -149,7 +149,7 @@ export default class Pagination extends React.Component {
     cookies.set('paginationLimit', limit, { path: '/' });
     let currentPagesAmount;
     if (this.state.queryString === '') {
-      currentPagesAmount = Math.round(this.state.ResultsAmount / limit)
+      currentPagesAmount = Math.round(this.state.resultsAmount / limit)
       if (currentPagesAmount === 1) { currentPagesAmount = 0 }
       this.setState({ limit: limit, currentPagesAmount: currentPagesAmount, skip: 0 }, () => {
         this.generatePagination()
@@ -157,7 +157,7 @@ export default class Pagination extends React.Component {
       })
     }
     else {
-      currentPagesAmount = Math.ceil(this.state.ResultsAmount / limit) - 1
+      currentPagesAmount = Math.ceil(this.state.resultsAmount / limit) - 1
       this.setState({ limit: limit, currentPagesAmount: currentPagesAmount, skip: 0 }, () => {
         this.generatePagination()
         this.handleCategoryChange({})
@@ -224,7 +224,7 @@ export default class Pagination extends React.Component {
                 {/*CHOOSE PAGE NUMBER*/}
                 <div className="d-flex justify-content-center align-items-center">
                   {/*PREVIOUS PAGE*/}
-                  {this.state.skip > 0  && this.state.ResultsAmount !== 0? // display only if not on first page
+                  {this.state.skip > 0  && this.state.resultsAmount !== 0? // display only if not on first page
                     <Link key="previousPageLink" to={`/${this.props.dbName}/${this.state.queryString}/page=${this.props.match.params.page - 1}`}>
                       <button id={`paginationPageButtonPrevious`}
                         className="prevPage btn btn-light"
@@ -239,7 +239,7 @@ export default class Pagination extends React.Component {
                   {/*PAGES*/}
                   <span>{this.state.paginationPages}</span>
                   {/*NEXT PAGE*/}
-                  {this.state.skip + parseInt(this.state.limit) !== (this.state.currentPagesAmount + 1) * parseInt(this.state.limit) && this.state.ResultsAmount !== 0? // display only if not on last page
+                  {this.state.skip + parseInt(this.state.limit) !== (this.state.currentPagesAmount + 1) * parseInt(this.state.limit) && this.state.resultsAmount !== 0? // display only if not on last page
                     <Link key="nextPageLink" to={`/${this.props.dbName}/${this.state.queryString}/page=${parseInt(this.props.match.params.page) + 1}`}>
                       <button id={`paginationPageButtonNext`}
                         className="nextPage btn btn-light"

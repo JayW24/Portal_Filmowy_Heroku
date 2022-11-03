@@ -14,10 +14,10 @@ export default function PremiereTile(props) {
                 {/*props._id*/}
                 <div className="col-sm-9 col-md-8 col-lg-9 d-flex flex-column justify-content-center">
                     <Link to={`/${props.path}/${props._id}`}><h5>{props.name}</h5></Link>
-                    <div>Czas: {props.duration}min</div>
-                    <div>Data premiery: {props.premiere}</div>
-                    <div>Kategorie: {props.categories}</div>
-                    <div>Oczekiwania: {roundRating(props.rating)}</div>
+                    <div><strong>Czas trwania:</strong> {props.duration}min</div>
+                    <div><strong>Data premiery:</strong> {props.premiere}</div>
+                    <div><strong>Kategorie:</strong> {props.categories}</div>
+                    <div><strong>Oczekiwania:</strong> {roundRating(props.rating)}</div>
                 </div>
             </div>
             <br />

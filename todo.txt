@@ -1,7 +1,8 @@
-1. Ogarnąć pliki statyczne.
-2. Wrzucić CMS na HEROKU.
-3. Refactoring i poprawa struktury folderów projektu.
-13. Zmienić rating liczbowy na gwiazdki
+1. Wrzucić CMS na HEROKU.
+2. Refactoring i poprawa struktury folderów projektu.
+3. Naprawić zliczanie ocen.
+4. Naprawić przechowywanie liczby wyników w ciastkach.
+5. Dodać zakładkę z opisem projektu.
 
 server: nodemon server
 frontend: npm start

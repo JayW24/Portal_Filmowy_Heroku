@@ -12,8 +12,8 @@ export default function FilmTile(props) {
                 </div>
                 <div className="col-sm-9 col-md-8 col-lg-9 d-flex flex-column justify-content-center">
                     <Link to={`/${props.path}/${props._id}`}><h5>{props.name}</h5></Link>
-                    <div><strong>Czas:</strong> {props.duration}min</div>
-                    <div><strong>Rok: </strong>{props.yearOfProduction}</div>
+                    <div><strong>Czas trwania:</strong> {props.duration}min</div>
+                    <div><strong>Premiera: </strong>{props.yearOfProduction} r.</div>
                     <div><strong>Kategorie: </strong>{props.categories.replaceAll(',', ', ')}</div>
                     <div><strong>Ocena: </strong>{roundRating(props.rating)}</div>
                 </div>

@@ -11,7 +11,7 @@ export default function SearchFullScreen(props) {
         <input id="fullScreenSearchInput" className="full-screen-search-input" type="text" autoComplete="off" name="searchlarge" onChange={props.onChange} />
         <h6 className="fullScreenSearchHeader">Wyniki:</h6>
         <div id="full-screen-search-results" onClick={props.onClose}>
-          {props && props.searchResult && props.searchResult.length? props.searchResult.map(searchResult => {
+          {props && props.searchResult && props.searchResult.length > 0 && Array.isArray(props.searchResult) ? props.searchResult.map(searchResult => {
             return (
               <Link to={`/${getDbNameByType(searchResult.type)}/${searchResult._id}`}>
                 <div className="d-flex align-items-center p-1 m-0 mb-1 search-item">

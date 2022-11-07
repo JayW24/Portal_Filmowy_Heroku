@@ -217,7 +217,7 @@ export default class Pagination extends React.Component {
               <div id="jw-pagination-results-29831">
                 <div ref={this.searchResultsTopRef} className="d-block align-items-center">
                   <span className="d-inline-block results-title"><h2 className="display-6">Wyniki wyszukiwania</h2></span>
-                  <span className="d-inline-block resultsAmountDescription ml-1 text-muted">({this.state.ResultsAmount === 0 && this.state.ResultsAmount ? 'Nie znaleziono wyników' : `Znaleziono wyników: ${this.state.ResultsAmount}`})</span>
+                  <span className="d-inline-block resultsAmountDescription ml-1 text-muted">({this.state.resultsAmount === 0 ? 'Nie znaleziono wyników' : `Znaleziono wyników: ${this.state.resultsAmount}`})</span>
                 </div>
                 <hr />
                 {this.state.data}
